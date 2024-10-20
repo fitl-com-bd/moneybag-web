@@ -1,0 +1,27 @@
+.bg-theme {
+  --cui-bg-opacity: 1;
+  background-color: rgba($color-theme, var(--cui-bg-opacity)) !important;
+}
+
+.bg-anti-flash-white {
+  --cui-bg-opacity: 1;
+  background-color: rgba(
+    $color-anti-flash-white,
+    var(--cui-bg-opacity)
+  ) !important;
+}
+
+.bg-ice-blue {
+  --cui-bg-opacity: 1;
+  background-color: rgba($color-ice-blue, var(--cui-bg-opacity)) !important;
+}
+
+.bg-white-2 {
+  --cui-bg-opacity: 1;
+  background-color: rgba($color-white-2, var(--cui-bg-opacity)) !important;
+}
+
+// Text
+.text-theme {
+  color: $color-theme !important;
+}

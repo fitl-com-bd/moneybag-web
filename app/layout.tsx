@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import "./globals.css"
+import "@/styles/style.scss"
 
 export const metadata: Metadata = {
   title: "Marchant-Portal Moneybag",

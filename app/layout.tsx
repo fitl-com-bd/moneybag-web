@@ -1,5 +1,6 @@
-import type { Metadata } from "next"
+import { StoreProvider, ToastProvider } from "@/components/providers"
 import "@/styles/style.scss"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Marchant-Portal Moneybag",
@@ -13,7 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={``}>{children}</body>
+      <body className={``}>
+        <StoreProvider>{children}</StoreProvider>
+        <ToastProvider />
+      </body>
     </html>
   )
 }

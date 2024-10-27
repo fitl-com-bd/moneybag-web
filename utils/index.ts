@@ -1,3 +1,7 @@
+import { ClassValue, clsx } from "clsx"
+
+export const cn = (...classes: ClassValue[]) => clsx(classes)
+
 export const userSingout = () => {
   localStorage.removeItem("token")
   window.location.href = "/"
@@ -12,3 +16,5 @@ export const isUrl = (string: string) => {
 
   return true
 }
+
+export const getRandomFromArray = (numbers = []) => numbers[Math.floor(Math.random() * numbers.length)]

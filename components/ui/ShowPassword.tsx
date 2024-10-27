@@ -1,3 +1,4 @@
+"use client"
 import { LayoutProps } from "@/types"
 import { useRef, useState } from "react"
 import { Icon } from "./Icon"

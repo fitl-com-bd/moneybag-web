@@ -58,7 +58,7 @@ const Login = () => {
     <div
       className="bg-anti-flash-white bg-watermark min-vh-100 d-flex flex-row align-items-center"
       style={{
-        backgroundImage: `url("images/auth-background.png")`,
+        backgroundImage: `url("/images/auth-background.png")`,
       }}>
       <CContainer>
         <CRow className="justify-content-center mx-auto">

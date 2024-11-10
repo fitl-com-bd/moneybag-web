@@ -1,29 +1,16 @@
 "use client"
-import { Icon } from "@/components/ui"
-import { CButton, CTooltip } from "@coreui/react"
+import { Icon, LoadingTable } from "@/components/ui"
+import { useStatementsQuery } from "@/store"
+import { getStatusColor } from "@/utils"
+import { CBadge, CButton, CTooltip } from "@coreui/react"
+import moment from "moment"
+import { useState } from "react"
+import DataTable from "react-data-table-component"
+import { TransactionActions } from "./_components/TransactionActions"
+import { TransactionDetails } from "./_components/TransactionDetails"
+import { TransactionFilterForm } from "./_components/TransactionFilterForm"
 
-import { CBadge } from "@coreui/react"
-// import { DateTime } from "luxon"
-
-const setTextColor = (e: any) => {
-  if (e == "INCOMPLETE") {
-    return "dark"
-  } else if (e == "DECLINED") {
-    return "danger"
-  } else if (e == "APPROVED") {
-    return "primary"
-  } else if (e == "REVERSED") {
-    return "light"
-  } else if (e == "REFUNDED") {
-    return "info"
-  } else if (e == "CANCELLED") {
-    return "danger"
-  } else {
-    return "warning"
-  }
-}
-
-export const column = ({ openDetails }: any) => [
+const column: any = ({ openTransactionDetails }: any) => [
   {
     name: "SL",
     selector: (row: any, index: number) => index + 1,
@@ -46,14 +33,11 @@ export const column = ({ openDetails }: any) => [
   //   minWidth: "70px;",
   // },
 
-  // {
-  //   name: "Creation date",
-  //   selector: row =>
-  //     DateTime.fromISO(row.gw_txn_timestamp, {
-  //       zone: "Asia/Dhaka",
-  //     }).toLocaleString(DateTime.DATETIME_MED),
-  //   minWidth: "70px;",
-  // },
+  {
+    name: "Creation date",
+    selector: (row: any) => moment(row.gw_txn_timestamp).format("lll"),
+    minWidth: "160px",
+  },
   {
     name: "Order Amount",
     selector: (row: any) => row.merchant_order_amount.toFixed(2),
@@ -82,15 +66,18 @@ export const column = ({ openDetails }: any) => [
 
   {
     name: "Order Status",
-    selector: (row: any) => (
-      <h6>
-        <CBadge
-          color={row.dispute_status == "P" ? "warning" : setTextColor(row.gw_order_status)}
-          className={`bg-opacity-16 text-${row.dispute_status == "P" ? "warning" : setTextColor(row.gw_order_status)}`}>
-          {row.dispute_status == "P" ? "DISPUTED" : row.gw_order_status}
-        </CBadge>
-      </h6>
-    ),
+    selector: (row: any) => {
+      const badgeColor = row.dispute_status === "P" ? "warning" : getStatusColor(row.gw_order_status)
+      const badgeText = row.dispute_status === "P" ? "DISPUTED" : row.gw_order_status
+
+      return (
+        <h6>
+          <CBadge color={badgeColor} className={`bg-opacity-16 text-${badgeColor}`}>
+            {badgeText}
+          </CBadge>
+        </h6>
+      )
+    },
   },
   // {
   //   name: "Description",
@@ -107,7 +94,7 @@ export const column = ({ openDetails }: any) => [
             size="sm"
             className="btn-icon"
             onClick={() => {
-              openDetails(row)
+              openTransactionDetails(row)
             }}>
             <Icon name="details" size={24} />
           </CButton>
@@ -118,113 +105,28 @@ export const column = ({ openDetails }: any) => [
 ]
 
 const TransactionList = () => {
+  const [showFilter, setShowFilter] = useState(false)
+  const [filter, setFilter] = useState<any>({})
+  const [transactionDetails, setTransactionDetails] = useState<any>(false)
+  const { data: statement, isLoading } = useStatementsQuery(filter)
+
+  const openTransactionDetails = (data: any) => setTransactionDetails(data)
+
   return (
-    <div>
-      <div className="data-table-wrapper shadow-sm bg-white border-0 rounded overflow-hidden p-3">
-        {/* <DataTable
-          title="Transaction List"
-          columns={column({ openDetails })}
-          data={statement}
-          pagination={50}
-          progressPending={isLoading}
-          progressComponent={<LoadingTable className="w-100" />}
-          actions={
-            <div>
-              <CTooltip content="Filter">
-                <CButton
-                  color={filter ? "dark" : "light"}
-                  onClick={event => {
-                    event.preventDefault()
-                    setFilter(!filter)
-                  }}>
-                  <Icon name="filter" size={16} />
-                </CButton>
-              </CTooltip>
-              <CTooltip content="Download PDF">
-                <CButton color="light" className="mx-1" onClick={dawonloadReport}>
-                  <CIcon icon={cilPrint} />
-                </CButton>
-              </CTooltip>
-              <CTooltip content="Download CSV">
-                <CSVLink
-                  data={setDateForEcecl(statement)}
-                  className="btn btn-light"
-                  filename={`transation-list${Date()}`}>
-                  <CIcon icon={cilDescription} />
-                </CSVLink>
-              </CTooltip>
-            </div>
-          }
-          subHeader
-          subHeaderWrap={false}
-          subHeaderComponent={
-            <CCollapse visible={filter}>
-              <CCard className="bg-anti-flash-white bg-opacity-50 border-0 mb-3">
-                <CCardBody>
-                  <CForm className="row m-0 gy-2 gx-3 align-items-end mb-2">
-                    <CCol md={3}>
-                      <CFormLabel>Order ID</CFormLabel>
-                      <CFormInput className="custom-input" type="text" onChange={handleOrderNumber} />
-                    </CCol>
-                    <CCol md={3}>
-                      <CFormLabel>Transaction ID</CFormLabel>
-                      <CFormInput className="custom-input" type="text" onChange={handleTxnId} />
-                    </CCol>
-                    <CCol md={3}>
-                      <CFormLabel className="mt-2">Period from</CFormLabel>
-                      <CFormInput className="custom-input" type="date" onChange={handlePeriodFrom} />
-                    </CCol>
-                    <CCol md={3}>
-                      <CFormLabel className="mt-2">Period To</CFormLabel>
-                      <CFormInput className="custom-input" type="date" onChange={handlePeriodTo} />
-                    </CCol>
-                    <CCol md={3}>
-                      <CFormLabel className="mt-2">Status</CFormLabel>
-                      <CFormSelect className="custom-input" onChange={handleStatus}>
-                        <option value={""}>Select One</option>
-                        <option>APPROVED</option>
-                        <option>DISPUTED</option>
-                        <option>REVERSED</option>
-                        <option>REFUNDED</option>
-                        <option>DECLINED</option>
-                        <option>CANCELLED</option>
-                        <option>INITIATED</option>
-                        <option>INCOMPLETE</option>
-                      </CFormSelect>
-                    </CCol>
-
-                    <CCol md={3}>
-                      <CFormLabel className="mt-2">Amount from</CFormLabel>
-                      <CFormInput className="custom-input" type="text" onChange={handleAmountFrom} />
-                    </CCol>
-                    <CCol md={3}>
-                      <CFormLabel className="mt-2">Amount To</CFormLabel>
-                      <CFormInput className="custom-input" type="text" onChange={handleAmountTo} />
-                    </CCol>
-
-                    <CCol className="d-flex justify-content-end">
-                      <CButton className="mt-2" color="primary" onClick={searchStatemet}>
-                        Search
-                      </CButton>
-                    </CCol>
-                  </CForm>
-                </CCardBody>
-              </CCard>
-            </CCollapse>
-          }
-        /> */}
-      </div>
-
-      {/* <div>
-        <CModal visible={visible} onClose={() => setVisible(false)} size="lg">
-          <CModalHeader onClose={() => setVisible(false)}>
-            <CModalTitle className="text-danger">Transection Details</CModalTitle>
-          </CModalHeader>
-          <CModalBody className="px-0">
-            <MerStatementDetail data={statementdetails} />
-          </CModalBody>
-        </CModal>
-      </div> */}
+    <div className="data-table-wrapper shadow-sm bg-white border-0 rounded overflow-hidden p-3">
+      <DataTable
+        title="Transaction List"
+        columns={column({ openTransactionDetails })}
+        data={statement}
+        pagination={50 as any}
+        progressPending={isLoading}
+        progressComponent={<LoadingTable className="w-100" />}
+        actions={<TransactionActions transactions={statement} filter={showFilter} setFilter={setShowFilter} />}
+        subHeader
+        subHeaderWrap={false}
+        subHeaderComponent={<TransactionFilterForm show={showFilter} filter={filter} setFilter={setFilter} />}
+      />
+      <TransactionDetails visible={transactionDetails} setVisible={setTransactionDetails} />
     </div>
   )
 }

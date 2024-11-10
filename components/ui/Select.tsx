@@ -50,8 +50,7 @@ export const Select = ({
             defaultValue={getValue(field.value)}
             value={getValue(field.value)}
             onChange={(value: any) => field.onChange(valueObject ? value : value?.value)}
-            // keep always open
-            menuIsOpen
+            // menuIsOpen
             className={cn(
               {
                 "is-invalid": invalid,

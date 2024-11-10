@@ -1,5 +1,6 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
 import { baseQuery } from "@/store/config"
+import { formatParams } from "@/utils"
+import { createApi } from "@reduxjs/toolkit/query/react"
 
 export const customerApi = createApi({
   reducerPath: "customerApi",
@@ -9,9 +10,9 @@ export const customerApi = createApi({
     customers: builder.query({
       query: params => ({
         url: `merchant/customers`,
-        params,
+        params: formatParams(params),
       }),
-      transformResponse: response => response.data.customers,
+      transformResponse: (response: any) => response.data.customers,
       transformErrorResponse: error => error,
       providesTags: ["Customers"],
     }),
@@ -23,7 +24,12 @@ export const customerApi = createApi({
       }),
       invalidatesTags: ["Customers"],
     }),
+    customer: builder.query({
+      query: id => `merchant/customer/${id}`,
+      transformResponse: (response: any) => response.customer,
+      transformErrorResponse: error => error,
+    }),
   }),
 })
 
-export const { useCustomersQuery, useCreateCustomerMutation } = customerApi
+export const { useCustomersQuery, useCreateCustomerMutation, useCustomerQuery } = customerApi

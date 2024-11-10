@@ -1,4 +1,5 @@
 import { ClassValue, clsx } from "clsx"
+import omitBy from "lodash/omitBy"
 
 export const cn = (...classes: ClassValue[]) => clsx(classes)
 
@@ -44,3 +45,11 @@ export const getStatusColor = (status: string): string => {
       return "warning"
   }
 }
+
+export const formatSearch = (searchKey: string) => {
+  return searchKey.trim().replace(/\s+/g, "%")
+}
+
+export const formatParams = (params: any) => omitBy(params, value => value == null || value === "")
+
+export const getRandomNumber = () => Math.floor(Math.random() * 100000)

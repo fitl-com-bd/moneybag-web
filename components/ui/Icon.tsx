@@ -56,6 +56,7 @@ type IconProps = {
   className?: string
   size?: number
   style?: any
+  role?: string
 }
 
 export const ICON_NAMES = Object.keys(ICONS) as string[]

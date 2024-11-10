@@ -1,5 +1,6 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
 import { baseQuery } from "@/store/config"
+import { formatParams } from "@/utils"
+import { createApi } from "@reduxjs/toolkit/query/react"
 
 export const invoiceApi = createApi({
   reducerPath: "invoiceApi",
@@ -9,9 +10,9 @@ export const invoiceApi = createApi({
     invoices: builder.query({
       query: params => ({
         url: `merchant/invoices`,
-        params,
+        params: formatParams(params),
       }),
-      transformResponse: response => response.data.invoices,
+      transformResponse: (response: any) => response.data.invoices,
       transformErrorResponse: error => error,
       providesTags: ["Invoices"],
     }),
@@ -38,7 +39,7 @@ export const invoiceApi = createApi({
         url: `merchant/invoice-by-no`,
         params: { invoice_no },
       }),
-      transformResponse: response => response.data.invoice,
+      transformResponse: (response: any) => response.data.invoice,
       transformErrorResponse: error => error,
       providesTags: (result, error, invoice_no) => [{ type: "Invoices", id: invoice_no }],
     }),

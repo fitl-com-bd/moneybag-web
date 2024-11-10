@@ -10,7 +10,7 @@ import { TransactionActions } from "./_components/TransactionActions"
 import { TransactionDetails } from "./_components/TransactionDetails"
 import { TransactionFilterForm } from "./_components/TransactionFilterForm"
 
-const column: any = ({ openTransactionDetails }: any) => [
+export const column: any = ({ openTransactionDetails }: any) => [
   {
     name: "SL",
     selector: (row: any, index: number) => index + 1,

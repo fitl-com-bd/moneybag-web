@@ -1,19 +1,19 @@
+"use client"
+import { DashboardLayout } from "@/components/layouts"
+import config from "@/config"
+import { useAuth } from "@/hooks"
 import { LayoutProps } from "@/types"
-import AppFooter from "./_components/AppFooter"
-import AppHeader from "./_components/AppHeader"
-import AppSidebar from "./_components/AppSidebar"
+import { useRouter } from "next/navigation"
 
-const DashboardLayout = ({ children }: LayoutProps) => {
-  return (
-    <div>
-      <AppSidebar />
-      <div className="wrapper d-flex flex-column vh-100">
-        <AppHeader />
-        <div className="body flex-grow-1 px-2.5 d-flex flex-column">{children}</div>
-        <AppFooter />
-      </div>
-    </div>
-  )
+const DashboardMainLayout = ({ children }: LayoutProps) => {
+  const router = useRouter()
+  const { user, isLoading } = useAuth()
+  // If user is loading, show loading indicator
+  if (isLoading) return null
+  // Redirect to login if user is not logged in
+  if (!user) return router.push(config.SIGN_IN_URL)
+
+  return <DashboardLayout>{children}</DashboardLayout>
 }
 
-export default DashboardLayout
+export default DashboardMainLayout

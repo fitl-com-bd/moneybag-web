@@ -1,4 +1,5 @@
 "use client"
+import { ShowPassword } from "@/components/ui"
 import { useLoginUserMutation } from "@/store"
 import {
   CButton,
@@ -18,7 +19,6 @@ import {
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
-import { ShowPassword } from "@/components/ui"
 import ForgetPassword from "./_components/ForgetPassword"
 
 const Login = () => {
@@ -69,11 +69,11 @@ const Login = () => {
                   <div className="text-center">
                     <CImage className="login-image-wrapper img-fluid mx-auto" src="images/logo.png" />
                   </div>
-                  <div className="text-center">
-                    <h4 className="pt-4 text-danger">Marchant Sign in...</h4>
+                  <div className="text-center mt-3 mb-8">
+                    <h5 className="text-danger">Marchant Sign In</h5>
                   </div>
                   <CFormInput
-                    className="my-4 custom-input"
+                    className="mb-4 custom-input"
                     placeholder="User Name"
                     type="text"
                     name="username"
@@ -81,19 +81,21 @@ const Login = () => {
                   />
                   <ShowPassword>
                     <CFormInput
-                      className="my-4 custom-input"
+                      className="custom-input"
                       placeholder="Password"
                       type="password"
                       name="password"
                       onChange={handlePassword}
                     />
                   </ShowPassword>
-                  <CButton color="link" onClick={openModal} className="text-danger">
-                    Forgot password?
-                  </CButton>
-                  <div className="text-center pt-3 mb-2 pb-1">
+                  <div className="d-flex mb-4">
+                    <CButton color="link" onClick={openModal} className="text-danger p-0 text-decoration-none ms-auto">
+                      Forgot password?
+                    </CButton>
+                  </div>
+                  <div className="text-center mb-3">
                     <CButton
-                      className="border-0 mb-4 w-100 gradient-custom-2"
+                      className="border-0 w-100 gradient-custom-2"
                       type="button"
                       disabled={isLoading}
                       onClick={submitUser}>

@@ -6,7 +6,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 export const pageApi = createApi({
   reducerPath: "pageApi",
   baseQuery,
-  tagTypes: ["Dashboard", "Statements", "IntegrationDetails"],
+  tagTypes: ["Dashboard", "Statements", "IntegrationDetails", "MerchantSettlements"],
   endpoints: builder => ({
     dashboard: builder.query({
       query: () => ({ url: `merchant-dashboard/dashboard-details` }),
@@ -23,6 +23,15 @@ export const pageApi = createApi({
       transformErrorResponse: error => error,
       providesTags: ["Statements"],
     }),
+    merchantSettlements: builder.query({
+      query: prams => ({
+        url: `merchant-settlements`,
+        params: { ...prams },
+      }),
+      transformResponse: (response: any) => response,
+      transformErrorResponse: error => error,
+      providesTags: ["MerchantSettlements"],
+    }),
     integrationDetails: builder.query({
       query: () => ({
         url: `marchants/integration-details`,
@@ -36,4 +45,5 @@ export const pageApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useDashboardQuery, useStatementsQuery, useIntegrationDetailsQuery } = pageApi
+export const { useDashboardQuery, useStatementsQuery, useIntegrationDetailsQuery, useMerchantSettlementsQuery } =
+  pageApi

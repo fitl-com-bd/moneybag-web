@@ -10,7 +10,7 @@ import { TransactionActions } from "./_components/TransactionActions"
 import { TransactionDetails } from "./_components/TransactionDetails"
 import { TransactionFilterForm } from "./_components/TransactionFilterForm"
 
-export const column: any = ({ openTransactionDetails }: any) => [
+export const column: any = ({ openDetails }: any) => [
   {
     name: "SL",
     selector: (row: any, index: number) => index + 1,
@@ -94,7 +94,7 @@ export const column: any = ({ openTransactionDetails }: any) => [
             size="sm"
             className="btn-icon"
             onClick={() => {
-              openTransactionDetails(row)
+              openDetails(row)
             }}>
             <Icon name="details" size={24} />
           </CButton>
@@ -107,26 +107,26 @@ export const column: any = ({ openTransactionDetails }: any) => [
 const TransactionList = () => {
   const [showFilter, setShowFilter] = useState(false)
   const [filter, setFilter] = useState<any>({})
-  const [transactionDetails, setTransactionDetails] = useState<any>(false)
-  const { data: statement, isLoading } = useStatementsQuery(filter)
+  const [details, setDetails] = useState<any>(false)
+  const { data: statements, isLoading } = useStatementsQuery(filter)
 
-  const openTransactionDetails = (data: any) => setTransactionDetails(data)
+  const openDetails = (data: any) => setDetails(data)
 
   return (
     <div className="data-table-wrapper shadow-sm bg-white border-0 rounded overflow-hidden p-3">
       <DataTable
         title="Transaction List"
-        columns={column({ openTransactionDetails })}
-        data={statement}
+        columns={column({ openDetails })}
+        data={statements}
         pagination={50 as any}
         progressPending={isLoading}
         progressComponent={<LoadingTable className="w-100" />}
-        actions={<TransactionActions transactions={statement} filter={showFilter} setFilter={setShowFilter} />}
+        actions={<TransactionActions transactions={statements} filter={showFilter} setFilter={setShowFilter} />}
         subHeader
         subHeaderWrap={false}
         subHeaderComponent={<TransactionFilterForm show={showFilter} filter={filter} setFilter={setFilter} />}
       />
-      <TransactionDetails visible={transactionDetails} setVisible={setTransactionDetails} />
+      <TransactionDetails visible={details} setVisible={setDetails} />
     </div>
   )
 }

@@ -12,17 +12,22 @@ type TransactionActionsProps = {
   setFilter: (value: boolean) => void
 }
 
-export const TransactionActions = ({ transactions, filter, setFilter }: TransactionActionsProps) => {
+const SettlementReportActions = ({ transactions, filter, setFilter }: TransactionActionsProps) => {
   const downloadReport = () => {}
 
   const formatExcelData = (transactions: any[]) =>
     transactions?.map(transaction => ({
-      Settlement_From: moment(transaction.settlement_from).format("lll"),
-      Settlement_to: moment(transaction.settlement_to).format("lll"),
-      Collection_Amount: formatPrice(transaction.gttl_order_amount),
-      PGW_Fee: formatPrice(transaction.gttl_bank_fee + transaction.gttl_pgw_fee),
-      Settlement_Amount: formatPrice(transaction.gttl_total_settlement_amount),
-      Settlement_Date: moment(transaction.settlement_date).format("lll"),
+      Order_ID: transaction.merchant_tran_id,
+      Transaction_ID: transaction.txn_id,
+      Merchant_id: transaction.merchant_id,
+      Merchant_Name: transaction.merchant_name,
+      Merchant_short_name: transaction.short_name,
+      Transaction_date: moment(transaction.created_at).format("lll"),
+      Order_Amount: formatPrice(transaction.merchant_order_amount),
+      Pgw_fee: formatPrice(transaction.bank_charge + transaction.pgw_charge),
+      Refund_Amount: formatPrice(transaction.refund_amount || 0),
+      Payable_Amount: formatPrice(transaction.merchant_order_amount - transaction.refund_amount),
+      Transaction_Status: transaction.gw_order_status,
     })) || []
 
   return (
@@ -50,3 +55,5 @@ export const TransactionActions = ({ transactions, filter, setFilter }: Transact
     </div>
   )
 }
+
+export default SettlementReportActions

@@ -1,13 +1,13 @@
 import { CButton, CCard, CCardBody, CCol, CCollapse, CForm, CFormInput, CFormLabel, CFormSelect } from "@coreui/react"
 import { useForm } from "react-hook-form"
 
-type TransactionFilterFormProps = {
+type Props = {
   show: boolean
   filter: any
   setFilter: (value: any) => void
 }
 
-export const TransactionFilterForm = ({ show, filter, setFilter }: TransactionFilterFormProps) => {
+export const TransactionFilterForm = ({ show, filter, setFilter }: Props) => {
   const {
     register,
     handleSubmit,

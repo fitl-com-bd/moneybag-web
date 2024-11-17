@@ -1,5 +1,6 @@
 "use client"
 import { Icon, Select } from "@/components/ui"
+import { LS_TERMS_AND_CONDITIONS } from "@/constants"
 import { useCreateInvoiceMutation, useCustomersQuery, useEditInvoiceMutation } from "@/store"
 import {
   CButton,
@@ -30,8 +31,7 @@ type StoreInvoice = {
 
 export const StoreInvoice = ({ edit = false, invoice }: StoreInvoice) => {
   const router = useRouter()
-  // const { state } = useLocation()
-  // const terms_and_conditions = state?.terms_and_conditions
+  const terms_and_conditions = localStorage.getItem(LS_TERMS_AND_CONDITIONS)
   const [showCreateCustomer, setShowCreateCustomer] = useState(false)
   const [isCreateCustomerLoading, setIsCreateCustomerLoading] = useState(false)
   const {
@@ -70,7 +70,7 @@ export const StoreInvoice = ({ edit = false, invoice }: StoreInvoice) => {
       sub_total: invoice ? undefined : 0,
       gross_discount: invoice ? invoice?.gross_discount : 0,
       all_total: invoice ? undefined : 0,
-      // terms_and_conditions: invoice ? invoice?.terms_and_conditions : terms_and_conditions,
+      terms_and_conditions: invoice ? invoice?.terms_and_conditions : terms_and_conditions,
     },
   })
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({

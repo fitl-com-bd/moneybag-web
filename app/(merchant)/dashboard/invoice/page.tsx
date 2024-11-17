@@ -1,6 +1,7 @@
 "use client"
 import { CopyPaymentLink, EmailToCustomer } from "@/components/shared"
 import { Icon, LoadingTable } from "@/components/ui"
+import { LS_TERMS_AND_CONDITIONS } from "@/constants"
 import { useInvoicesQuery } from "@/store"
 import { formatCurrency } from "@/utils"
 import { CBadge, CButton, CTooltip } from "@coreui/react"
@@ -113,6 +114,8 @@ const Invoice = () => {
 
   const showCopyPaymentLinkModal = () => setShowCopyPaymentLink(true)
   const showEmailToCustomerModal = (data: any) => () => setShowEmailToCustomer(data)
+
+  if (invoice?.length > 0) localStorage.setItem(LS_TERMS_AND_CONDITIONS, invoice[0].terms_and_conditions || "")
 
   return (
     <div className="data-table-wrapper bg-white border-0 rounded overflow-hidden flex-1 p-3">

@@ -96,7 +96,7 @@ export const InvoiceFilter = ({ filter, setParams }: InvoiceFilterProps) => {
             </CCol> */}
 
             <CCol md={3} className="d-flex align-items-center gap-2">
-              <CButton type="button" color="secondary" onClick={handleReset}>
+              <CButton type="button" color="dark" onClick={handleReset}>
                 Reset
               </CButton>
               <CButton type="submit" className="border-0 text-light">

@@ -7,6 +7,7 @@ import {
   CCardBody,
   CCol,
   CContainer,
+  CForm,
   CFormInput,
   CImage,
   CModal,
@@ -18,40 +19,39 @@ import {
 } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import ForgetPassword from "./_components/ForgetPassword"
 
 const Login = () => {
   const router = useRouter()
-  const [username, setuername] = useState("")
-  const [password, setpassword] = useState("")
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    setError,
+    clearErrors,
+    formState: { errors, isValid },
+  } = useForm()
   const [visible, setVisible] = useState<boolean | undefined>()
-  // const [isLoading, setIsLoading] = useState(false);
   const [loginUser, { isLoading }] = useLoginUserMutation()
 
   const openModal = () => setVisible(true)
 
-  const handleUser = (e: any) => {
-    const username = e.target.value
-    setuername(username)
-  }
-  const handlePassword = (e: any) => {
-    const password = e.target.value
-    setpassword(password)
-  }
+  const onSubmit = async (data: any) => {
+    const response: any = await loginUser(data)
 
-  const submitUser = async (e: any) => {
-    e.preventDefault()
-    const response: any = await loginUser({ username, password })
     if (response?.error) {
       console.error("There was an error!", response.error)
+      const message = response.error?.data?.detail || "Something went wrong!"
+      return toast.error(message)
     }
     if (response?.data?.access_token) {
+      router.push("/dashboard")
       localStorage.setItem("token", response.data.access_token)
       toast.success("Login successful")
-      return router.push("/dashboard")
     }
-    toast.error("Something went wrong")
   }
 
   return (
@@ -65,7 +65,7 @@ const Login = () => {
           <CCol sm={12} md={12} lg={6} xl={4}>
             <CCard className="border-0 shadow">
               <CCardBody className="p-sm-5 p-md-5 px-xl-4">
-                <div className="justify-content-center px-3">
+                <CForm className="justify-content-center px-3" onSubmit={handleSubmit(onSubmit)}>
                   <div className="text-center">
                     <CImage className="login-image-wrapper img-fluid mx-auto" src="images/logo.png" />
                   </div>
@@ -76,16 +76,18 @@ const Login = () => {
                     className="mb-4 custom-input"
                     placeholder="User Name"
                     type="text"
-                    name="username"
-                    onChange={handleUser}
+                    {...register("username")}
+                    invalid={errors?.username as any}
+                    feedbackInvalid={errors?.username?.message as any}
                   />
                   <ShowPassword>
                     <CFormInput
                       className="custom-input"
                       placeholder="Password"
                       type="password"
-                      name="password"
-                      onChange={handlePassword}
+                      {...register("password")}
+                      invalid={errors?.password as any}
+                      feedbackInvalid={errors?.password?.message as any}
                     />
                   </ShowPassword>
                   <div className="d-flex mb-4">
@@ -96,14 +98,14 @@ const Login = () => {
                   <div className="text-center mb-3">
                     <CButton
                       className="border-0 w-100 gradient-custom-2"
-                      type="button"
-                      disabled={isLoading}
-                      onClick={submitUser}>
+                      type="submit"
+                      // onClick={submitUser}
+                      disabled={isLoading}>
                       {isLoading && <CSpinner color="light" size="sm" className="me-2" />}
                       {isLoading ? "Signing in..." : "Sign in"}
                     </CButton>
                   </div>
-                </div>
+                </CForm>
               </CCardBody>
             </CCard>
           </CCol>
@@ -115,11 +117,7 @@ const Login = () => {
           onClose={() => {
             setVisible(false)
           }}>
-          <CModalHeader
-          // onClose={() => {
-          //   setVisible(false)
-          // }}
-          >
+          <CModalHeader>
             <CModalTitle className="px-3 text-danger">Forgot Password</CModalTitle>
           </CModalHeader>
           <CModalBody>

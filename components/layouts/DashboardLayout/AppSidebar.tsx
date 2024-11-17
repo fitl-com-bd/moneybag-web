@@ -13,7 +13,7 @@ const AppSidebar = () => {
   const showSidebar = useAppSelector(state => state.entities.sidebar.showSidebar)
 
   return (
-    <CSidebar position="fixed" colorScheme="light" visible={showSidebar}>
+    <CSidebar position="fixed" visible={showSidebar}>
       <CSidebarBrand className="py-3 flex-center">
         <CImage className="image-wrapper" src={config.LOGO} />
       </CSidebarBrand>

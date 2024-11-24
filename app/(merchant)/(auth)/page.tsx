@@ -1,5 +1,7 @@
 "use client"
 import { ShowPassword } from "@/components/ui"
+import config from "@/config"
+import { LS_TOKEN } from "@/constants"
 import { useLoginUserMutation } from "@/store"
 import {
   CButton,
@@ -48,9 +50,9 @@ const Login = () => {
       return toast.error(message)
     }
     if (response?.data?.access_token) {
-      router.push("/dashboard")
-      localStorage.setItem("token", response.data.access_token)
+      localStorage.setItem(LS_TOKEN, response.data.access_token)
       toast.success("Login successful")
+      router.push(config.DASHBOARD_URL)
     }
   }
 

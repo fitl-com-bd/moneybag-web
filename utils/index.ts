@@ -1,11 +1,13 @@
+import config from "@/config"
+import { LS_TOKEN } from "@/constants"
 import { ClassValue, clsx } from "clsx"
 import omitBy from "lodash/omitBy"
 
 export const cn = (...classes: ClassValue[]) => clsx(classes)
 
-export const userSingout = () => {
-  localStorage.removeItem("token")
-  window.location.href = "/"
+export const handleSingout = () => {
+  localStorage.removeItem(LS_TOKEN)
+  window.location.href = config.SIGN_IN_URL
 }
 
 export const isUrl = (string: string) => {

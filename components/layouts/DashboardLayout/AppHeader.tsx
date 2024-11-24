@@ -1,4 +1,8 @@
 "use client"
+import { Avatar, Icon } from "@/components/ui"
+import { useAuth } from "@/hooks"
+import { sidebarToggle } from "@/store"
+import { handleSingout } from "@/utils"
 import {
   CButton,
   CContainer,
@@ -18,13 +22,9 @@ import {
   CModalTitle,
 } from "@coreui/react"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
 import { useForm } from "react-hook-form"
-import { Avatar, Icon } from "@/components/ui"
-import { useAuth } from "@/hooks"
-import { sidebarToggle } from "@/store"
-import { userSingout } from "@/utils"
 import toast from "react-hot-toast"
+import { useDispatch } from "react-redux"
 
 const AppHeader = () => {
   const { user, isLoading } = useAuth()
@@ -140,7 +140,7 @@ const AppHeader = () => {
                 <CDropdownItem component="button" className="chang-password custom-text fw-bold" onClick={openModal}>
                   Change Password
                 </CDropdownItem>
-                <CDropdownItem component="button" className="fw-bold" onClick={userSingout}>
+                <CDropdownItem component="button" className="fw-bold" onClick={handleSingout}>
                   Sign Out
                 </CDropdownItem>
               </CDropdownMenu>

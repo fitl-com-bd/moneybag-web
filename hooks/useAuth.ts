@@ -8,5 +8,17 @@ export const useAuth = () => {
 
   const user = data as any
 
-  return { user, isLoading, error, isAdmin }
+  let { permissions = [] } = (user || {}) as { permissions: any[] }
+
+  permissions = permissions.map(permission => permission.slug)
+
+  return {
+    user,
+    isLoading,
+    error,
+    isAdmin,
+    permissions,
+    isSuperAdmin: user?.id === 45,
+    hasPermission: (permission: string) => user?.id === 45 || permissions.includes(permission),
+  }
 }

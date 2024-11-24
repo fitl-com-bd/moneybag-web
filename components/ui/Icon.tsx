@@ -7,15 +7,23 @@ import { MdMenu } from "react-icons/md"
 import { PiDotsThreeCircle } from "react-icons/pi"
 import {
   RiAddLine,
+  RiAdminLine,
   RiArrowLeftLine,
+  RiBankLine,
   RiDashboardLine,
   RiDeleteBin6Line,
   RiEdit2Line,
   RiExchangeDollarLine,
   RiFileAddLine,
+  RiFileList2Line,
   RiFileList3Line,
+  RiLockPasswordLine,
+  RiToolsLine,
   RiUser3Line,
   RiUserAddLine,
+  RiUserSettingsLine,
+  RiUserUnfollowLine,
+  RiWallet2Line,
 } from "react-icons/ri"
 
 export const ICONS = {
@@ -48,6 +56,17 @@ export const ICONS = {
   search: FiSearch,
   x: FiX,
   chevronDown: FiChevronDown,
+  setup: RiUserSettingsLine,
+  admin: RiAdminLine,
+  merchant: RiUser3Line,
+  password: RiLockPasswordLine,
+  bank: RiBankLine,
+  wallet: RiWallet2Line,
+  service: RiToolsLine,
+  transaction: RiExchangeDollarLine,
+  settlement: RiFileList2Line,
+  role: RiUserSettingsLine,
+  permission: RiUserUnfollowLine,
 }
 
 type IconProps = {

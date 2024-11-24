@@ -1,6 +1,7 @@
 "use client"
 import { ShowPassword } from "@/components/ui"
-import { useLoginUserMutation } from "@/store"
+import config from "@/config"
+import { useLoginAdminMutation } from "@/store"
 import {
   CButton,
   CCard,
@@ -35,12 +36,12 @@ const Login = () => {
     formState: { errors, isValid },
   } = useForm()
   const [visible, setVisible] = useState<boolean | undefined>()
-  const [loginUser, { isLoading }] = useLoginUserMutation()
+  const [loginAdmin, { isLoading }] = useLoginAdminMutation()
 
   const openModal = () => setVisible(true)
 
   const onSubmit = async (data: any) => {
-    const response: any = await loginUser(data)
+    const response: any = await loginAdmin(data)
 
     if (response?.error) {
       console.error("There was an error!", response.error)
@@ -48,9 +49,9 @@ const Login = () => {
       return toast.error(message)
     }
     if (response?.data?.access_token) {
-      router.push("/dashboard")
       localStorage.setItem("token", response.data.access_token)
       toast.success("Login successful")
+      router.push(config.ADMIN_DASHBOARD_URL)
     }
   }
 

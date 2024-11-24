@@ -9,7 +9,7 @@ import "simplebar-react/dist/simplebar.min.css"
 import { AppSidebarNav } from "./AppSidebarNav"
 
 const AppSidebar = () => {
-  const { user, isLoading } = useAuth()
+  const { user, isLoading, isAdmin } = useAuth()
   const showSidebar = useAppSelector(state => state.entities.sidebar.showSidebar)
 
   return (

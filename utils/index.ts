@@ -1,5 +1,5 @@
 import config from "@/config"
-import { LS_TOKEN } from "@/constants"
+import { LS_TOKEN, LS_USER_TYPE } from "@/constants"
 import { ClassValue, clsx } from "clsx"
 import omitBy from "lodash/omitBy"
 
@@ -7,7 +7,8 @@ export const cn = (...classes: ClassValue[]) => clsx(classes)
 
 export const handleSingout = () => {
   localStorage.removeItem(LS_TOKEN)
-  window.location.href = config.SIGN_IN_URL
+  const isAdmin = window.location.pathname.startsWith("/admin")
+  window.location.href = isAdmin ? config.ADMIN_SIGN_IN_URL : config.SIGN_IN_URL
 }
 
 export const isUrl = (string: string) => {

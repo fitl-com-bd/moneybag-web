@@ -130,9 +130,9 @@ const AppHeader = () => {
           {!isLoading && user && (
             <CDropdown className="">
               <CDropdownToggle href="#" color="secondary" className="btn-clear d-flex align-items-center gap-2 py-0">
-                <Avatar src={user.merchant_logo_url} alt={user.merchant_name} />
+                <Avatar src={user.merchant_logo_url} alt={user.merchant_name || user.user_name} />
                 <div className="flex-col justify-content-between align-items-start small">
-                  <span className="avatar-name-sm lh-1">{user.merchant_name}</span>
+                  <span className="avatar-name-sm lh-1">{user.merchant_name || user.user_name}</span>
                   <span className="small">@{user.user_id}</span>
                 </div>
               </CDropdownToggle>

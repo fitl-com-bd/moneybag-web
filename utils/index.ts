@@ -1,5 +1,5 @@
 import config from "@/config"
-import { LS_TOKEN, LS_USER_TYPE } from "@/constants"
+import { LS_TOKEN } from "@/constants"
 import { ClassValue, clsx } from "clsx"
 import omitBy from "lodash/omitBy"
 

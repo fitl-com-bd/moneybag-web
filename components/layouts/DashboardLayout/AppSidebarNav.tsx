@@ -1,5 +1,6 @@
 import { Icon } from "@/components/ui"
 import { useAuth } from "@/hooks"
+import { getNavItems } from "@/utils"
 import { CBadge, CNavGroup, CNavItem } from "@coreui/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -9,6 +10,7 @@ import { ReactNode } from "react"
 interface BaseNavItem {
   name: string
   href: string
+  slug?: string
   icon?: ReactNode
   active?: (pathname: string) => boolean
 }
@@ -101,6 +103,7 @@ const ADMIN_NAV: NavType = [
     component: CNavItem,
     name: "Dashboard",
     href: "/dashboard",
+    slug: "dashboard",
     icon: <Icon name="home" className="nav-icon" />,
     active: pathname => pathname === "/dashboard",
   },
@@ -114,18 +117,21 @@ const ADMIN_NAV: NavType = [
         component: CNavItem,
         name: "User List",
         href: "/dashboard/users",
+        slug: "admin-user-list",
         icon: <Icon name="admin" className="nav-icon" />,
       },
       {
         component: CNavItem,
         name: "Merchant User List",
         href: "/dashboard/merchant-users",
+        slug: "merchant-user-list",
         icon: <Icon name="merchant" className="nav-icon" />,
       },
       {
         component: CNavItem,
         name: "Merchant API Pass",
         href: "/dashboard/merchant-callbackUrl",
+        slug: "merchant-api-password-list",
         icon: <Icon name="password" className="nav-icon" />,
       },
 
@@ -133,24 +139,16 @@ const ADMIN_NAV: NavType = [
         component: CNavItem,
         name: "Bank List",
         href: "/dashboard/bank",
+        slug: "bank-list",
         icon: <Icon name="bank" className="nav-icon" />,
       },
       {
         component: CNavItem,
         name: "Branch List",
         href: "/dashboard/branch",
+        slug: "branch-list",
         icon: <Icon name="bank" className="nav-icon" />,
       },
-      // {
-      //   component: CNavItem,
-      //   name: "Partner",
-      //   href: "/partner",
-      // },
-      // {
-      //   component: CNavItem,
-      //   name: "Partner-Branch",
-      //   href: "/partner-branch",
-      // },
     ],
   },
   {
@@ -163,23 +161,21 @@ const ADMIN_NAV: NavType = [
         component: CNavItem,
         name: "Fintech List",
         href: "/dashboard/fintech",
+        slug: "fintech-list",
         icon: <Icon name="wallet" className="nav-icon" />,
       },
-      // {
-      //   component: CNavItem,
-      //   name: "Services",
-      //   href: "/dashboard/service",
-      // },
       {
         component: CNavItem,
         name: "Settlement Account",
-        href: "/dashboard/settelment",
+        href: "/dashboard/settlement",
+        slug: "settlement-account",
         icon: <Icon name="report" className="nav-icon" />,
       },
       {
         component: CNavItem,
         name: "Default Service",
         href: "/dashboard/default-servic/add-default-service",
+        slug: "default-service",
         icon: <Icon name="service" className="nav-icon" />,
       },
     ],
@@ -194,24 +190,16 @@ const ADMIN_NAV: NavType = [
         component: CNavItem,
         name: "Merchant List",
         href: "/dashboard/merchant",
+        slug: "merchant-list",
         icon: <Icon name="merchant" className="nav-icon" />,
       },
       {
         component: CNavItem,
         name: "Merchant Service",
         href: "/dashboard/merchant-service",
+        slug: "merchant-service",
         icon: <Icon name="service" className="nav-icon" />,
       },
-      // {
-      //   component: CNavItem,
-      //   name: "Merchant Store",
-      //   href: "/merchant-store",
-      // },
-      // {
-      //   component: CNavItem,
-      //   name: "Bank Payment",
-      //   href: "/bank-payment",
-      // },
     ],
   },
   {
@@ -220,22 +208,18 @@ const ADMIN_NAV: NavType = [
     href: "",
     icon: <Icon name="transaction" className="nav-icon" />,
     items: [
-      // {
-      //   component: CNavItem,
-      //   name: "Merchant Transaction",
-      //   href: "/dashboard/merchant-transaction",
-      //   icon: <Icon name="merchant" className="nav-icon" />,
-      // },
       {
         component: CNavItem,
         name: "Transaction List",
         href: "/dashboard/transaction",
+        slug: "transaction-list",
         icon: <Icon name="transaction" className="nav-icon" />,
       },
       {
         component: CNavItem,
         name: "Settlement",
         href: "/dashboard/settlement",
+        slug: "pending-settlements",
         icon: <Icon name="settlement" className="nav-icon" />,
         active: pathname => pathname === "/dashboard/settlement",
       },
@@ -243,6 +227,7 @@ const ADMIN_NAV: NavType = [
         component: CNavItem,
         name: "Settlement Report",
         href: "/dashboard/settlement-report",
+        slug: "settlement-report",
         icon: <Icon name="report" className="nav-icon" />,
       },
     ],
@@ -257,12 +242,14 @@ const ADMIN_NAV: NavType = [
         component: CNavItem,
         name: "Role",
         href: "/dashboard/role",
+        slug: "role-list",
         icon: <Icon name="role" className="nav-icon" />,
       },
       {
         component: CNavItem,
         name: "Permission",
         href: "/dashboard/permission",
+        slug: "permission-list",
         icon: <Icon name="permission" className="nav-icon" />,
       },
     ],
@@ -272,8 +259,7 @@ const ADMIN_NAV: NavType = [
 export const AppSidebarNav = () => {
   const pathname = usePathname()
   const { permissions, isSuperAdmin, isAdmin } = useAuth()
-  // const navbarItems = isAdmin? isSuperAdmin ? ADMIN_NAV : getNavItems(ADMIN_NAV, routes, permissions) :MERCHANT_NAV
-  const navbarItems = MERCHANT_NAV
+  const navbarItems = isAdmin ? (isSuperAdmin ? ADMIN_NAV : getNavItems(ADMIN_NAV, permissions)) : MERCHANT_NAV
 
   const navLink = (name: string, icon: any, badge?: any) => {
     return (

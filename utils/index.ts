@@ -56,3 +56,16 @@ export const formatSearch = (searchKey: string) => {
 export const formatParams = (params: any) => omitBy(params, value => value == null || value === "")
 
 export const getRandomNumber = () => Math.floor(Math.random() * 100000)
+
+// getNavItems
+export const getNavItems = (navItems: any, permissions: any) => {
+  const filteredNavItems = navItems.filter((item: any) => {
+    if (item.permissions) {
+      return item.permissions.some((permission: any) => permissions.includes(permission))
+    }
+
+    return true
+  })
+
+  return filteredNavItems
+}

@@ -19,7 +19,7 @@ const routes = {
   "/fintech": "fintech-list",
   "/fintech/add-fintech": "create-fintech",
   "/fintech/update-fintech": "update-fintech",
-  "/settlement": "settlement-account",
+  // "/settlement": "settlement-account",
   "/default-servic/add-default-service": "default-service",
   "/merchant": "merchant-list",
   "/create-new-merchant": "create-new-merchant",

@@ -40,7 +40,7 @@ export const Search = ({ className, value, onChange, ...props }: SearchProps) =>
         type="text"
         size="sm"
         placeholder="Search"
-        className={cn("h-9.5 px-7", className)}
+        className={cn("h-9.5 ps-7.5", className)}
         value={localValue}
         onChange={handleChange}
         {...props}

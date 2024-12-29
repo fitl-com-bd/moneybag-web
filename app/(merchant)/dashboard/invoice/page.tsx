@@ -1,5 +1,5 @@
 "use client"
-import { CopyPaymentLink, EmailToCustomer } from "@/components/shared"
+import { CopyPaymentLink, DataTableActions, EmailToCustomer } from "@/components/shared"
 import { Icon, LoadingTable } from "@/components/ui"
 import { LS_TERMS_AND_CONDITIONS } from "@/constants"
 import { useInvoicesQuery } from "@/store"
@@ -9,7 +9,6 @@ import moment from "moment"
 import Link from "next/link"
 import { useState } from "react"
 import DataTable from "react-data-table-component"
-import { InvoiceActions } from "./_components/InvoiceActions"
 import { InvoiceFilter } from "./_components/InvoiceFilter"
 
 export const column: any = ({ showCopyPaymentLinkModal, showEmailToCustomerModal }: any) => [
@@ -131,7 +130,15 @@ const Invoice = () => {
         pagination={50 as any}
         progressPending={isLoading}
         progressComponent={<LoadingTable className="w-100 mx-3 mb-2" />}
-        actions={<InvoiceActions filter={filter} setFilter={setFilter} invoice={invoice} />}
+        actions={
+          <DataTableActions
+            name="Create Invoice"
+            href="/dashboard/invoice/create"
+            icon="addInvoice"
+            filter={filter}
+            setFilter={setFilter}
+          />
+        }
         subHeader
         subHeaderWrap={false}
         subHeaderComponent={<InvoiceFilter filter={filter} setParams={setParams} />}

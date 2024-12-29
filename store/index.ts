@@ -1,16 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query/react"
-import { authApi, customerApi, invoiceApi, pageApi } from "./features"
-import reducer from "./reducer"
+import reducer, { middleware } from "./reducer"
 
 const store = configureStore({
   reducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware()
-      .concat(authApi.middleware)
-      .concat(pageApi.middleware)
-      .concat(customerApi.middleware)
-      .concat(invoiceApi.middleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(middleware),
 })
 
 setupListeners(store.dispatch)

@@ -1,6 +1,6 @@
 "use client"
-import { CreateCustomer } from "@/components/shared"
-import { Icon, LoadingTable, Search } from "@/components/ui"
+import { CreateCustomer, DataTableActions } from "@/components/shared"
+import { Icon, LoadingTable } from "@/components/ui"
 import { useCustomersQuery } from "@/store"
 import { formatSearch } from "@/utils"
 import { CButton, CTooltip } from "@coreui/react"
@@ -67,23 +67,14 @@ const CustomerList = () => {
         data={customer}
         pagination={50 as any}
         actions={
-          <div className="d-flex align-items-center gap-4">
-            <Search
-              value={searchKey}
-              onChange={setSearchKey}
-              placeholder="Search (Name, Email, Phone, Address)"
-              className="w-80"
-            />
-            <CTooltip content="Create Customer">
-              <CButton
-                color="light"
-                onClick={() => setShowCreateCustomer(true)}
-                className="d-inline-flex align-items-center whitespace-nowrap">
-                <Icon name="createUser" size={16} className="me-1" />
-                Create Customer
-              </CButton>
-            </CTooltip>
-          </div>
+          <DataTableActions
+            name="Create Customer"
+            onClick={() => setShowCreateCustomer(true)}
+            icon="addUser"
+            search={searchKey}
+            onSearchChange={setSearchKey}
+            searchPlaceholder="Search (Name, Email, Phone, Address)"
+          />
         }
         progressPending={isLoading}
         progressComponent={<LoadingTable className="w-100 mx-3 mb-2" />}

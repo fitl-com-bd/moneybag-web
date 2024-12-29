@@ -276,16 +276,16 @@ export const AppSidebarNav = () => {
   }
 
   const navItem = (item: any, index: number) => {
-    const { component, name, badge, icon, active, ...rest } = item
+    const { component, name, badge, icon, active, href, ...rest } = item
 
     const Component = component
-    const isLink = rest.href && !rest.items
+    const isLink = href && !rest.items
     const otherProps = isLink ? { component: Link } : {}
-    const isActive = active ? active(pathname) : pathname.startsWith(rest.href)
+    const isActive = active ? active(pathname) : pathname.startsWith(href)
     const className = isActive ? "is_active active" : ""
 
     return (
-      <Component {...otherProps} key={index} {...rest} className={className}>
+      <Component {...otherProps} key={index} href={isAdmin ? `/admin${href}` : href} {...rest} className={className}>
         {navLink(name, icon, badge)}
       </Component>
     )

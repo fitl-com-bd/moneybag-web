@@ -33,14 +33,14 @@ export const Search = ({ className, value, onChange, ...props }: SearchProps) =>
         size={16}
         className="position-absolute top-50 translate-middle-y text-dark"
         style={{
-          left: 8,
+          left: 12,
         }}
       />
       <CFormInput
         type="text"
         size="sm"
         placeholder="Search"
-        className={cn("h-9.5 ps-7.5", className)}
+        className={cn("rounded-pill h-9.5 ps-9", className)}
         value={localValue}
         onChange={handleChange}
         {...props}

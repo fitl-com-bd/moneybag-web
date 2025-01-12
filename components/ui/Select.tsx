@@ -1,4 +1,5 @@
 // import classNames from "classnames"
+import { OptionType } from "@/types"
 import { cn } from "@/utils"
 import isObject from "lodash/isObject"
 import { Control, Controller, FieldValues } from "react-hook-form"
@@ -8,11 +9,6 @@ const ReactSelect = (props: RSelectProps) => (
   <RSelect {...props} className={cn("react-select", props.className)} classNamePrefix="react-select" />
 )
 
-type Option = {
-  value: any
-  label: string
-}
-
 type SelectProps = RSelectProps & {
   control?: Control<FieldValues>
   name?: string
@@ -21,7 +17,7 @@ type SelectProps = RSelectProps & {
   rules?: any
   invalid?: boolean
   feedbackInvalid?: string
-  options?: Option[]
+  options?: OptionType[]
 }
 
 export const Select = ({

@@ -62,6 +62,10 @@ a {
   text-decoration: none;
 }
 
+button {
+  white-space: nowrap;
+}
+
 // Background
 .bg-opacity-16 {
   --cui-bg-opacity: 0.16;
@@ -195,6 +199,24 @@ a {
         bottom: 0;
         left: 0;
       }
+    }
+  }
+}
+
+.nav-vertical {
+  margin-left: 1rem;
+  width: 250px;
+  .nav-link {
+    color: $color-subtext;
+    font-weight: 600;
+    border-left: 3px solid #d4d5d9;
+    transition: font-size 0.3s ease, color 0.3s ease, border-left 0.3s ease;
+
+    &.active {
+      color: $color-theme;
+      font-weight: 500;
+      border-left: 3px solid $color-theme;
+      font-size: 1.1rem;
     }
   }
 }

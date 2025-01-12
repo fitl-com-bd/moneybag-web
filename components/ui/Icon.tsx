@@ -2,7 +2,7 @@ import { FC } from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { FaRegEye, FaRegFileAlt } from "react-icons/fa"
 import { FaLink, FaRegCircleUser, FaRegCopy, FaRegEnvelope } from "react-icons/fa6"
-import { FiChevronDown, FiEdit3, FiEye, FiEyeOff, FiFilter, FiLogOut, FiSearch, FiUser, FiX } from "react-icons/fi"
+import { FiChevronDown, FiEdit, FiEye, FiEyeOff, FiFilter, FiLogOut, FiSearch, FiUser, FiX } from "react-icons/fi"
 import { MdMenu } from "react-icons/md"
 import { PiDotsThreeCircle } from "react-icons/pi"
 import {
@@ -37,8 +37,8 @@ export const ICONS = {
   dotsCircle: BsThreeDotsVertical,
   dotsHorizontalCircle: PiDotsThreeCircle,
   details: FaRegEye,
-  view: FaRegEye,
-  edit: FiEdit3,
+  view: FiEye,
+  edit: FiEdit,
   signOut: FiLogOut,
   integration: RiEdit2Line,
   copy: FaRegCopy,

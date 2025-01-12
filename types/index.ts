@@ -22,3 +22,8 @@ export type DataTableColumn = TableColumn<any>[]
 export type LayoutProps = {
   children: ReactNode
 }
+
+export type OptionType = {
+  value: string
+  label: string
+}

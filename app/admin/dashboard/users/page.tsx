@@ -1,8 +1,7 @@
 "use client"
-import { DataTablePage, FilterField } from "@/components/shared"
+import { DataTablePage } from "@/components/shared"
 import { Icon } from "@/components/ui"
-import { PAYMENT_STATUS_OPTIONS } from "@/constants"
-import { useMerchantsQuery } from "@/store"
+import { useUsersQuery } from "@/store"
 import { DataTableColumn } from "@/types"
 import { CButton, CTooltip } from "@coreui/react"
 import Link from "next/link"
@@ -44,7 +43,7 @@ const columns: DataTableColumn = [
 
 const Users = () => (
   <DataTablePage
-    apiFunction={useMerchantsQuery}
+    apiFunction={useUsersQuery}
     title="User List"
     columns={columns}
     actionsProps={{

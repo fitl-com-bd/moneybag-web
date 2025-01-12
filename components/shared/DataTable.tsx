@@ -1,5 +1,5 @@
 import { Icon, ICONS, LoadingTable, Search } from "@/components/ui"
-import { DataTableColumn } from "@/types"
+import { DataTableColumn, OptionType } from "@/types"
 import { formatSearch, getRandomNumber } from "@/utils"
 import {
   CButton,
@@ -64,7 +64,21 @@ type ActionsWithoutFilterProps = {
 
 type ActionsFilterProps = ActionsWithFilterProps | ActionsWithoutFilterProps
 
-type DataTableActionsProps = ActionsButtonProps & ActionsSearchProps & ActionsFilterProps
+type ActionsWithStatusProps = {
+  statusOptions: OptionType[]
+  selectedStatus: string
+  onStatusChange: (value: string) => void
+}
+
+type ActionsWithoutStatusProps = {
+  statusOptions?: undefined
+  selectedStatus?: undefined
+  onStatusChange?: never
+}
+
+type ActionsStatusProps = ActionsWithStatusProps | ActionsWithoutStatusProps
+
+type DataTableActionsProps = ActionsButtonProps & ActionsSearchProps & ActionsFilterProps & ActionsStatusProps
 
 export const DataTableActions = ({
   href,
@@ -72,10 +86,13 @@ export const DataTableActions = ({
   search,
   onSearchChange,
   searchPlaceholder = "Search",
-  name = "Create",
+  name = "Add New",
   icon = "add",
   filter,
   setFilter,
+  statusOptions,
+  selectedStatus,
+  onStatusChange,
   children,
 }: DataTableActionsProps) => {
   return (
@@ -84,9 +101,28 @@ export const DataTableActions = ({
       {isString(search) && (
         <Search value={search} onChange={onSearchChange!} placeholder={searchPlaceholder} className="w-72" />
       )}
+      {statusOptions && (
+        <CFormSelect
+          value={selectedStatus}
+          onChange={e => onStatusChange(e.target.value)}
+          className="rounded-pill ps-4c py-1.5 w-40">
+          <option value="" selected>
+            All Status
+          </option>
+          {statusOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </CFormSelect>
+      )}
       {isBoolean(filter) && (
         <CTooltip content="Filter">
-          <CButton type="button" color={filter ? "dark" : "light"} onClick={() => setFilter && setFilter(!filter)}>
+          <CButton
+            type="button"
+            color={filter ? "dark" : "light"}
+            onClick={() => setFilter && setFilter(!filter)}
+            className="rounded-pill px-2.5">
             <Icon name="filter" size={16} />
           </CButton>
         </CTooltip>
@@ -94,13 +130,13 @@ export const DataTableActions = ({
       <CTooltip content={name}>
         {href ? (
           <Link href={href}>
-            <CButton color="light" className="d-inline-flex align-items-center">
+            <CButton color="dark" className="rounded-pill d-inline-flex align-items-center px-3">
               <Icon name={icon} size={16} className="me-1" />
               {name}
             </CButton>
           </Link>
         ) : (
-          <CButton color="light" className="d-inline-flex align-items-center" onClick={onClick}>
+          <CButton color="dark" className="rounded-pill d-inline-flex align-items-center px-3" onClick={onClick}>
             <Icon name={icon} size={16} className="me-1" />
             {name}
           </CButton>
@@ -114,7 +150,7 @@ export type FilterField = {
   name: string
   label: string
   type: "text" | "select"
-  options?: { value: string; label: string }[]
+  options?: OptionType[]
   isLoading?: boolean
   placeholder?: string
 }
@@ -197,6 +233,7 @@ type DataTablePageProps = {
   search?: boolean
   filter?: boolean
   fields?: FilterField[]
+  statusOptions?: OptionType[]
   actionsProps: Omit<DataTableActionsProps, "search" | "onSearchChange">
 } & Omit<DataTableProps, "data" | "columns">
 
@@ -206,15 +243,18 @@ export const DataTablePage = ({
   search = false,
   filter = false,
   fields = [],
+  statusOptions,
   actionsProps,
   ...props
 }: DataTablePageProps) => {
   const [searchKey, setSearchKey] = useState("")
+  const [selectedStatus, setSelectedStatus] = useState("")
   const [showFilter, setFilter] = useState(false)
   const [params, setParams] = useState({})
   const { data, isLoading } = apiFunction({
     ...params,
     search_key: !search ? null : formatSearch(searchKey),
+    status: selectedStatus,
   })
 
   const dataTableActionsProps: any = { ...actionsProps }
@@ -225,6 +265,11 @@ export const DataTablePage = ({
   if (filter) {
     dataTableActionsProps.filter = showFilter
     dataTableActionsProps.setFilter = setFilter
+  }
+  if (statusOptions) {
+    dataTableActionsProps.statusOptions = statusOptions
+    dataTableActionsProps.selectedStatus = selectedStatus
+    dataTableActionsProps.onStatusChange = setSelectedStatus
   }
 
   const dataTableProps: Omit<DataTableProps, "data" | "columns"> = {}

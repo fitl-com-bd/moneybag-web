@@ -3,6 +3,7 @@ import { Nav } from "@/components/ui"
 import { CCard, CCardBody, CNav, CNavItem, CNavLink } from "@coreui/react"
 import { useState } from "react"
 
+// TODO: Reusable Tab Content Component
 const MerchantDetails = () => {
   const [tab, setTab] = useState("business_structure")
   return (

@@ -14,12 +14,15 @@ $color-ice-blue: #d6dde1;
 $color-complete: #1474e1;
 $color-white: #fff;
 $color-white-2: #f0f3f4;
+$color-light-gray: #e6e5e7;
 $color-transparent: transparent;
 
 // Default Color
 $primary: #0062b8;
 $danger: $color-theme;
 $dark: $color-blue-gray;
+
+$border-radius: 1rem !default;
 
 // Default variable overrides
 $body-bg: $color-anti-flash-white;
@@ -52,6 +55,7 @@ $sidebar-nav-group-indicator-icon: url("data:image/svg+xml,%3csvg xmlns=%27http:
 $sidebar-nav-group-bg: $color-transparent;
 $sidebar-nav-link-border-radius: 9999px;
 $sidebar-nav-icon-width: 3rem;
+$sidebar-nav-link-padding-y: .5rem;
 // $sidebar-nav-group-indicator-hover-icon
 
 // Header
@@ -376,6 +380,171 @@ $col-span: (
     .col-span-xl-#{$key} {
       grid-column: span $value / span $value !important;
     }
+  }
+}
+
+// text
+$text-size: 1rem;
+$text-sizes: (
+  6: $text-size * 0.375, // 6px
+  8: $text-size * 0.5, // 8px
+  "xxs": $text-size * 0.625, // 10px
+  "xs": $text-size * 0.75, // 12px
+  "sm": $text-size * 0.875, // 14px
+  "base": $text-size, // 16px
+  "lg": $text-size * 1.125, // 18px
+  "xl": $text-size * 1.25, // 20px
+  "2xl": $text-size * 1.5, // 24px
+  "2\\.5xl": $text-size * 1.75, // 28px
+  "3xl": $text-size * 1.875, // 30px
+  "4xl": $text-size * 2.25, // 36px
+  "5xl": $text-size * 3, // 48px
+  "6xl": $text-size * 3.75, // 60px
+  "7xl": $text-size * 4.5, // 72px
+  "8xl": $text-size * 6, // 96px
+  "9xl": $text-size * 8, // 128px
+  "60p": 60%,
+);
+
+// text-sizes-line-height
+$text-size-line-heights: (
+  6: 0.4375rem, // 7px
+  8: 0.625rem, // 10px
+  "xxs": 0.875rem, // 14px
+  "xs": 1rem, // 16px
+  "sm": 1.25rem, // 20px
+  "base": 1.5rem, // 24px
+  "lg": 1.75rem, // 28px
+  "xl": 1.75rem, // 28px
+  "2xl": 2rem, // 32px
+  "2\\.5xl": 2.125rem, // 34px
+  "3xl": 2.25rem, // 36px
+  "4xl": 2.5rem, // 40px
+  "5xl": 1,
+  "6xl": 1,
+  "7xl": 1,
+  "8xl": 1,
+  "9xl": 1,
+  "60p": 1,
+);
+
+// line-height
+$line-heights: (
+  3: 0.75rem, // 12px
+  4: 1rem, // 16px
+  5: 1.25rem, // 20px
+  6: 1.5rem, // 24px
+  7: 1.75rem, // 28px
+  8: 2rem, // 32px
+  9: 2.25rem, // 36px
+  10: 2.5rem, // 40px
+  "none": 1,
+  "tight": 1.25,
+  "snug": 1.375,
+  "normal": 1.5,
+  "relaxed": 1.625,
+  "loose": 2,
+);
+
+// text
+@each $key, $value in $text-sizes {
+  .text-#{$key} {
+    font-size: $value !important;
+    line-height: map-get($text-size-line-heights, $key) !important;
+  }
+
+  // if md device
+  @include media(">=md") {
+    .text-md-#{$key} {
+      font-size: $value !important;
+      line-height: map-get($text-size-line-heights, $key) !important;
+    }
+  }
+
+  // if lg device
+  @include media(">=lg") {
+    .text-lg-#{$key} {
+      font-size: $value !important;
+      line-height: map-get($text-size-line-heights, $key) !important;
+    }
+  }
+
+  // if xl device
+  @include media(">=xl") {
+    .text-xl-#{$key} {
+      font-size: $value !important;
+      line-height: map-get($text-size-line-heights, $key) !important;
+    }
+  }
+}
+
+// font-weight
+$font-weights: (
+  "thin": 100,
+  "extralight": 200,
+  "light": 300,
+  "normal": 400,
+  "medium": 500,
+  "semibold": 600,
+  "bold": 700,
+  "extrabold": 800,
+  "black": 900,
+);
+
+@each $key, $value in $font-weights {
+  .font-#{$key} {
+    font-weight: $value !important;
+  }
+}
+
+// line-height
+@each $key, $value in $line-heights {
+  .leading-#{$key} {
+    line-height: $value !important;
+  }
+
+  // if md device
+  @include media(">=md") {
+    .leading-md-#{$key} {
+      line-height: $value !important;
+    }
+  }
+
+  // if lg device
+  @include media(">=lg") {
+    .leading-lg-#{$key} {
+      line-height: $value !important;
+    }
+  }
+
+  // if xl device
+  @include media(">=xl") {
+    .leading-xl-#{$key} {
+      line-height: $value !important;
+    }
+  }
+}
+
+// line-clamp
+$line-clamp: (
+  1: 1,
+  2: 2,
+  3: 3,
+  4: 4,
+  5: 5,
+  6: 6,
+  7: 7,
+  8: 8,
+  9: 9,
+  10: 10,
+);
+
+@each $key, $value in $line-clamp {
+  .line-clamp-#{$key} {
+    display: -webkit-box;
+    -webkit-line-clamp: $value;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 

@@ -1,6 +1,7 @@
 "use client"
 import { Avatar, Icon } from "@/components/ui"
-import { useAuth } from "@/hooks"
+import config from "@/config"
+import { useAppSelector, useAuth } from "@/hooks"
 import { sidebarToggle } from "@/store"
 import { handleSingout } from "@/utils"
 import {
@@ -16,6 +17,7 @@ import {
   CFormLabel,
   CHeader,
   CHeaderToggler,
+  CImage,
   CModal,
   CModalBody,
   CModalHeader,
@@ -29,6 +31,7 @@ import { useDispatch } from "react-redux"
 const AppHeader = () => {
   const { user, isLoading } = useAuth()
   const dispatch = useDispatch()
+  const showSidebar = useAppSelector(state => state.entities.sidebar.showSidebar)
   const [visible, setVisible] = useState<boolean | undefined>()
   const [newPass, setNewPass] = useState<string | undefined>()
   const [conPass, setConPass] = useState<string | undefined>()
@@ -122,11 +125,14 @@ const AppHeader = () => {
     <div>
       <CHeader position="sticky" className="mb-4">
         <CContainer fluid>
-          <CHeaderToggler
-            className="text-light bg-danger border-0 text-center rounded"
-            onClick={() => dispatch(sidebarToggle())}>
-            <Icon name="menu" />
-          </CHeaderToggler>
+          <div className="d-flex gap-3">
+            <CHeaderToggler
+              className="text-theme bg-danger bg-opacity-10 border-0 w-10 h-10 text-center rounded-circle"
+              onClick={() => dispatch(sidebarToggle())}>
+              <Icon name="menu" />
+            </CHeaderToggler>
+            {!showSidebar && <CImage className="image-wrapper h-10" src={config.LOGO} />}
+          </div>
           {!isLoading && user && (
             <CDropdown className="">
               <CDropdownToggle href="#" color="secondary" className="btn-clear d-flex align-items-center gap-2 py-0">

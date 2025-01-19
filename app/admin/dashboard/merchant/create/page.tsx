@@ -8,7 +8,7 @@ const MerchantDetails = () => {
   return (
     <div className="d-flex">
       <div className="">
-        <h5 className="text-lg mb-6">Merchant Details</h5>
+        <h5 className="text-lg mb-6">Add New Merchant</h5>
         <Nav
           items={[
             { label: "Business Structure", value: "business_structure" },
@@ -34,8 +34,10 @@ const MerchantDetails = () => {
         />
       </div>
       <div className="flex-1">
-        <h5 className="text-lg mb-0">Merchant Name Here</h5>
-        <p className="text-muted">Hotel & Resort</p>
+        <h5 className="text-lg mb-0">Define Your Business Structure</h5>
+        <p className="text-muted">
+          Provide details about the type and category of your business to help us understand your operations better.
+        </p>
 
         {tab === "business_structure" && (
           <CCard className="bg-white shadow-sm mb-3">

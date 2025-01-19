@@ -209,13 +209,13 @@ button {
   .nav-link {
     color: $color-subtext;
     font-weight: 600;
-    border-left: 3px solid #d4d5d9;
+    border-left: 2px solid #d4d5d9;
     transition: font-size 0.3s ease, color 0.3s ease, border-left 0.3s ease;
 
     &.active {
       color: $color-theme;
       font-weight: 500;
-      border-left: 3px solid $color-theme;
+      border-left: 2px solid $color-theme;
       font-size: 1.1rem;
     }
   }
@@ -223,17 +223,17 @@ button {
 
 // Sidebar
 .sidebar {
-  border-radius: 12px;
+  border-radius: $border-radius;
   margin: 10px;
   border: 2px solid $color-ice-blue;
   user-select: none;
   .simplebar-content {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 10px;
   }
   .sidebar-nav {
-    padding-top: 2.5rem;
+    padding-top: 0.5rem;
     .nav-item {
       .nav-link {
         margin-left: 10px;
@@ -331,7 +331,7 @@ button {
   }
 
   hr {
-    border-color: $color-blue-gray;
+    border-color: $color-subtext;
   }
 
   .user-button {
@@ -384,25 +384,49 @@ button {
   padding-left: calc(var(--cui-sidebar-occupy-start, 0) + 10px);
 }
 
-// .rdt_TableHeader {
-// }
+$table-border-color: $color-light-gray;
+$table-text-color: $color-subtext;
 .data-table-wrapper {
   background-color: $color-white;
   border: none;
-  border-radius: 8px;
+  border-radius: 1rem;
   overflow: hidden;
-  padding: 0.75rem;
+  // border-color: #000;
+  // border-color: #e6e5e7;
   header {
     min-height: 0;
     padding-left: 0;
     padding-right: 0;
   }
+  .rdt_TableHeader {
+    padding: 1.375rem 1.25rem 1.5rem 1.75rem;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: $table-border-color;
+  }
+  .rdt_TableHeadRow {
+    min-height: 50px;
+  }
+  .rdt_TableRow {
+    min-height: 70px;
+    color: $table-text-color;
+  }
+  .rdt_TableHeadRow {
+    text-transform: uppercase;
+    border-bottom-color: $table-border-color;
+  }
+  .rdt_TableRow:not(:last-of-type) {
+    border-bottom-color: $table-border-color;
+  }
+  .rdt_Pagination {
+    border-top-color: $table-border-color;
+  }
 }
 
 // header
 .header {
-  border-radius: 8px;
-  margin: 10px;
+  border-radius: $border-radius;
+  margin: 10px 10px 10px 16px;
 }
 .header-toggler:not(:disabled) {
   display: flex;

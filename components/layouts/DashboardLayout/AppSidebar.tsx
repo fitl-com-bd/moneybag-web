@@ -14,10 +14,10 @@ const AppSidebar = () => {
 
   return (
     <CSidebar position="fixed" visible={showSidebar}>
-      <CSidebarBrand className="py-3 flex-center">
+      <CSidebarBrand className="pt-3c flex-center">
         <CImage className="image-wrapper" src={config.LOGO} />
       </CSidebarBrand>
-      <hr className="my-2 mx-4" />
+      <hr className="my-2" />
       <CSidebarNav>
         <SimpleBar>
           <AppSidebarNav />

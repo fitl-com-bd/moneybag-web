@@ -17,14 +17,23 @@ $color-white-2: #f0f3f4;
 $color-light-gray: #e6e5e7;
 $color-transparent: transparent;
 
+// Theme Variables
+$border-radius-theme: 1rem;
+
 // Default Color
 $primary: #0062b8;
 $danger: $color-theme;
 $dark: $color-blue-gray;
-
-$border-radius: 1rem !default;
+$secondary: $color-subtext;
 
 // Default variable overrides
+$page-padding: .75rem;
+$layout-gap: 1rem;
+// $border-radius: 1rem !default;
+$card-border-radius: $border-radius-theme;
+$card-spacer-x: 1.5rem;
+$card-spacer-y: 1.5rem;
+// $sidebar-header-padding-y: .75rem;
 $body-bg: $color-anti-flash-white;
 $body-text-align: left;
 

@@ -123,7 +123,7 @@ const AppHeader = () => {
 
   return (
     <div>
-      <CHeader position="sticky" className="mb-4">
+      <CHeader position="sticky" className="mb-4c">
         <CContainer fluid>
           <div className="d-flex gap-3">
             <CHeaderToggler

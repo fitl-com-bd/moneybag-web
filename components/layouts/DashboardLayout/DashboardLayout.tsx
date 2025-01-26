@@ -8,7 +8,7 @@ export const DashboardLayout = ({ children }: LayoutProps) => (
     <AppSidebar />
     <div className="wrapper d-flex flex-column vh-100">
       <AppHeader />
-      <div className="body flex-grow-1 ps-4c pe-2.5 d-flex flex-column">{children}</div>
+      <div className="body body-wrapper">{children}</div>
       <AppFooter />
     </div>
   </div>

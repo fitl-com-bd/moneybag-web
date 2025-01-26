@@ -1,6 +1,6 @@
 import { FC } from "react"
 
-type NavItem = {
+export type NavItem = {
   label: string
   value: string
   disabled?: boolean

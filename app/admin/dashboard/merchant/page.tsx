@@ -41,14 +41,14 @@ const columns: DataTableColumn = [
         <CTooltip content="View">
           <Link href={`merchant/${row.id}`}>
             <CButton color="light" size="sm" className="btn-icon">
-              <Icon name="view" size={20} />
+              <Icon name="view" size={24} />
             </CButton>
           </Link>
         </CTooltip>
         <CTooltip content="Update">
           <Link href={`merchant/${row.id}/edit`}>
             <CButton color="light" size="sm" className="btn-icon">
-              <Icon name="edit" size={20} />
+              <Icon name="edit" size={24} />
             </CButton>
           </Link>
         </CTooltip>

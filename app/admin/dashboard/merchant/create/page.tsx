@@ -1,33 +1,13 @@
 "use client"
-import { Card, TabItem, Tabs } from "@/components/ui"
-import { CFormLabel, CFormSelect } from "@coreui/react"
-
-const businessOption = [
-  "Educational Institute",
-  "Public Limited",
-  "Partnership",
-  "Proprietorship",
-  "Non Profit",
-  "Private Limited",
-]
+import { Card, FormLabel, TabItem, Tabs } from "@/components/ui"
+import { CCol, CFormControlWrapper, CFormInput, CFormLabel, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
+import BusinessStructure from "./_components/BusinessStructure"
 
 const tabItems: TabItem[] = [
   {
     label: "Business Structure",
     value: "business_structure",
-    component: () => (
-      <Card>
-        <CFormLabel className="col-form-label">Legal Identity of Company</CFormLabel>
-        <CFormSelect aria-label="Default select example" type="number">
-          <option value="">Select One</option>
-          {businessOption.map((country, index) => (
-            <option value={country} key={index}>
-              {country}
-            </option>
-          ))}
-        </CFormSelect>
-      </Card>
-    ),
+    component: BusinessStructure,
   },
   {
     label: "Business Details",

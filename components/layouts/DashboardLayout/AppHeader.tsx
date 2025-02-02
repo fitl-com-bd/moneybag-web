@@ -134,19 +134,30 @@ const AppHeader = () => {
             {!showSidebar && <CImage className="image-wrapper h-10" src={config.LOGO} />}
           </div>
           {!isLoading && user && (
-            <CDropdown className="">
-              <CDropdownToggle href="#" color="secondary" className="btn-clear d-flex align-items-center gap-2 py-0">
-                <Avatar src={user.merchant_logo_url} alt={user.merchant_name || user.user_name} />
-                <div className="flex-col justify-content-between align-items-start small">
-                  <span className="avatar-name-sm lh-1">{user.merchant_name || user.user_name}</span>
-                  <span className="small">@{user.user_id}</span>
+            <CDropdown className="user-dropdown">
+              <CDropdownToggle className="user-dropdown-toggle">
+                <div className="flex-col justify-content-between align-items-startend small">
+                  <span className="avatar-name-sm lh-1 text-end">{user.merchant_name || user.user_name}</span>
+                  <span className="small text-end">@{user.user_id}</span>
                 </div>
+                <Avatar src={user.merchant_logo_url} alt={user.merchant_name || user.user_name} size="md" />
               </CDropdownToggle>
-              <CDropdownMenu className="bg-white shadow">
-                <CDropdownItem component="button" className="chang-password custom-text fw-bold" onClick={openModal}>
+              <CDropdownMenu className="user-dropdown-menu">
+                <CDropdownItem>
+                  <Icon name="user" size={20} />
+                  Profile
+                </CDropdownItem>
+                <CDropdownItem>
+                  <Icon name="settings" size={20} />
+                  Settings
+                </CDropdownItem>
+                <CDropdownItem onClick={openModal}>
+                  <Icon name="lock" size={20} />
                   Change Password
                 </CDropdownItem>
-                <CDropdownItem component="button" className="fw-bold" onClick={handleSingout}>
+                <hr className="my-2" />
+                <CDropdownItem onClick={handleSingout}>
+                  <Icon name="signOut" size={20} />
                   Sign Out
                 </CDropdownItem>
               </CDropdownMenu>

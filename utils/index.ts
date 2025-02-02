@@ -49,9 +49,7 @@ export const getStatusColor = (status: string): string => {
   }
 }
 
-export const formatSearch = (searchKey: string) => {
-  return searchKey.trim().replace(/\s+/g, "%")
-}
+export const formatSearch = (searchKey: string) => searchKey.trim().replace(/\s+/g, "%")
 
 export const formatParams = (params: any) => omitBy(params, value => value == null || value === "")
 

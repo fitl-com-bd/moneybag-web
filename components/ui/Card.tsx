@@ -1,9 +1,15 @@
 import { LayoutProps } from "@/types"
+import { cn } from "@/utils"
 import { CCard, CCardBody } from "@coreui/react"
 import { FC } from "react"
 
-export const Card: FC<LayoutProps> = ({ children }) => (
-  <CCard className="card-theme">
-    <CCardBody>{children}</CCardBody>
+type CardProps = LayoutProps & {
+  className?: string
+  cardClassName?: string
+}
+
+export const Card: FC<CardProps> = ({ children, className, cardClassName }) => (
+  <CCard className={cn("card-theme", cardClassName)}>
+    <CCardBody className={className}>{children}</CCardBody>
   </CCard>
 )

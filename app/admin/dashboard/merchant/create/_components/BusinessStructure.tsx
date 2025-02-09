@@ -1,6 +1,7 @@
 import { Button, Card, FormFooter, FormLabel } from "@/components/ui"
-import { CButton, CCol, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
-
+import { CCol, CForm, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
+import { useForm } from "react-hook-form"
+import Swal from "sweetalert2"
 const businessOption = [
   "Educational Institute",
   "Public Limited",
@@ -11,12 +12,39 @@ const businessOption = [
 ]
 
 const BusinessStructure = () => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    setError,
+    clearErrors,
+    formState: { errors, isValid },
+  } = useForm()
+
+  const onSubmit = (data: any) => {
+    console.log(data)
+    Swal.fire({
+      title: "Success",
+      text: "Business Structure Updated Successfully",
+      icon: "success",
+      confirmButtonText: "Ok",
+    })
+  }
   return (
-    <>
+    <CForm onSubmit={handleSubmit(onSubmit)}>
       <Card className="space-y-6">
         <div className="form-group">
           <FormLabel required>Legal Identity of Company</FormLabel>
-          <CFormSelect>
+          <CFormSelect
+            {...register("businessOption", {
+              required: {
+                value: true,
+                message: "Please select an option",
+              },
+            })}
+            invalid={errors?.businessOption as any}
+            feedbackInvalid={errors?.businessOption?.message as any}>
             <option value="">Select</option>
             {businessOption.map((country, index) => (
               <option value={country} key={index}>
@@ -62,9 +90,9 @@ const BusinessStructure = () => {
       </Card>
       <FormFooter>
         <Button secondary>Cancel</Button>
-        <Button>Update</Button>
+        <Button submit>Update</Button>
       </FormFooter>
-    </>
+    </CForm>
   )
 }
 

@@ -234,13 +234,16 @@ button {
   }
   .sidebar-nav {
     padding-top: 0.5rem;
+    .nav-icon {
+      fill: none;
+    }
     .nav-item {
       .nav-link {
         margin-left: 10px;
         margin-right: 10px;
-        .nav-icon {
-          fill: currentColor;
-        }
+        // .nav-icon {
+        //   fill: currentColor;
+        // }
         &:hover {
           color: var(--cui-sidebar-nav-link-hover-color) !important;
         }
@@ -308,6 +311,7 @@ button {
           background: var(--cui-sidebar-nav-link-active-bg);
           .nav-icon {
             color: var(--cui-sidebar-nav-link-active-color);
+            font: unset;
           }
           &::after {
             background-image: var(--cui-sidebar-nav-group-indicator-hover);

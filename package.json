@@ -35,7 +35,8 @@
     "sass": "^1.80.3",
     "simplebar-react": "^3.2.6",
     "styled-components": "^6.1.13",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.16.0"
   },
   "devDependencies": {
     "@types/node": "^20",

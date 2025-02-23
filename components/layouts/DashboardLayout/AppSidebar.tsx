@@ -23,7 +23,7 @@ const AppSidebar = () => {
           <AppSidebarNav />
         </SimpleBar>
       </CSidebarNav>
-      <div className="flex-col gap-2.5 m-2.5">
+      {/* <div className="flex-col gap-2.5 m-2.5">
         {!isLoading && user && (
           <div className="flex-col align-items-center gap-2 bg-anti-flash-white bg-opacity-50 shadow-sm rounded p-3">
             <CButton onClick={handleSingout} color="danger" variant="outline" className="w-100 mt-1 flex-center gap-2">
@@ -32,7 +32,7 @@ const AppSidebar = () => {
             </CButton>
           </div>
         )}
-      </div>
+      </div> */}
     </CSidebar>
   )
 }

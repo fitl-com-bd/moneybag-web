@@ -108,14 +108,14 @@ const ADMIN_NAV: NavType = [
   },
   {
     component: CNavGroup,
-    name: "Employees",
+    name: "User Management",
     href: "",
     icon: <Icon name="employees" className="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: "Employee List",
-        href: "/dashboard/employee",
+        name: "User List",
+        href: "/dashboard/users",
         slug: "employee-list",
       },
       {
@@ -250,8 +250,9 @@ export const AppSidebarNav = () => {
     const Component = component
     const isLink = href && !rest.items
     const otherProps = isLink ? { component: Link } : {}
-    const isActive = active ? active(pathname) : pathname.startsWith(href)
-    const className = isActive ? "is_active active" : ""
+    const isActive = active ? active(pathname) : pathname.includes(href)
+
+    const className = isActive ? "active" : ""
 
     return (
       <Component {...otherProps} key={index} href={isAdmin ? `/admin${href}` : href} {...rest} className={className}>
@@ -268,9 +269,9 @@ export const AppSidebarNav = () => {
       ? active(pathname)
       : href
       ? pathname.startsWith(href)
-      : itemLinks?.some((itemLink: any) => pathname.startsWith(itemLink))
+      : itemLinks?.some((itemLink: any) => pathname.includes(itemLink))
 
-    const className = isActive ? "is_active" : ""
+    const className = isActive ? "active" : ""
 
     const Component = component
     return (

@@ -249,27 +249,27 @@ button {
         }
       }
 
-      &:not(.is_active) {
-        .nav-link.active {
-          background: var(--cui-sidebar-nav-link-bg);
-          color: var(--cui-sidebar-nav-link-color);
-          .nav-icon {
-            color: var(--cui-sidebar-nav-link-color);
-          }
-          &:hover {
-            background: var(--cui-sidebar-nav-link-hover-bg);
-            color: var(--cui-sidebar-nav-link-hover-color);
-            .nav-icon {
-              color: var(--cui-sidebar-nav-link-hover-color);
-            }
-          }
-        }
-      }
+      // &:not(.is_active) {
+      //   .nav-link.active {
+      //     background: var(--cui-sidebar-nav-link-bg);
+      //     color: var(--cui-sidebar-nav-link-color);
+      //     .nav-icon {
+      //       color: var(--cui-sidebar-nav-link-color);
+      //     }
+      //     &:hover {
+      //       background: var(--cui-sidebar-nav-link-hover-bg);
+      //       color: var(--cui-sidebar-nav-link-hover-color);
+      //       .nav-icon {
+      //         color: var(--cui-sidebar-nav-link-hover-color);
+      //       }
+      //     }
+      //   }
+      // }
     }
 
     .nav-group {
       display: grid;
-      gap: 2px;
+      gap: 8px;
       margin-left: 10px;
       margin-right: 10px;
       .nav-group-toggle {
@@ -284,7 +284,6 @@ button {
       &.show {
         .nav-group-items {
           display: grid !important;
-          gap: 2px;
         }
       }
       .nav-group-items {
@@ -292,45 +291,66 @@ button {
         .nav-link {
           background: transparent;
           color: var(--cui-sidebar-nav-link-color);
+          border: none;
+          border-left: 2px solid $color-light-gray;
+          border-radius: 0;
+          transition: color 0.3s ease, border-left 0.3s ease;
           .nav-icon {
             color: var(--cui-sidebar-nav-link-color);
             margin-left: -16px !important;
+            transition: color 0.3s ease;
           }
+          &.active,
           &:hover {
-            background: var(--cui-sidebar-nav-link-hover-bg);
-            color: var(--cui-sidebar-nav-link-hover-color);
+            // background: var(--cui-sidebar-nav-link-hover-bg);
+            border-left: 2px solid $color-theme;
+            color: $color-theme !important;
             .nav-icon {
-              color: var(--cui-sidebar-nav-link-hover-color);
+              color: var(--cui-sidebar-nav-link-color) !important;
             }
           }
         }
       }
-      &.is_active {
+      &.show,
+      &.active {
         .nav-group-toggle {
-          color: var(--cui-sidebar-nav-link-active-color);
-          background: var(--cui-sidebar-nav-link-active-bg);
+          color: var(--cui-sidebar-nav-link-hover-color);
+          background: var(--cui-sidebar-nav-link-hover-bg);
           .nav-icon {
-            color: var(--cui-sidebar-nav-link-active-color);
+            color: var(--cui-sidebar-nav-link-hover-color);
             font: unset;
           }
           &::after {
             background-image: var(--cui-sidebar-nav-group-indicator-hover);
           }
-          &:hover {
-            color: var(--cui-sidebar-nav-link-hover-color);
-            background: var(--cui-sidebar-nav-link-hover-bg);
-            .nav-icon {
-              color: var(--cui-sidebar-nav-link-hover-color);
-            }
-          }
-        }
-
-        .nav-item.is_active {
-          .nav-link {
-            font-weight: bold;
-          }
         }
       }
+      // &.is_active {
+      //   .nav-group-toggle {
+      //     color: var(--cui-sidebar-nav-link-active-color);
+      //     background: var(--cui-sidebar-nav-link-active-bg);
+      //     .nav-icon {
+      //       color: var(--cui-sidebar-nav-link-active-color);
+      //       font: unset;
+      //     }
+      //     &::after {
+      //       background-image: var(--cui-sidebar-nav-group-indicator-hover);
+      //     }
+      //     &:hover {
+      //       color: var(--cui-sidebar-nav-link-hover-color);
+      //       background: var(--cui-sidebar-nav-link-hover-bg);
+      //       .nav-icon {
+      //         color: var(--cui-sidebar-nav-link-hover-color);
+      //       }
+      //     }
+      //   }
+
+      //   .nav-item.is_active {
+      //     .nav-link {
+      //       font-weight: bold;
+      //     }
+      //   }
+      // }
     }
   }
 

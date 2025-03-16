@@ -1,7 +1,25 @@
 import entities from "./entities"
-import { authApi, customerApi, financeApi, invoiceApi, merchantServiceApi, merchantSetupApi, pageApi } from "./features"
+import {
+  accessControlApi,
+  authApi,
+  customerApi,
+  financeApi,
+  invoiceApi,
+  merchantServiceApi,
+  merchantSetupApi,
+  pageApi,
+} from "./features"
 
-export const apiSlices = [authApi, pageApi, customerApi, invoiceApi, merchantSetupApi, merchantServiceApi, financeApi]
+export const apiSlices = [
+  authApi,
+  pageApi,
+  customerApi,
+  invoiceApi,
+  merchantSetupApi,
+  merchantServiceApi,
+  financeApi,
+  accessControlApi,
+]
 export const middleware = apiSlices.map(api => api.middleware)
 
 const reducer = {
@@ -12,6 +30,7 @@ const reducer = {
   [merchantSetupApi.reducerPath]: merchantSetupApi.reducer,
   [merchantServiceApi.reducerPath]: merchantServiceApi.reducer,
   [financeApi.reducerPath]: financeApi.reducer,
+  [accessControlApi.reducerPath]: accessControlApi.reducer,
   entities,
 }
 

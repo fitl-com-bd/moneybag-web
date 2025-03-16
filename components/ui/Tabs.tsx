@@ -1,4 +1,4 @@
-import { Nav, NavItem } from "@/components/ui"
+import { Nav, NavItem, SectionHeader } from "@/components/ui"
 import React, { FC, Fragment, ReactNode, useState } from "react"
 
 export type TabItem = NavItem & {
@@ -21,10 +21,10 @@ export const Tabs: FC<TabsProps> = ({ items = [] }) => {
         <Nav items={items} value={tab} setValue={setTab} />
       </div>
       <div className="flex-1">
-        <h5 className="text-lg mb-0">Define Your Business Structure</h5>
-        <p className="text-secondary">
-          Provide details about the type and category of your business to help us understand your operations better.
-        </p>
+        <SectionHeader
+          title="Define Your Business Structure"
+          subtitle="Provide details about the type and category of your business to help us understand your operations better."
+        />
         <div className="tab-container">
           <TabComponent />
         </div>

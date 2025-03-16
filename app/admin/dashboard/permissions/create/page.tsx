@@ -1,11 +1,13 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useRolesQuery } from "@/store"
+import { useCreatePermissionMutation, useFeaturesQuery } from "@/store"
+import { getOptions } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import Swal from "sweetalert2"
 
-const CreateRole = () => {
+const CreatePermission = () => {
   const {
     register,
     handleSubmit,
@@ -16,25 +18,61 @@ const CreateRole = () => {
     formState: { errors, isValid },
   } = useForm()
 
-  const { data: roles, isLoading } = useRolesQuery({})
-  console.log(`🔥 | roles:`, roles)
+  const { data: features, isLoading } = useFeaturesQuery({})
+  const [createPermission] = useCreatePermissionMutation() // Use the mutation hook
+  const router = useRouter()
 
-  const onSubmit = (data: any) => {
-    console.log(data)
-    Swal.fire({
-      title: "Success",
-      text: "Business Structure Updated Successfully",
-      icon: "success",
-      confirmButtonText: "Ok",
-    })
+  const onSubmit = async (data: any) => {
+    try {
+      // const response = await createPermission(data).unwrap()
+      Swal.fire({
+        title: "Success",
+        text: "Permission Created Successfully",
+        icon: "success",
+        confirmButtonText: "Continue",
+      }).then(() => {
+        router.push("/admin/dashboard/permissions")
+      })
+    } catch (error) {
+      console.error(error)
+      Swal.fire({
+        title: "Error",
+        text: "Failed to create permission",
+        icon: "error",
+        confirmButtonText: "Ok",
+      })
+    }
   }
 
   return (
     <>
-      <SectionHeader title="Role Create" subtitle="Create a new role for the users" />
+      <SectionHeader title="Permission Create" subtitle="Create a new permission for the users" />
       <CForm className="space-y-1" onSubmit={handleSubmit(onSubmit)}>
         <Card className="space-y-6">
           <CRow>
+            <CCol>
+              <FormLabel required>App Feature</FormLabel>
+              <CFormSelect
+                placeholder="App Feature"
+                {...register("feature_id", {
+                  required: {
+                    value: true,
+                    message: "Please select an app feature",
+                  },
+                })}>
+                <option value="" selected disabled>
+                  Select App Feature
+                </option>
+                {getOptions(features, "title", "id").map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </CFormSelect>
+              {errors?.feature_id && (
+                <div className="invalid-feedback d-block">{errors?.feature_id?.message as any}</div>
+              )}
+            </CCol>
             <CCol>
               <FormLabel required>Title</FormLabel>
               <CFormInput
@@ -49,22 +87,6 @@ const CreateRole = () => {
                 invalid={errors?.title as any}
                 feedbackInvalid={errors?.title?.message as any}
               />
-            </CCol>
-            <CCol>
-              <FormLabel required>App Feature</FormLabel>
-              <CFormSelect placeholder="App Feature" {...register("parentRole")}>
-                <option value="" selected disabled>
-                  Select App Feature
-                </option>
-                {roles?.data?.map((role: any) => (
-                  <option key={role.id} value={role.id}>
-                    {role.name}
-                  </option>
-                ))}
-              </CFormSelect>
-              {errors?.parentRole && (
-                <div className="invalid-feedback d-block">{errors?.parentRole?.message as any}</div>
-              )}
             </CCol>
           </CRow>
         </Card>
@@ -127,4 +149,4 @@ const CreateRole = () => {
   )
 }
 
-export default CreateRole
+export default CreatePermission

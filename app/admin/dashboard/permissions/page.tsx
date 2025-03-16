@@ -8,25 +8,21 @@ import Link from "next/link"
 
 const columns: DataTableColumn = [
   {
-    name: "Name",
+    name: "Title",
     sortable: true,
-    selector: row => row.first_name + " " + row.last_name,
+    selector: row => row.title,
   },
   {
-    name: "User Id",
-    selector: row => row.user_id,
+    name: "Slug",
+    selector: row => row.slug,
   },
   {
-    name: "Email",
-    selector: row => row.email,
-  },
-  {
-    name: "Role",
-    selector: row => row?.role || "-",
+    name: "Description",
+    selector: row => row.description,
   },
   {
     name: "Status",
-    selector: row => row.status,
+    selector: row => (row?.is_enabled ? "Active" : "Inactive"),
   },
   {
     name: "Action",
@@ -51,7 +47,7 @@ const Permissions = () => (
     title="Permission List"
     columns={columns}
     actionsProps={{
-      href: "/dashboard/permissions/create",
+      href: "/admin/dashboard/permissions/create",
       name: "Create Permission",
       // icon: "addUser",
     }}

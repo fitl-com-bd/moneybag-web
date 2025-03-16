@@ -79,3 +79,10 @@ export const decodeToken = (token: string) => {
     return null
   }
 }
+
+export const getOptions = (list: { data: any[] }, label: string, value: string) => {
+  return (list?.data || [])?.map(item => ({
+    value: item[value],
+    label: item[label],
+  }))
+}

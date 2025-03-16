@@ -121,13 +121,13 @@ const ADMIN_NAV: NavType = [
       {
         component: CNavItem,
         name: "Role",
-        href: "/dashboard/role",
+        href: "/dashboard/roles",
         slug: "role-list",
       },
       {
         component: CNavItem,
         name: "Permission",
-        href: "/dashboard/permission",
+        href: "/dashboard/permissions",
         slug: "permission-list",
       },
     ],
@@ -141,7 +141,7 @@ const ADMIN_NAV: NavType = [
       {
         component: CNavItem,
         name: "Merchant List",
-        href: "/dashboard/merchant",
+        href: "/dashboard/merchants",
         slug: "merchant-list",
       },
       {
@@ -173,7 +173,7 @@ const ADMIN_NAV: NavType = [
       {
         component: CNavItem,
         name: "Bank List",
-        href: "/dashboard/bank",
+        href: "/dashboard/banks",
         slug: "bank-list",
       },
       {

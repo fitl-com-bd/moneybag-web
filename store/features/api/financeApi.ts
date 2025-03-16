@@ -2,21 +2,21 @@ import { baseQuery } from "@/store/config"
 import { formatParams } from "@/utils"
 import { createApi } from "@reduxjs/toolkit/query/react"
 
-export const marchantServiceApi = createApi({
-  reducerPath: "marchantServiceApi",
+export const financeApi = createApi({
+  reducerPath: "financeApi",
   baseQuery,
-  tagTypes: ["Merchants"],
+  tagTypes: ["Banks"],
   endpoints: builder => ({
-    merchants: builder.query({
+    banks: builder.query({
       query: params => ({
-        url: `marchants`,
+        url: `banks`,
         params: formatParams(params),
       }),
       // transformResponse: (response: any) => response.data.users,
       transformErrorResponse: error => error,
-      providesTags: ["Merchants"],
+      providesTags: ["Banks"],
     }),
   }),
 })
 
-export const { useMerchantsQuery } = marchantServiceApi
+export const { useBanksQuery } = financeApi

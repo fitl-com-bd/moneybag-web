@@ -251,11 +251,12 @@ export const DataTablePage = ({
   const [selectedStatus, setSelectedStatus] = useState("")
   const [showFilter, setFilter] = useState(false)
   const [params, setParams] = useState({})
-  const { data, isLoading } = apiFunction({
+  const { data: apiData, isLoading } = apiFunction({
     ...params,
     search_key: !search ? null : formatSearch(searchKey),
     status: selectedStatus,
   })
+  const data = apiData?.data || []
 
   const dataTableActionsProps: any = { ...actionsProps }
   if (search) {

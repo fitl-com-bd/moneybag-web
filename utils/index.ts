@@ -1,9 +1,12 @@
 import config from "@/config"
 import { LS_TOKEN } from "@/constants"
 import { ClassValue, clsx } from "clsx"
+import { jwtDecode } from "jwt-decode"
 import omitBy from "lodash/omitBy"
 
 export const cn = (...classes: ClassValue[]) => clsx(classes)
+
+export const isBrowser = () => typeof window !== "undefined"
 
 export const handleSingout = () => {
   localStorage.removeItem(LS_TOKEN)
@@ -66,4 +69,13 @@ export const getNavItems = (navItems: any, permissions: any) => {
   })
 
   return filteredNavItems
+}
+
+export const decodeToken = (token: string) => {
+  try {
+    const decoded = jwtDecode(token)
+    return decoded
+  } catch (error) {
+    return null
+  }
 }

@@ -1,7 +1,7 @@
 "use client"
 import { DataTablePage } from "@/components/shared"
 import { Icon } from "@/components/ui"
-import { useUsersQuery } from "@/store"
+import { useBanksQuery } from "@/store"
 import { DataTableColumn } from "@/types"
 import { CButton, CTooltip } from "@coreui/react"
 import Link from "next/link"
@@ -45,17 +45,17 @@ const columns: DataTableColumn = [
   },
 ]
 
-const Users = () => (
+const Bank = () => (
   <DataTablePage
-    apiFunction={useUsersQuery}
-    title="User List"
+    apiFunction={useBanksQuery}
+    title="Bank List"
     columns={columns}
     actionsProps={{
-      href: "/dashboard/users/create",
-      name: "Create User",
-      icon: "addUser",
+      href: "/dashboard/banks/create",
+      name: "Create Bank",
+      // icon: "addUser",
     }}
   />
 )
 
-export default Users
+export default Bank

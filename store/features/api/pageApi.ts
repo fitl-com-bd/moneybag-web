@@ -34,7 +34,7 @@ export const pageApi = createApi({
     }),
     integrationDetails: builder.query({
       query: () => ({
-        url: `marchants/integration-details`,
+        url: `merchants/integration-details`,
       }),
       transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,

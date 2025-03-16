@@ -8,10 +8,11 @@ import { useEffect } from "react"
 const AuthLayout = ({ children }: LayoutProps) => {
   const router = useRouter()
   const { user, isLoading } = useAuth()
+  console.log(`🔥 | user:`, user)
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.push(config.DASHBOARD_URL)
+      router.push(config.ADMIN_DASHBOARD_URL)
     }
   }, [isLoading, user, router])
 

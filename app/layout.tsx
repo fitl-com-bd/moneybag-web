@@ -3,8 +3,8 @@ import "@/styles/style.scss"
 import type { Metadata, Viewport } from "next"
 
 export const metadata: Metadata = {
-  title: "Marchant-Portal Moneybag",
-  description: "Marchant your money is safe with us",
+  title: "Merchant-Portal Moneybag",
+  description: "Merchant your money is safe with us",
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },

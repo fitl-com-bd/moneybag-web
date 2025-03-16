@@ -1,10 +1,14 @@
-import { useCheckAdminLoginQuery, useCheckLoginQuery } from "@/store"
+import { LS_TOKEN } from "@/constants"
+import { decodeToken, isBrowser } from "@/utils"
 import { usePathname } from "next/navigation"
 
 export const useAuth = () => {
   const pathname = usePathname()
   const isAdmin = pathname?.startsWith("/admin")
-  const { data, isFetching: isLoading, error } = isAdmin ? useCheckAdminLoginQuery({}) : useCheckLoginQuery({})
+  // const { data, isFetching: isLoading, error } = isAdmin ? useCheckAdminLoginQuery({}) : useCheckLoginQuery({})
+  const token = isBrowser() ? localStorage.getItem(LS_TOKEN) : null
+  const data = token ? decodeToken(token) : null
+  const isLoading = false
 
   const user = data as any
 
@@ -12,13 +16,15 @@ export const useAuth = () => {
 
   permissions = permissions.map(permission => permission.slug)
 
+  const isSuperAdmin = user?.scp === "superuser"
+
   return {
     user,
     isLoading,
-    error,
+    // error,
     isAdmin,
     permissions,
-    isSuperAdmin: user?.id === 45,
-    hasPermission: (permission: string) => user?.id === 45 || permissions.includes(permission),
+    isSuperAdmin,
+    hasPermission: (permission: string) => isSuperAdmin || permissions.includes(permission),
   }
 }

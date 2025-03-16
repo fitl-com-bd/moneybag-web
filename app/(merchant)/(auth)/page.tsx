@@ -2,7 +2,8 @@
 import { ShowPassword } from "@/components/ui"
 import config from "@/config"
 import { LS_TOKEN } from "@/constants"
-import { useLoginUserMutation } from "@/store"
+import { useLoginMutation } from "@/store"
+import { decodeToken } from "@/utils"
 import {
   CButton,
   CCard,
@@ -37,22 +38,25 @@ const Login = () => {
     formState: { errors, isValid },
   } = useForm()
   const [visible, setVisible] = useState<boolean | undefined>()
-  const [loginUser, { isLoading }] = useLoginUserMutation()
+  const [login, { isLoading }] = useLoginMutation()
 
   const openModal = () => setVisible(true)
 
   const onSubmit = async (data: any) => {
-    const response: any = await loginUser(data)
+    const response: any = await login(data)
 
     if (response?.error) {
       console.error("There was an error!", response.error)
       const message = response.error?.data?.detail || "Something went wrong!"
       return toast.error(message)
     }
-    if (response?.data?.access_token) {
-      localStorage.setItem(LS_TOKEN, response.data.access_token)
+    if (response?.data?.success) {
+      const token = response.data.data.access_token
+      localStorage.setItem(LS_TOKEN, token)
       toast.success("Login successful")
-      router.push(config.DASHBOARD_URL)
+      const decoded = decodeToken(token)
+      console.log(`🔥 | decoded:`, decoded)
+      router.push(config.ADMIN_SIGN_IN_URL)
     }
   }
 
@@ -72,15 +76,15 @@ const Login = () => {
                     <CImage className="login-image-wrapper img-fluid mx-auto" src="images/logo.png" />
                   </div>
                   <div className="text-center mt-3 mb-8">
-                    <h5 className="text-danger">Marchant Sign In</h5>
+                    <h5 className="text-danger"> Sign In</h5>
                   </div>
                   <CFormInput
                     className="mb-4 custom-input"
                     placeholder="User Name"
                     type="text"
-                    {...register("username")}
-                    invalid={errors?.username as any}
-                    feedbackInvalid={errors?.username?.message as any}
+                    {...register("email")}
+                    invalid={errors?.email as any}
+                    feedbackInvalid={errors?.email?.message as any}
                   />
                   <ShowPassword>
                     <CFormInput

@@ -11,7 +11,7 @@ export const isBrowser = () => typeof window !== "undefined"
 export const handleSingout = () => {
   localStorage.removeItem(LS_TOKEN)
   const isAdmin = window.location.pathname.startsWith("/admin")
-  window.location.href = isAdmin ? config.ADMIN_SIGN_IN_URL : config.SIGN_IN_URL
+  window.location.href = config.SIGN_IN_URL
 }
 
 export const isUrl = (string: string) => {

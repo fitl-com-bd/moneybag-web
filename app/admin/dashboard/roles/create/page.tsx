@@ -1,5 +1,6 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
+import { useRolesQuery } from "@/store"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
 import { useForm } from "react-hook-form"
 import Swal from "sweetalert2"
@@ -14,6 +15,8 @@ const MerchantDetails = () => {
     clearErrors,
     formState: { errors, isValid },
   } = useForm()
+
+  const { data: roles, isLoading } = useRolesQuery() // Fetch roles using the custom hook
 
   const onSubmit = (data: any) => {
     console.log(data)
@@ -48,7 +51,19 @@ const MerchantDetails = () => {
             </CCol>
             <CCol>
               <FormLabel required>Parent Role</FormLabel>
-              <CFormInput type="text" placeholder="Parent Role" />
+              <CFormSelect placeholder="Parent Role" {...register("parentRole")}>
+                <option value="" selected disabled>
+                  Select Parent Role
+                </option>
+                {roles?.map((role: any) => (
+                  <option key={role.id} value={role.id}>
+                    {role.name}
+                  </option>
+                ))}
+              </CFormSelect>
+              {errors?.parentRole && (
+                <div className="invalid-feedback d-block">{errors?.parentRole?.message as any}</div>
+              )}
             </CCol>
           </CRow>
         </Card>

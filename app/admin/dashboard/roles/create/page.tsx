@@ -16,8 +16,7 @@ const MerchantDetails = () => {
     formState: { errors, isValid },
   } = useForm()
 
-  const { data: roles, isLoading } = useRolesQuery() // Fetch roles using the custom hook
-
+  const { data: roles, isLoading } = useRolesQuery({})
   const onSubmit = (data: any) => {
     console.log(data)
     Swal.fire({

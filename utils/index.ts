@@ -3,6 +3,7 @@ import { LS_TOKEN } from "@/constants"
 import { ClassValue, clsx } from "clsx"
 import { jwtDecode } from "jwt-decode"
 import omitBy from "lodash/omitBy"
+export * from "./sweetalertConfig"
 
 export const cn = (...classes: ClassValue[]) => clsx(classes)
 

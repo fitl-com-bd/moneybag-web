@@ -1,11 +1,10 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { useCreatePermissionMutation, useFeaturesQuery } from "@/store"
-import { getOptions } from "@/utils"
+import { getOptions, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
-import Swal from "sweetalert2"
 
 const CreatePermission = () => {
   const {
@@ -24,7 +23,7 @@ const CreatePermission = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      // const response = await createPermission(data).unwrap()
+      const response = await createPermission(data).unwrap()
       Swal.fire({
         title: "Success",
         text: "Permission Created Successfully",

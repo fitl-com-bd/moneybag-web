@@ -1,11 +1,14 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useRolesQuery } from "@/store"
-import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
+import { useCreateRoleMutation, usePermissionsQuery, useRolesQuery } from "@/store"
+import { getOptions } from "@/utils"
+import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import Swal from "sweetalert2"
 
 const CreateRole = () => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -15,18 +18,36 @@ const CreateRole = () => {
     clearErrors,
     formState: { errors, isValid },
   } = useForm()
-
   const { data: roles, isLoading } = useRolesQuery({})
-  console.log(`🔥 | roles:`, roles)
+  const { data: permissions, isLoading: isPermissionsLoading } = usePermissionsQuery({})
+  const [createRole] = useCreateRoleMutation()
 
-  const onSubmit = (data: any) => {
-    console.log(data)
-    Swal.fire({
-      title: "Success",
-      text: "Business Structure Updated Successfully",
-      icon: "success",
-      confirmButtonText: "Ok",
-    })
+  const onSubmit = async (data: any) => {
+    const payload = {
+      ...data,
+      permissions: data.permissions.filter((permission: any) => permission),
+    }
+    console.log(`🔥 | payload:`, payload)
+
+    try {
+      // const response = await createRole(data).unwrap()
+      Swal.fire({
+        title: "Success",
+        text: "Role Created Successfully",
+        icon: "success",
+        confirmButtonText: "Continue",
+      }).then(() => {
+        router.push("/admin/dashboard/roles")
+      })
+    } catch (error) {
+      console.error(error)
+      Swal.fire({
+        title: "Error",
+        text: "Failed to create role",
+        icon: "error",
+        confirmButtonText: "Ok",
+      })
+    }
   }
 
   return (
@@ -36,14 +57,14 @@ const CreateRole = () => {
         <Card className="space-y-6">
           <CRow>
             <CCol>
-              <FormLabel required>Title</FormLabel>
+              <FormLabel required>Role Name</FormLabel>
               <CFormInput
                 type="text"
-                placeholder="Title"
+                placeholder="Role Name"
                 {...register("title", {
                   required: {
                     value: true,
-                    message: "Please enter a title",
+                    message: "Please enter a role name",
                   },
                 })}
                 invalid={errors?.title as any}
@@ -51,14 +72,14 @@ const CreateRole = () => {
               />
             </CCol>
             <CCol>
-              <FormLabel required>App Feature</FormLabel>
-              <CFormSelect placeholder="App Feature" {...register("parentRole")}>
+              <FormLabel required>Parent Role</FormLabel>
+              <CFormSelect placeholder="Parent Role" {...register("parentRole")}>
                 <option value="" selected disabled>
-                  Select App Feature
+                  Select Parent Role
                 </option>
-                {roles?.data?.map((role: any) => (
-                  <option key={role.id} value={role.id}>
-                    {role.name}
+                {getOptions(roles, "title", "id").map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </CFormSelect>
@@ -116,6 +137,21 @@ const CreateRole = () => {
               </div>
               {errors?.status && <div className="invalid-feedback d-block">{errors?.status?.message as any}</div>}
             </CCol>
+          </CRow>
+        </Card>
+        <h6 className="mb-2">Permission</h6>
+        <Card className="space-y-6">
+          <CRow>
+            {permissions?.data.map((permission: any) => (
+              <CCol key={permission.id}>
+                <CFormSwitch
+                  {...register(`permissions.${permission.id}`)}
+                  label={permission.title}
+                  id={`permission-${permission.id}`}
+                  value={permission.id}
+                />
+              </CCol>
+            ))}
           </CRow>
         </Card>
         <FormFooter>

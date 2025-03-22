@@ -27,7 +27,21 @@ export const accessControlApi = createApi({
       }),
       invalidatesTags: ["Permissions"],
     }),
+    createRole: builder.mutation({
+      query: body => ({
+        url: "acl/roles",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Roles"],
+    }),
   }),
 })
 
-export const { useRolesQuery, usePermissionsQuery, useFeaturesQuery, useCreatePermissionMutation } = accessControlApi
+export const {
+  useRolesQuery,
+  usePermissionsQuery,
+  useFeaturesQuery,
+  useCreatePermissionMutation,
+  useCreateRoleMutation,
+} = accessControlApi

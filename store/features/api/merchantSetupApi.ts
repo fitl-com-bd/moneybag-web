@@ -9,19 +9,22 @@ export const merchantSetupApi = createApi({
   endpoints: builder => ({
     users: builder.query({
       query: params => ({
-        url: `users`,
+        url: "users",
         params: formatParams(params),
       }),
       // transformResponse: (response: any) => response.data.users,
       transformErrorResponse: error => error,
       providesTags: ["Users"],
     }),
+    createUser: builder.mutation({
+      query: body => ({
+        url: "users",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Users"],
+    }),
   }),
 })
 
-export const {
-  useUsersQuery,
-  // useCreateCustomerMutation,
-  // useCustomerQuery,
-  // useCustomersQuery,
-} = merchantSetupApi
+export const { useUsersQuery, useCreateUserMutation } = merchantSetupApi

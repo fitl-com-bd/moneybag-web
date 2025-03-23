@@ -22,7 +22,7 @@ const columns: DataTableColumn = [
   },
   {
     name: "Role",
-    selector: row => row?.role || "-",
+    selector: row => (!row?.role ? "-" : row.role.title),
   },
   {
     name: "Status",
@@ -51,7 +51,7 @@ const Users = () => (
     title="User List"
     columns={columns}
     actionsProps={{
-      href: "/dashboard/users/create",
+      href: "/admin/dashboard/users/create",
       name: "Create User",
       icon: "addUser",
     }}

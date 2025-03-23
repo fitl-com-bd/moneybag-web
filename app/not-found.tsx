@@ -1,6 +1,8 @@
-import Link from "next/link"
+"use client"
+import { useRouter } from "next/navigation"
 
 const NotFound = () => {
+  const router = useRouter()
   return (
     <div className="d-flex flex-column justify-content-center align-items-center vh-100 bg-white">
       <img
@@ -19,9 +21,9 @@ const NotFound = () => {
       </h1> */}
       <h2 className="mb-2 fw-bold">Page Not Found</h2>
       <p className="lead text-muted">Sorry, the page you are looking for does not exist.</p>
-      <Link href="/" className="btn btn-danger text-white mt-3">
+      <button type="button" onClick={() => router.back()} className="btn btn-danger text-white mt-3">
         Go Home
-      </Link>
+      </button>
     </div>
   )
 }

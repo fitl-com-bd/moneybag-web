@@ -8,25 +8,21 @@ import Link from "next/link"
 
 const columns: DataTableColumn = [
   {
-    name: "Name",
+    name: "Title",
     sortable: true,
-    selector: row => row.first_name + " " + row.last_name,
+    selector: row => row.title,
   },
   {
-    name: "User Id",
-    selector: row => row.user_id,
+    name: "Slug",
+    selector: row => row.slug,
   },
   {
-    name: "Email",
-    selector: row => row.email,
-  },
-  {
-    name: "Role",
-    selector: row => row?.role || "-",
+    name: "Description",
+    selector: row => row.description,
   },
   {
     name: "Status",
-    selector: row => row.status,
+    selector: row => (row.is_active ? "Active" : "Inactive"),
   },
   {
     name: "Action",
@@ -34,7 +30,7 @@ const columns: DataTableColumn = [
     cell: row => (
       <div className="d-flex justify-content-center">
         <CTooltip content="Update">
-          <Link href={`/dashboard/users/${row.id}`}>
+          <Link href={`/admin/dashboard/roles/${row.id}`}>
             <CButton color="light" size="sm" className="btn-icon">
               <Icon name="edit" size={24} />
             </CButton>

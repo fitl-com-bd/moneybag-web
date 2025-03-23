@@ -2,6 +2,8 @@ import config from "@/config"
 import { LS_TOKEN } from "@/constants"
 import { ClassValue, clsx } from "clsx"
 import { jwtDecode } from "jwt-decode"
+import isArray from "lodash/isArray"
+import isString from "lodash/isString"
 import omitBy from "lodash/omitBy"
 export * from "./sweetalertConfig"
 
@@ -86,4 +88,18 @@ export const getOptions = (list: { data: any[] }, label: string, value: string) 
     value: item[value],
     label: item[label],
   }))
+}
+
+export const getErrorMessage = (error: any) => {
+  const errorDetail = error?.data?.detail
+  if (isString(errorDetail)) return errorDetail
+  if (isArray(errorDetail)) {
+    const [firstError] = errorDetail
+    const { loc, msg } = firstError
+    const field = loc[loc.length - 1]
+    // return `${field}: ${msg}`
+    console.log(`🔥 | field:`, field)
+    return msg
+  }
+  return "Something went wrong"
 }

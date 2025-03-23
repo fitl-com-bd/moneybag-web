@@ -1,7 +1,7 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { useCreatePermissionMutation, useFeaturesQuery } from "@/store"
-import { getOptions, Swal } from "@/utils"
+import { getErrorMessage, getOptions, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
@@ -22,23 +22,25 @@ const CreatePermission = () => {
   const router = useRouter()
 
   const onSubmit = async (data: any) => {
-    try {
-      const response = await createPermission(data).unwrap()
+    const response = await createPermission(data)
+
+    if (response?.error) {
+      return Swal.fire({
+        title: "Error",
+        icon: "error",
+        text: getErrorMessage(response.error),
+        confirmButtonText: "Ok",
+      })
+    }
+
+    if (response?.data?.success) {
       Swal.fire({
         title: "Success",
-        text: "Permission Created Successfully",
         icon: "success",
+        text: response?.data?.message,
         confirmButtonText: "Continue",
       }).then(() => {
-        router.push("/admin/dashboard/permissions")
-      })
-    } catch (error) {
-      console.error(error)
-      Swal.fire({
-        title: "Error",
-        text: "Failed to create permission",
-        icon: "error",
-        confirmButtonText: "Ok",
+        router.back()
       })
     }
   }
@@ -140,7 +142,9 @@ const CreatePermission = () => {
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary>Cancel</Button>
+          <Button secondary back>
+            Cancel
+          </Button>
           <Button submit>Save</Button>
         </FormFooter>
       </CForm>

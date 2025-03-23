@@ -1,9 +1,11 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { useCreateRoleMutation, usePermissionsQuery, useRolesQuery } from "@/store"
-import { getOptions } from "@/utils"
+import { getErrorMessage, getOptions } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { title } from "process"
 import { useForm } from "react-hook-form"
 import Swal from "sweetalert2"
 
@@ -17,6 +19,7 @@ const CreateRole = () => {
     setError,
     clearErrors,
     formState: { errors, isValid },
+    setValue,
   } = useForm()
   const { data: roles, isLoading } = useRolesQuery({})
   const { data: permissions, isLoading: isPermissionsLoading } = usePermissionsQuery({})
@@ -25,27 +28,30 @@ const CreateRole = () => {
   const onSubmit = async (data: any) => {
     const payload = {
       ...data,
-      permissions: data.permissions.filter((permission: any) => permission),
+      title: data.title,
+      description: data.description,
+      permission_ids: data.permissions.filter((permission: any) => permission),
     }
-    console.log(`🔥 | payload:`, payload)
 
-    try {
-      // const response = await createRole(data).unwrap()
+    const response = await createRole(payload)
+
+    if (response?.error) {
+      return Swal.fire({
+        title: "Error",
+        icon: "error",
+        text: getErrorMessage(response.error),
+        confirmButtonText: "Ok",
+      })
+    }
+
+    if (response?.data?.success) {
       Swal.fire({
         title: "Success",
-        text: "Role Created Successfully",
         icon: "success",
+        text: response?.data?.message,
         confirmButtonText: "Continue",
       }).then(() => {
-        router.push("/admin/dashboard/roles")
-      })
-    } catch (error) {
-      console.error(error)
-      Swal.fire({
-        title: "Error",
-        text: "Failed to create role",
-        icon: "error",
-        confirmButtonText: "Ok",
+        router.back()
       })
     }
   }
@@ -73,7 +79,24 @@ const CreateRole = () => {
             </CCol>
             <CCol>
               <FormLabel required>Parent Role</FormLabel>
-              <CFormSelect placeholder="Parent Role" {...register("parentRole")}>
+              <CFormSelect
+                placeholder="Parent Role"
+                {...register("parentRole")}
+                onChange={e => {
+                  const value = e.target.value
+                  if (value === "") return
+                  const parentRole = roles?.data.find((role: any) => role.id === parseInt(value))
+                  if (!parentRole) return
+                  const parentRolePermissions = parentRole.permissions.map((permission: any) => permission.id)
+                  //clear all permissions
+                  permissions?.data?.forEach((permission: any) => {
+                    setValue(`permissions.${permission.id}`, false)
+                  })
+                  // set parent role permissions
+                  parentRolePermissions.forEach((permission: any) => {
+                    setValue(`permissions.${permission}`, true)
+                  })
+                }}>
                 <option value="" selected disabled>
                   Select Parent Role
                 </option>
@@ -142,20 +165,32 @@ const CreateRole = () => {
         <h6 className="mb-2">Permission</h6>
         <Card className="space-y-6">
           <CRow>
-            {permissions?.data.map((permission: any) => (
-              <CCol key={permission.id}>
-                <CFormSwitch
-                  {...register(`permissions.${permission.id}`)}
-                  label={permission.title}
-                  id={`permission-${permission.id}`}
-                  value={permission.id}
-                />
+            {isPermissionsLoading ? (
+              <CCol>
+                <p className="text-muted mb-0">Loading...</p>
               </CCol>
-            ))}
+            ) : !permissions?.data?.length ? (
+              <CCol>
+                <p className="text-muted mb-0">No permissions found</p>
+              </CCol>
+            ) : (
+              permissions?.data.map((permission: any) => (
+                <CCol key={permission.id}>
+                  <CFormSwitch
+                    {...register(`permissions.${permission.id}`)}
+                    label={permission.title}
+                    id={`permission-${permission.id}`}
+                    value={permission.id}
+                  />
+                </CCol>
+              ))
+            )}
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary>Cancel</Button>
+          <Button secondary back>
+            Cancel
+          </Button>
           <Button submit>Save</Button>
         </FormFooter>
       </CForm>

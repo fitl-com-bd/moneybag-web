@@ -17,6 +17,23 @@ export const handleSingout = () => {
   window.location.href = config.SIGN_IN_URL
 }
 
+// convert to normal case
+export const toNormalCase = (string: any) => {
+  if (typeof string !== "string") return
+  const result = string
+    .toLowerCase() // Convert the string to lowercase
+    .replace(/[^A-Za-z0-9]/gi, " ")
+    .replace(/([A-Z])/g, " $1")
+    .trim()
+  return result.charAt(0).toUpperCase() + result.slice(1)
+}
+
+// Capitalize only the first letter of the string
+export const capitalizeFirst = (string: any) => toNormalCase(string)
+
+// To Lower Case
+export const toLowerCase = (string: any) => (typeof string === "string" ? string.toLowerCase() : string)
+
 export const isUrl = (string: string) => {
   try {
     new URL(string)

@@ -6,19 +6,8 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery,
-  tagTypes: ["CheckLogin", "CheckAdminLogin"],
+  tagTypes: ["Me", "CheckAdminLogin"],
   endpoints: builder => ({
-    checkLogin: builder.query({
-      query: () => ({ url: "auth/details" }),
-      transformResponse: response => response,
-      transformErrorResponse: error => {
-        if (error.status === 401) {
-          return error.data
-        }
-        return error
-      },
-      providesTags: ["CheckLogin"],
-    }),
     loginUser: builder.mutation({
       query: ({ username, password }) => ({
         url: "mruser-auth/token",
@@ -44,13 +33,25 @@ export const authApi = createApi({
         body: { username, password },
       }),
     }),
-    // /api/v2/auth/token
+    // V2
     login: builder.mutation({
       query: ({ email, password }) => ({
         url: "auth/token",
         method: "POST",
         body: { email, password },
       }),
+    }),
+    // /api/v2/me
+    checkLogin: builder.query({
+      query: () => "me",
+      transformResponse: (response: { data: any }) => response.data,
+      transformErrorResponse: error => {
+        if (error.status === 401) {
+          return error.data
+        }
+        return error
+      },
+      providesTags: ["Me"],
     }),
   }),
 })

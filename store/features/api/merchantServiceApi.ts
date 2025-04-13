@@ -12,7 +12,7 @@ export const merchantServiceApi = createApi({
         url: `merchants`,
         params: formatParams(params),
       }),
-      // transformResponse: (response: any) => response.data.users,
+      // transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,
       providesTags: ["Merchants"],
     }),

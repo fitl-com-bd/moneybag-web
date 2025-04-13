@@ -3,6 +3,7 @@ import { DataTablePage } from "@/components/shared"
 import { Icon } from "@/components/ui"
 import { useMerchantsQuery } from "@/store"
 import { DataTableColumn } from "@/types"
+import { toLowerCase, toNormalCase } from "@/utils"
 import { CButton, CTooltip } from "@coreui/react"
 import Link from "next/link"
 
@@ -10,28 +11,28 @@ const columns: DataTableColumn = [
   {
     name: "Merchant Id",
     sortable: true,
-    selector: row => row.merchant_id,
+    selector: row => row.business_detail.merchant_id,
   },
   {
     name: "Merchant Name",
-    selector: row => row.business_name,
+    selector: row => row.business_detail.business_name,
   },
   {
     name: "Person Name",
     sortable: true,
-    selector: row => row.first_name + " " + row.last_name,
+    selector: row => row.business_representative?.full_name || "-",
   },
   {
     name: "Email",
-    selector: row => row.email,
+    selector: row => row.business_detail.business_email,
   },
   {
     name: "Website",
-    selector: row => row.website,
+    selector: row => row.business_detail.business_website,
   },
   {
     name: "Status",
-    selector: row => (row.is_active === 1 ? "Active" : "Inactive"),
+    selector: row => row.business_detail.merchant_status,
   },
   {
     name: "Action",

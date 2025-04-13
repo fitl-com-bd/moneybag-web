@@ -150,18 +150,6 @@ const ADMIN_NAV: NavType = [
         href: "/dashboard/merchant-users",
         slug: "merchant-user-list",
       },
-      {
-        component: CNavItem,
-        name: "Merchant API Pass",
-        href: "/dashboard/merchant-callbackUrl",
-        slug: "merchant-api-password-list",
-      },
-      {
-        component: CNavItem,
-        name: "Merchant Service",
-        href: "/dashboard/merchant-service",
-        slug: "merchant-service",
-      },
     ],
   },
   {
@@ -181,12 +169,6 @@ const ADMIN_NAV: NavType = [
         name: "Fintech List",
         href: "/dashboard/fintech",
         slug: "fintech-list",
-      },
-      {
-        component: CNavItem,
-        name: "Settlement Account",
-        href: "/dashboard/settlement",
-        slug: "settlement-account",
       },
       {
         component: CNavItem,

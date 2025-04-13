@@ -136,11 +136,11 @@ const AppHeader = () => {
           {!isLoading && user && (
             <CDropdown className="user-dropdown">
               <CDropdownToggle className="user-dropdown-toggle">
-                <div className="flex-col justify-content-between align-items-startend small">
-                  <span className="avatar-name-sm lh-1 text-end">{user.merchant_name || user.user_name}</span>
-                  <span className="small text-end">@{user.user_id}</span>
+                <div className="flex-col justify-content-between align-items-end small">
+                  <span className="avatar-name-sm lh-1 text-end">{user.full_name}</span>
+                  <span className="small text-end">{user.email}</span>
                 </div>
-                <Avatar src={user.merchant_logo_url} alt={user.merchant_name || user.user_name} size="md" />
+                <Avatar src={user.merchant_logo_url} alt={user.full_name} size="md" />
               </CDropdownToggle>
               <CDropdownMenu className="user-dropdown-menu">
                 <CDropdownItem>

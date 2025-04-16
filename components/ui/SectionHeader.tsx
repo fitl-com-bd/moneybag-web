@@ -8,7 +8,7 @@ interface SectionHeaderProps {
 export const SectionHeader: FC<SectionHeaderProps> = ({ title, subtitle }) => {
   return (
     <div>
-      <h5 className="text-lg mb-0">{title}</h5>
+      <h5 className="text-lg fw-medium mb-0">{title}</h5>
       <p className="text-secondary">{subtitle}</p>
     </div>
   )

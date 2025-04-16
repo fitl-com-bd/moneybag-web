@@ -40,14 +40,14 @@ const columns: DataTableColumn = [
     cell: row => (
       <div className="d-flex justify-content-center gap-2">
         <CTooltip content="View">
-          <Link href={`merchant/${row.id}`}>
+          <Link href={`merchants/${row.id}`}>
             <CButton color="light" size="sm" className="btn-icon">
               <Icon name="view" size={24} />
             </CButton>
           </Link>
         </CTooltip>
         <CTooltip content="Update">
-          <Link href={`merchant/${row.id}/edit`}>
+          <Link href={`merchants/${row.id}/edit`}>
             <CButton color="light" size="sm" className="btn-icon">
               <Icon name="edit" size={24} />
             </CButton>
@@ -69,7 +69,7 @@ const Merchants = () => (
       { label: "Inactive", value: "0" },
     ]}
     actionsProps={{
-      href: "merchant/create",
+      href: "merchants/create",
     }}
   />
 )

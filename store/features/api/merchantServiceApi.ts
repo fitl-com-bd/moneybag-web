@@ -9,14 +9,22 @@ export const merchantServiceApi = createApi({
   endpoints: builder => ({
     merchants: builder.query({
       query: params => ({
-        url: `merchants`,
+        url: "merchants",
         params: formatParams(params),
       }),
       // transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,
       providesTags: ["Merchants"],
     }),
+    createBusinessDetails: builder.mutation({
+      query: businessDetails => ({
+        url: "merchants/business-details",
+        method: "POST",
+        body: businessDetails,
+      }),
+      invalidatesTags: ["Merchants"],
+    }),
   }),
 })
 
-export const { useMerchantsQuery } = merchantServiceApi
+export const { useMerchantsQuery, useCreateBusinessDetailsMutation } = merchantServiceApi

@@ -1,29 +1,31 @@
 "use client"
 import { Card, FormLabel, TabItem, Tabs } from "@/components/ui"
 import { CCol, CFormControlWrapper, CFormInput, CFormLabel, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
-import BusinessStructure from "./_components/BusinessStructure"
+import { BusinessDetails } from "./_components/BusinessDetails"
+import { BusinessRepresentative } from "./_components/BusinessRepresentative"
+import { PaymentService } from "./_components/PaymentService"
+import { SettlementBank } from "./_components/SettlementBank"
 
 const tabItems: TabItem[] = [
   {
-    label: "Business Structure",
-    value: "business_structure",
-    component: BusinessStructure,
-  },
-  {
     label: "Business Details",
     value: "business_details",
+    component: BusinessDetails,
   },
   {
     label: "Business Representative",
     value: "business_representative",
+    component: BusinessRepresentative,
+  },
+  {
+    label: "Payment Service",
+    value: "payment_service",
+    component: PaymentService,
   },
   {
     label: "Settlement Bank",
     value: "settlement_bank",
-  },
-  {
-    label: "Merchant Service",
-    value: "merchant_service",
+    component: SettlementBank,
   },
 ]
 

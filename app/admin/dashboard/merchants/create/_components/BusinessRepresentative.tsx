@@ -49,188 +49,118 @@ export const BusinessRepresentative = () => {
   return (
     <>
       <SectionHeader
-        title="Enter Your Business Details"
-        subtitle="Fill in all required information about your business, including contact details and registration documents."
+        title="Add Business Representative Information"
+        subtitle="Enter the details of the authorized representative for your business, including identification and contact information."
       />
       <CForm onSubmit={handleSubmit(onSubmit)}>
         <Card className="space-y-6">
           <CRow>
             <CCol>
-              <FormLabel required>Business Name</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Business Name"
-                {...register("business_name", {
-                  required: {
-                    value: true,
-                    message: "Please enter the business name",
-                  },
-                })}
-                invalid={errors?.business_name as any}
-                feedbackInvalid={errors?.business_name?.message as any}
-              />
+              <div className="form-group">
+                <FormLabel required>NID</FormLabel>
+                <CFormInput
+                  type="text"
+                  placeholder="Enter NID"
+                  {...register("nid", {
+                    required: {
+                      value: true,
+                      message: "Please enter the NID",
+                    },
+                  })}
+                  invalid={errors?.nid as any}
+                  feedbackInvalid={errors?.nid?.message as any}
+                />
+              </div>
+              <div className="form-group">
+                <FormLabel required>Date of Birth</FormLabel>
+                <CFormInput
+                  type="date"
+                  {...register("date_of_birth", {
+                    required: {
+                      value: true,
+                      message: "Please enter the date of birth",
+                    },
+                  })}
+                  invalid={errors?.date_of_birth as any}
+                  feedbackInvalid={errors?.date_of_birth?.message as any}
+                />
+              </div>
             </CCol>
-            <CCol>
-              <FormLabel required>Business Short Name</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Business Short Name"
-                {...register("business_short_name", {
-                  required: {
-                    value: true,
-                    message: "Please enter the business short name",
-                  },
-                })}
-                invalid={errors?.business_short_name as any}
-                feedbackInvalid={errors?.business_short_name?.message as any}
-              />
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol>
-              <FormLabel required>BIN</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter BIN"
-                {...register("bin_no", {
-                  required: {
-                    value: true,
-                    message: "Please enter the BIN",
-                  },
-                })}
-                invalid={errors?.bin_no as any}
-                feedbackInvalid={errors?.bin_no?.message as any}
-              />
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol>
-              <FormLabel required>NID</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter NID"
-                {...register("nid", {
-                  required: {
-                    value: true,
-                    message: "Please enter the NID",
-                  },
-                })}
-                invalid={errors?.nid as any}
-                feedbackInvalid={errors?.nid?.message as any}
-              />
-            </CCol>
-            <CCol>
-              <FormLabel required>Date of Birth</FormLabel>
-              <CFormInput
-                type="date"
-                {...register("date_of_birth", {
-                  required: {
-                    value: true,
-                    message: "Please enter the date of birth",
-                  },
-                })}
-                invalid={errors?.date_of_birth as any}
-                feedbackInvalid={errors?.date_of_birth?.message as any}
-              />
-            </CCol>
+            <CCol></CCol>
           </CRow>
         </Card>
         <Card className="space-y-6">
           <CRow>
             <CCol>
-              <FormLabel required>Industry/Business Type</FormLabel>
-              <CFormSelect>
-                <option value="">Select Industry/Business</option>
-                {businessOption.map((country, index) => (
-                  <option value={country} key={index}>
-                    {country}
-                  </option>
-                ))}
-              </CFormSelect>
-            </CCol>
-            <CCol>
-              <FormLabel required>Merchant Category Code</FormLabel>
+              <FormLabel required>First Name</FormLabel>
               <CFormInput
                 type="text"
-                placeholder="Enter Merchant Category Code"
-                {...register("merchant_category_id", {
+                placeholder="Enter First Name"
+                {...register("first_name", {
                   required: {
                     value: true,
-                    message: "Please enter the merchant category code",
+                    message: "Please enter the first name",
                   },
                 })}
-                invalid={errors?.merchant_category_id as any}
-                feedbackInvalid={errors?.merchant_category_id?.message as any}
+                invalid={errors?.first_name as any}
+                feedbackInvalid={errors?.first_name?.message as any}
               />
             </CCol>
-          </CRow>
-        </Card>
-        <Card className="space-y-6">
-          <CRow>
             <CCol>
-              <FormLabel required>Business Description</FormLabel>
-              <CFormTextarea
-                rows={4}
-                placeholder="Enter Business Description"
-                {...register("business_desc", {
+              <FormLabel required>Last Name</FormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Enter Last Name"
+                {...register("last_name", {
                   required: {
                     value: true,
-                    message: "Please enter the business description",
+                    message: "Please enter the last name",
                   },
                 })}
-                invalid={errors?.business_desc as any}
-                feedbackInvalid={errors?.business_desc?.message as any}
+                invalid={errors?.last_name as any}
+                feedbackInvalid={errors?.last_name?.message as any}
               />
             </CCol>
           </CRow>
-        </Card>
-        <Card className="space-y-6">
           <CRow>
             <CCol>
               <FormLabel required>Phone Number</FormLabel>
               <CFormInput
                 type="text"
                 placeholder="Enter Phone Number"
-                {...register("business_phone", {
+                {...register("phone_number", {
                   required: {
                     value: true,
                     message: "Please enter the phone number",
                   },
                 })}
-                invalid={errors?.business_phone as any}
-                feedbackInvalid={errors?.business_phone?.message as any}
+                invalid={errors?.phone_number as any}
+                feedbackInvalid={errors?.phone_number?.message as any}
               />
             </CCol>
             <CCol>
-              <FormLabel required>Business Website</FormLabel>
+              <FormLabel required>Email Address</FormLabel>
               <CFormInput
-                type="text"
-                placeholder="Enter Business Website"
-                {...register("business_website", {
+                type="email"
+                placeholder="Enter Email Address"
+                {...register("email_address", {
                   required: {
                     value: true,
-                    message: "Please enter the business website",
+                    message: "Please enter the email address",
                   },
                 })}
-                invalid={errors?.business_website as any}
-                feedbackInvalid={errors?.business_website?.message as any}
+                invalid={errors?.email_address as any}
+                feedbackInvalid={errors?.email_address?.message as any}
               />
             </CCol>
           </CRow>
           <CRow>
             <CCol>
-              <FormLabel required>Email</FormLabel>
-              <CFormInput
-                type="email"
-                placeholder="Enter Email"
-                {...register("business_email", {
-                  required: {
-                    value: true,
-                    message: "Please enter the email",
-                  },
-                })}
-                invalid={errors?.business_email as any}
-                feedbackInvalid={errors?.business_email?.message as any}
+              <CFormCheck
+                type="checkbox"
+                {...register("is_merchant_user")}
+                label="Is Merchant User (Merchant Admin)"
+                id="isMerchantUser"
               />
             </CCol>
           </CRow>
@@ -306,100 +236,25 @@ export const BusinessRepresentative = () => {
         <Card className="space-y-6">
           <CRow>
             <CCol>
-              <FormLabel required>Max Ticket Size</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Max Ticket Size"
-                {...register("max_ticket_size", {
+              <FormLabel required>Permanent Address</FormLabel>
+              <CFormTextarea
+                rows={4}
+                placeholder="Enter Permanent Address"
+                {...register("permanent_address", {
                   required: {
                     value: true,
-                    message: "Please enter the max ticket size",
+                    message: "Please enter the permanent address",
                   },
                 })}
-                invalid={errors?.max_ticket_size as any}
-                feedbackInvalid={errors?.max_ticket_size?.message as any}
+                invalid={errors?.permanent_address as any}
+                feedbackInvalid={errors?.permanent_address?.message as any}
               />
-            </CCol>
-            <CCol>
-              <FormLabel>Service Charge by Merchant*</FormLabel>
-              <CFormSwitch
-                {...register("bleeding", {})}
-                reverse
-                id="serviceCharge"
-                label="Activate this option if the merchant will apply a service charge for transactions."
-                invalid={errors?.bleeding as any}
-                // feedbackInvalid={errors?.serviceCharge?.message as any}
-              />
-            </CCol>
-          </CRow>
-        </Card>
-        <Card className="space-y-6">
-          <CRow>
-            <CCol>
-              <FormLabel required>Status</FormLabel>
-              <div className="d-flex gap-4">
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="active"
-                  label="Active"
-                  id="active"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="inactive"
-                  label="Inactive"
-                  id="inactive"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="suspended"
-                  label="Suspended"
-                  id="suspended"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="draft"
-                  label="Draft"
-                  id="draft"
-                  invalid={errors?.merchant_status as any}
-                />
-              </div>
-              {errors?.merchant_status && (
-                <div className="invalid-feedback d-block">{errors?.merchant_status?.message as any}</div>
-              )}
             </CCol>
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary>Cancel</Button>
-          <Button submit>Update</Button>
+          <Button secondary>Previous</Button>
+          <Button submit>Next</Button>
         </FormFooter>
       </CForm>
     </>

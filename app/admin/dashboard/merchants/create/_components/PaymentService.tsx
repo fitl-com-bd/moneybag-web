@@ -1,3 +1,3 @@
 export const PaymentService = () => {
-  return <div>PaymentService</div>
+  return <div>/api/v2/payment-configs/merchant-payment-services</div>
 }

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
 const businessOption = [
+  "CORPORATION",
   "Educational Institute",
   "Public Limited",
   "Partnership",
@@ -31,7 +32,7 @@ export const BusinessDetails = () => {
 
   const onSubmit = async (data: any) => {
     const response = await createBusinessDetails(data)
-
+    
     if (response?.error) {
       return Swal.fire({
         title: "Error",
@@ -68,14 +69,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter Business Name"
-                {...register("businessName", {
+                {...register("business_name", {
                   required: {
                     value: true,
                     message: "Please enter the business name",
                   },
                 })}
-                invalid={errors?.businessName as any}
-                feedbackInvalid={errors?.businessName?.message as any}
+                invalid={errors?.business_name as any}
+                feedbackInvalid={errors?.business_name?.message as any}
               />
             </CCol>
             <CCol>
@@ -83,14 +84,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter Business Short Name"
-                {...register("businessShortName", {
+                {...register("business_short_name", {
                   required: {
                     value: true,
                     message: "Please enter the business short name",
                   },
                 })}
-                invalid={errors?.businessShortName as any}
-                feedbackInvalid={errors?.businessShortName?.message as any}
+                invalid={errors?.business_short_name as any}
+                feedbackInvalid={errors?.business_short_name?.message as any}
               />
             </CCol>
           </CRow>
@@ -100,14 +101,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter BIN"
-                {...register("bin", {
+                {...register("bin_no", {
                   required: {
                     value: true,
                     message: "Please enter the BIN",
                   },
                 })}
-                invalid={errors?.bin as any}
-                feedbackInvalid={errors?.bin?.message as any}
+                invalid={errors?.bin_no as any}
+                feedbackInvalid={errors?.bin_no?.message as any}
               />
             </CCol>
           </CRow>
@@ -116,18 +117,18 @@ export const BusinessDetails = () => {
           <div className="form-group">
             <FormLabel required>Legal Identity of Company</FormLabel>
             <CFormSelect
-              {...register("businessOption", {
+              {...register("legal_identity", {
                 required: {
                   value: true,
                   message: "Please select an option",
                 },
               })}
-              invalid={errors?.businessOption as any}
-              feedbackInvalid={errors?.businessOption?.message as any}>
+              invalid={errors?.legal_identity as any}
+              feedbackInvalid={errors?.legal_identity?.message as any}>
               <option value="">Select</option>
-              {businessOption.map((country, index) => (
-                <option value={country} key={index}>
-                  {country}
+              {businessOption.map((option, index) => (
+                <option value={option} key={index}>
+                  {option}
                 </option>
               ))}
             </CFormSelect>
@@ -146,7 +147,18 @@ export const BusinessDetails = () => {
             </CCol>
             <CCol>
               <FormLabel required>Merchant Category Code</FormLabel>
-              <CFormInput type="text" placeholder="Enter Merchant Category Code" />
+              <CFormInput
+                type="text"
+                placeholder="Enter Merchant Category Code"
+                {...register("merchant_category_id", {
+                  required: {
+                    value: true,
+                    message: "Please enter the merchant category code",
+                  },
+                })}
+                invalid={errors?.merchant_category_id as any}
+                feedbackInvalid={errors?.merchant_category_id?.message as any}
+              />
             </CCol>
           </CRow>
         </Card>
@@ -154,7 +166,18 @@ export const BusinessDetails = () => {
           <CRow>
             <CCol>
               <FormLabel required>Business Description</FormLabel>
-              <CFormTextarea rows={4} text="" />
+              <CFormTextarea
+                rows={4}
+                placeholder="Enter Business Description"
+                {...register("business_desc", {
+                  required: {
+                    value: true,
+                    message: "Please enter the business description",
+                  },
+                })}
+                invalid={errors?.business_desc as any}
+                feedbackInvalid={errors?.business_desc?.message as any}
+              />
             </CCol>
           </CRow>
         </Card>
@@ -165,14 +188,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter Phone Number"
-                {...register("phoneNumber", {
+                {...register("business_phone", {
                   required: {
                     value: true,
                     message: "Please enter the phone number",
                   },
                 })}
-                invalid={errors?.phoneNumber as any}
-                feedbackInvalid={errors?.phoneNumber?.message as any}
+                invalid={errors?.business_phone as any}
+                feedbackInvalid={errors?.business_phone?.message as any}
               />
             </CCol>
             <CCol>
@@ -180,14 +203,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter Business Website"
-                {...register("businessWebsite", {
+                {...register("business_website", {
                   required: {
                     value: true,
                     message: "Please enter the business website",
                   },
                 })}
-                invalid={errors?.businessWebsite as any}
-                feedbackInvalid={errors?.businessWebsite?.message as any}
+                invalid={errors?.business_website as any}
+                feedbackInvalid={errors?.business_website?.message as any}
               />
             </CCol>
           </CRow>
@@ -197,14 +220,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="email"
                 placeholder="Enter Email"
-                {...register("email", {
+                {...register("business_email", {
                   required: {
                     value: true,
                     message: "Please enter the email",
                   },
                 })}
-                invalid={errors?.email as any}
-                feedbackInvalid={errors?.email?.message as any}
+                invalid={errors?.business_email as any}
+                feedbackInvalid={errors?.business_email?.message as any}
               />
             </CCol>
           </CRow>
@@ -216,14 +239,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter Address"
-                {...register("address", {
+                {...register("street", {
                   required: {
                     value: true,
                     message: "Please enter the address",
                   },
                 })}
-                invalid={errors?.address as any}
-                feedbackInvalid={errors?.address?.message as any}
+                invalid={errors?.street as any}
+                feedbackInvalid={errors?.street?.message as any}
               />
             </CCol>
           </CRow>
@@ -233,14 +256,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter City"
-                {...register("city", {
+                {...register("city_id", {
                   required: {
                     value: true,
                     message: "Please enter the city",
                   },
                 })}
-                invalid={errors?.city as any}
-                feedbackInvalid={errors?.city?.message as any}
+                invalid={errors?.city_id as any}
+                feedbackInvalid={errors?.city_id?.message as any}
               />
             </CCol>
             <CCol>
@@ -248,14 +271,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter District"
-                {...register("district", {
+                {...register("district_id", {
                   required: {
                     value: true,
                     message: "Please enter the district",
                   },
                 })}
-                invalid={errors?.district as any}
-                feedbackInvalid={errors?.district?.message as any}
+                invalid={errors?.district_id as any}
+                feedbackInvalid={errors?.district_id?.message as any}
               />
             </CCol>
           </CRow>
@@ -265,14 +288,14 @@ export const BusinessDetails = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter Postal Code"
-                {...register("postalCode", {
+                {...register("postal_code", {
                   required: {
                     value: true,
                     message: "Please enter the postal code",
                   },
                 })}
-                invalid={errors?.postalCode as any}
-                feedbackInvalid={errors?.postalCode?.message as any}
+                invalid={errors?.postal_code as any}
+                feedbackInvalid={errors?.postal_code?.message as any}
               />
             </CCol>
           </CRow>
@@ -281,23 +304,27 @@ export const BusinessDetails = () => {
           <CRow>
             <CCol>
               <FormLabel required>Max Ticket Size</FormLabel>
-              <CFormSelect>
-                <option value="">Select</option>
-                {businessOption.map((country, index) => (
-                  <option value={country} key={index}>
-                    {country}
-                  </option>
-                ))}
-              </CFormSelect>
+              <CFormInput
+                type="text"
+                placeholder="Enter Max Ticket Size"
+                {...register("max_ticket_size", {
+                  required: {
+                    value: true,
+                    message: "Please enter the max ticket size",
+                  },
+                })}
+                invalid={errors?.max_ticket_size as any}
+                feedbackInvalid={errors?.max_ticket_size?.message as any}
+              />
             </CCol>
             <CCol>
               <FormLabel>Service Charge by Merchant*</FormLabel>
               <CFormSwitch
-                {...register("serviceCharge", {})}
+                {...register("bleeding", {})}
                 reverse
                 id="serviceCharge"
                 label="Activate this option if the merchant will apply a service charge for transactions."
-                invalid={errors?.serviceCharge as any}
+                invalid={errors?.bleeding as any}
                 // feedbackInvalid={errors?.serviceCharge?.message as any}
               />
             </CCol>
@@ -310,7 +337,7 @@ export const BusinessDetails = () => {
               <div className="d-flex gap-4">
                 <CFormCheck
                   type="radio"
-                  {...register("status", {
+                  {...register("merchant_status", {
                     required: {
                       value: true,
                       message: "Please select a status",
@@ -319,11 +346,11 @@ export const BusinessDetails = () => {
                   value="active"
                   label="Active"
                   id="active"
-                  invalid={errors?.status as any}
+                  invalid={errors?.merchant_status as any}
                 />
                 <CFormCheck
                   type="radio"
-                  {...register("status", {
+                  {...register("merchant_status", {
                     required: {
                       value: true,
                       message: "Please select a status",
@@ -332,11 +359,11 @@ export const BusinessDetails = () => {
                   value="inactive"
                   label="Inactive"
                   id="inactive"
-                  invalid={errors?.status as any}
+                  invalid={errors?.merchant_status as any}
                 />
                 <CFormCheck
                   type="radio"
-                  {...register("status", {
+                  {...register("merchant_status", {
                     required: {
                       value: true,
                       message: "Please select a status",
@@ -345,11 +372,11 @@ export const BusinessDetails = () => {
                   value="suspended"
                   label="Suspended"
                   id="suspended"
-                  invalid={errors?.status as any}
+                  invalid={errors?.merchant_status as any}
                 />
                 <CFormCheck
                   type="radio"
-                  {...register("status", {
+                  {...register("merchant_status", {
                     required: {
                       value: true,
                       message: "Please select a status",
@@ -358,10 +385,12 @@ export const BusinessDetails = () => {
                   value="draft"
                   label="Draft"
                   id="draft"
-                  invalid={errors?.status as any}
+                  invalid={errors?.merchant_status as any}
                 />
               </div>
-              {errors?.status && <div className="invalid-feedback d-block">{errors?.status?.message as any}</div>}
+              {errors?.merchant_status && (
+                <div className="invalid-feedback d-block">{errors?.merchant_status?.message as any}</div>
+              )}
             </CCol>
           </CRow>
         </Card>

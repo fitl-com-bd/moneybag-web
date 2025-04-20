@@ -1,3 +1,18 @@
+// TypeScript type support
+export interface MerchantPaymentServicePayload {
+  api_key: { api_key: string; secret: string }
+  bank_rate: string
+  financial_organization_id: number
+  is_active: boolean
+  is_custom_rate: boolean
+  merchant_id: number
+  moneybag_rate: string
+  note: string
+  payment_provider_id: number
+  rate_type: string
+  total_rate: string
+}
+
 import { baseQuery } from "@/store/config"
 import { formatParams } from "@/utils"
 import { createApi } from "@reduxjs/toolkit/query/react"
@@ -42,6 +57,14 @@ export const merchantServiceApi = createApi({
       transformErrorResponse: error => error,
       providesTags: ["Merchants"],
     }),
+    createMerchantPaymentService: builder.mutation({
+      query: (payload: MerchantPaymentServicePayload) => ({
+        url: "payment-configs/merchant-payment-services",
+        method: "POST",
+        body: payload,
+      }),
+      transformErrorResponse: error => error,
+    }),
   }),
 })
 
@@ -50,4 +73,5 @@ export const {
   useCreateBusinessDetailsMutation,
   useCreateMerchantRepresentativeMutation,
   useMerchantNidQuery,
+  useCreateMerchantPaymentServiceMutation,
 } = merchantServiceApi

@@ -1,6 +1,6 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
+import { useCreateMerchantPaymentServiceMutation } from "@/store/features/api/merchantServiceApi"
 import { getErrorMessage, Swal } from "@/utils"
 import {
   CCardBody,
@@ -18,6 +18,19 @@ import {
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
+// TypeScript type support
+interface PaymentServiceFormData {
+  api_key: string
+  secret: string
+  bank_rate: string
+  custom_rate: boolean
+  moneybag_rate: string
+  note?: string
+  rate_type: string
+  status: string
+  merchant_service_fee: string
+}
+
 export const PaymentService = () => {
   const {
     register,
@@ -29,11 +42,28 @@ export const PaymentService = () => {
     formState: { errors, isValid },
   } = useForm()
 
-  const [createBusinessDetails] = useCreateBusinessDetailsMutation()
+  const [createMerchantPaymentService] = useCreateMerchantPaymentServiceMutation()
   const router = useRouter()
 
-  const onSubmit = async (data: any) => {
-    const response = await createBusinessDetails(data)
+  const onSubmit = async (data: PaymentServiceFormData) => {
+    const payload = {
+      api_key: {
+        api_key: data.api_key,
+        secret: data.secret,
+      },
+      bank_rate: data.bank_rate,
+      financial_organization_id: 1, // Replace with actual value
+      is_active: data.status === "active",
+      is_custom_rate: data.custom_rate || false,
+      merchant_id: 1, // Replace with actual value
+      moneybag_rate: data.moneybag_rate,
+      note: data.note || "",
+      payment_provider_id: 1, // Replace with actual value
+      rate_type: data.rate_type,
+      total_rate: data.merchant_service_fee || "",
+    }
+
+    const response = await createMerchantPaymentService(payload)
 
     if (response?.error) {
       return Swal.fire({
@@ -178,19 +208,40 @@ export const PaymentService = () => {
           </CRow>
           <CRow>
             <CCol>
-              <FormLabel required>API Key & Pass</FormLabel>
-              <CFormTextarea
-                rows={4}
-                placeholder="Enter API Key & Pass"
-                {...register("api_key_pass", {
+              <FormLabel required>API Key</FormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Enter API Key"
+                {...register("api_key", {
                   required: {
                     value: true,
-                    message: "Please enter the API key and pass",
+                    message: "Please enter the API key",
                   },
                 })}
-                invalid={errors?.api_key_pass as any}
-                feedbackInvalid={errors?.api_key_pass?.message as any}
+                invalid={errors?.api_key as any}
+                feedbackInvalid={errors?.api_key?.message as any}
               />
+            </CCol>
+            <CCol>
+              <FormLabel required>Secret</FormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Enter Secret"
+                {...register("secret", {
+                  required: {
+                    value: true,
+                    message: "Please enter the secret",
+                  },
+                })}
+                invalid={errors?.secret as any}
+                feedbackInvalid={errors?.secret?.message as any}
+              />
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol>
+              <FormLabel>Note</FormLabel>
+              <CFormTextarea rows={4} placeholder="Enter Note" {...register("note")} />
             </CCol>
           </CRow>
         </Card>

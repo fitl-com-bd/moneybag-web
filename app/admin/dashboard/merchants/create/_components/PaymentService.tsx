@@ -3,7 +3,19 @@
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
 import { getErrorMessage, Swal } from "@/utils"
-import { CCardTitle, CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
+import {
+  CCardBody,
+  CCardLink,
+  CCardTitle,
+  CCol,
+  CForm,
+  CFormCheck,
+  CFormInput,
+  CFormSelect,
+  CFormSwitch,
+  CFormTextarea,
+  CRow,
+} from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
@@ -53,8 +65,20 @@ export const PaymentService = () => {
         subtitle="Choose the payment services and methods you want to enable for your business transactions."
       />
       <CForm onSubmit={handleSubmit(onSubmit)}>
-        <Card className="space-y-6">
-          <CCardTitle className="">Service Details</CCardTitle>
+        <Card
+          className="space-y-6"
+          header={
+            <div className="d-flex justify-content-between align-items-center">
+              <CCardTitle className="my-3c">Service Details</CCardTitle>
+              <CFormSwitch
+                {...register("custom_rate", {})}
+                id="customRate"
+                label="Custom Rate"
+                invalid={errors?.custom_rate as any}
+                className="switch-reverse"
+              />
+            </div>
+          }>
           <CRow>
             <CCol>
               <FormLabel required>Service</FormLabel>

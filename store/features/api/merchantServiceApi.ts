@@ -2,12 +2,6 @@ import { baseQuery } from "@/store/config"
 import { formatParams } from "@/utils"
 import { createApi } from "@reduxjs/toolkit/query/react"
 
-// TypeScript type support
-export interface MerchantNidDetailsPayload {
-  date_of_birth: string
-  nid_number: string
-}
-
 export const merchantServiceApi = createApi({
   reducerPath: "merchantServiceApi",
   baseQuery,
@@ -40,14 +34,13 @@ export const merchantServiceApi = createApi({
       invalidatesTags: ["Merchants"],
     }),
     // /api/v2/merchants/nid-details
-    merchantNid: builder.mutation({
-      query: (payload: MerchantNidDetailsPayload) => ({
+    merchantNid: builder.query({
+      query: params => ({
         url: "merchants/nid-details",
-        method: "POST",
-        body: { ...payload, english_translation: true },
+        params: formatParams(params),
       }),
       transformErrorResponse: error => error,
-      invalidatesTags: ["Merchants"],
+      providesTags: ["Merchants"],
     }),
   }),
 })
@@ -56,5 +49,5 @@ export const {
   useMerchantsQuery,
   useCreateBusinessDetailsMutation,
   useCreateMerchantRepresentativeMutation,
-  useMerchantNidMutation,
+  useMerchantNidQuery,
 } = merchantServiceApi

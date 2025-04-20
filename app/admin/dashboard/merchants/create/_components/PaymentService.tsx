@@ -1,4 +1,3 @@
-// /payment-configs/merchant-payment-services
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
@@ -161,7 +160,7 @@ export const PaymentService = () => {
             </CCol>
             <CCol>
               <FormLabel required>Status</FormLabel>
-              <div>
+              <div className="d-flex gap-3">
                 <CFormCheck
                   type="radio"
                   label="Active"

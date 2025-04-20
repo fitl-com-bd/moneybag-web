@@ -65,6 +65,31 @@ export const merchantServiceApi = createApi({
       }),
       transformErrorResponse: error => error,
     }),
+    createMerchantBankAccount: builder.mutation({
+      query: ({
+        merchantId,
+        ...payload
+      }: {
+        merchantId: number
+        account_name: string
+        account_number: string
+        branch_id: number
+        notes: string
+      }) => ({
+        url: `banks/accounts/merchant/${merchantId}/`,
+        method: "POST",
+        body: payload,
+      }),
+      transformErrorResponse: error => error,
+    }),
+    // /api/v2/merchants/categories
+    merchantCategories: builder.query({
+      query: params => ({
+        url: "merchants/categories",
+        params: formatParams(params),
+      }),
+      transformErrorResponse: error => error,
+    }),
   }),
 })
 
@@ -74,4 +99,5 @@ export const {
   useCreateMerchantRepresentativeMutation,
   useMerchantNidQuery,
   useCreateMerchantPaymentServiceMutation,
+  useCreateMerchantBankAccountMutation,
 } = merchantServiceApi

@@ -1,7 +1,6 @@
-// /api/v2/banks/accounts/merchant/:merchant_id/
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
+import { useCreateMerchantBankAccountMutation } from "@/store/features/api/merchantServiceApi"
 import { getErrorMessage, Swal } from "@/utils"
 import {
   CCardBody,
@@ -18,6 +17,7 @@ import {
 } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+
 export const SettlementBank = () => {
   const {
     register,
@@ -29,11 +29,19 @@ export const SettlementBank = () => {
     formState: { errors, isValid },
   } = useForm()
 
-  const [createBusinessDetails] = useCreateBusinessDetailsMutation()
+  const [createMerchantBankAccount] = useCreateMerchantBankAccountMutation()
   const router = useRouter()
 
   const onSubmit = async (data: any) => {
-    const response = await createBusinessDetails(data)
+    const payload = {
+      merchantId: 1, // Replace with actual merchant ID
+      account_name: data.account_name,
+      account_number: data.account_number,
+      branch_id: 1, // Replace with actual branch ID
+      notes: data.notes || "Merchant bank account",
+    }
+
+    const response = await createMerchantBankAccount(payload)
 
     if (response?.error) {
       return Swal.fire({
@@ -164,6 +172,12 @@ export const SettlementBank = () => {
                 invalid={errors?.account_number as any}
                 feedbackInvalid={errors?.account_number?.message as any}
               />
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol>
+              <FormLabel>Notes</FormLabel>
+              <CFormTextarea rows={4} placeholder="Enter Notes" {...register("notes")} />
             </CCol>
           </CRow>
         </Card>

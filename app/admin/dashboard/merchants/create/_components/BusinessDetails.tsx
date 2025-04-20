@@ -4,6 +4,7 @@ import { useAddressQuery, useCreateBusinessDetailsMutation } from "@/store"
 import { getErrorMessage, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 const businessOption = [
@@ -15,6 +16,22 @@ const businessOption = [
   "Non Profit",
   "Private Limited",
 ]
+
+const getDivisions = (data: any, countryId: number = 1) => {
+  const country = (data?.countries || []).find((country: any) => country.id === countryId)
+  return country ? country.divisions : []
+}
+
+const getDistrictsByDivision = (data: any, divisionId: string) => {
+  const division = getDivisions(data).find((div: any) => div.id === parseInt(divisionId))
+  const districts: any[] = []
+  division?.cities?.forEach((city: any) => {
+    const cityDistricts = city.districts.forEach((district: any) => {
+      districts.push(district)
+    })
+  })
+  return districts
+}
 
 export const BusinessDetails = () => {
   const {
@@ -30,10 +47,14 @@ export const BusinessDetails = () => {
   const [createBusinessDetails] = useCreateBusinessDetailsMutation()
   const router = useRouter()
   const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
-  console.log(`🔥 | addressData:`, addressData)
+  const selectedDivision = watch("division_id")
 
   const onSubmit = async (data: any) => {
-    const response = await createBusinessDetails(data)
+    const arg = {
+      ...data,
+      city_id: 1,
+    }
+    const response = await createBusinessDetails(arg)
 
     if (response?.error) {
       return Swal.fire({
@@ -266,7 +287,7 @@ export const BusinessDetails = () => {
                 feedbackInvalid={errors?.division_id?.message as any}
                 disabled={isAddressLoading}>
                 <option value="">Select Division</option>
-                {addressData?.division?.map((division: any) => (
+                {getDivisions(addressData).map((division: any) => (
                   <option value={division.id} key={division.id}>
                     {division.name}
                   </option>
@@ -284,9 +305,9 @@ export const BusinessDetails = () => {
                 })}
                 invalid={errors?.district_id as any}
                 feedbackInvalid={errors?.district_id?.message as any}
-                disabled={isAddressLoading}>
+                disabled={isAddressLoading || !selectedDivision}>
                 <option value="">Select District</option>
-                {addressData?.district?.map((district: any) => (
+                {getDistrictsByDivision(addressData, selectedDivision).map(district => (
                   <option value={district.id} key={district.id}>
                     {district.name}
                   </option>
@@ -333,10 +354,11 @@ export const BusinessDetails = () => {
               <FormLabel>Service Charge by Merchant*</FormLabel>
               <CFormSwitch
                 {...register("bleeding", {})}
-                reverse
+                // reverse
                 id="serviceCharge"
                 label="Activate this option if the merchant will apply a service charge for transactions."
                 invalid={errors?.bleeding as any}
+                className="small"
                 // feedbackInvalid={errors?.serviceCharge?.message as any}
               />
             </CCol>

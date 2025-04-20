@@ -1,10 +1,10 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useAddressQuery, useCreateBusinessDetailsMutation } from "@/store"
+import { useAddressQuery, useCreateBusinessDetailsMutation, useMerchantCategoriesQuery } from "@/store"
 import { getErrorMessage, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import React from "react"
 import { useForm } from "react-hook-form"
 
 const businessOption = [
@@ -33,6 +33,29 @@ const getDistrictsByDivision = (data: any, divisionId: string) => {
   return districts
 }
 
+const handleErrorResponse = (response: any, setError: any) => {
+  const error = response?.error
+
+  if (error?.status === 422 && error?.data?.detail) {
+    error.data.detail.forEach((error: any) => {
+      const field = error.loc[1] // Extract the field name from the error location
+      const message = error.msg // Extract the error message
+      setError(field, { type: "manual", message }) // Set the error in the form
+    })
+  }
+}
+
+const legalIdentityOptions = [
+  { label: "Educational Institution", value: "Educational Institution" },
+  { label: "Corporation", value: "Corporation" },
+  { label: "Sole Proprietorship", value: "Sole Proprietorship" },
+  { label: "Partnership", value: "Partnership" },
+  { label: "Limited Liability Company", value: "Limited Liability Company" },
+  { label: "Public Company", value: "Public Company" },
+  { label: "Non-Governmental Organization", value: "Non-Governmental Organization" },
+  { label: "Other", value: "Other" },
+]
+
 export const BusinessDetails = () => {
   const {
     register,
@@ -41,13 +64,16 @@ export const BusinessDetails = () => {
     watch,
     setError,
     clearErrors,
+    setValue,
     formState: { errors, isValid },
   } = useForm()
 
   const [createBusinessDetails] = useCreateBusinessDetailsMutation()
   const router = useRouter()
   const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
+  const { data: merchantCategories, isLoading: isCategoriesLoading } = useMerchantCategoriesQuery({})
   const selectedDivision = watch("division_id")
+  // const selectedIndustryType = watch("industry_type")
 
   const onSubmit = async (data: any) => {
     const arg = {
@@ -57,6 +83,7 @@ export const BusinessDetails = () => {
     const response = await createBusinessDetails(arg)
 
     if (response?.error) {
+      handleErrorResponse(response, setError)
       return Swal.fire({
         title: "Error",
         icon: "error",
@@ -149,9 +176,9 @@ export const BusinessDetails = () => {
               invalid={errors?.legal_identity as any}
               feedbackInvalid={errors?.legal_identity?.message as any}>
               <option value="">Select</option>
-              {businessOption.map((option, index) => (
-                <option value={option} key={index}>
-                  {option}
+              {legalIdentityOptions.map((option, index) => (
+                <option value={option.value} key={index}>
+                  {option.label}
                 </option>
               ))}
             </CFormSelect>
@@ -159,11 +186,25 @@ export const BusinessDetails = () => {
           <CRow>
             <CCol>
               <FormLabel required>Industry/Business Type</FormLabel>
-              <CFormSelect>
+              <CFormSelect
+                {...register("industry_type", {
+                  required: {
+                    value: true,
+                    message: "Please select an industry/business type",
+                  },
+                })}
+                invalid={errors?.industry_type as any}
+                feedbackInvalid={errors?.industry_type?.message as any}
+                onChange={e => {
+                  const selectedValue = e.target.value
+                  setValue("merchant_category_id", selectedValue)
+                  clearErrors("merchant_category_id")
+                }}
+                disabled={isCategoriesLoading}>
                 <option value="">Select Industry/Business</option>
-                {businessOption.map((country, index) => (
-                  <option value={country} key={index}>
-                    {country}
+                {merchantCategories?.map((category: any) => (
+                  <option value={category.id} key={category.id}>
+                    {category.name}
                   </option>
                 ))}
               </CFormSelect>
@@ -172,15 +213,16 @@ export const BusinessDetails = () => {
               <FormLabel required>Merchant Category Code</FormLabel>
               <CFormInput
                 type="text"
-                placeholder="Enter Merchant Category Code"
+                placeholder="Merchant Category Code"
                 {...register("merchant_category_id", {
                   required: {
                     value: true,
-                    message: "Please enter the merchant category code",
+                    message: "Merchant category code is required",
                   },
                 })}
                 invalid={errors?.merchant_category_id as any}
                 feedbackInvalid={errors?.merchant_category_id?.message as any}
+                readOnly
               />
             </CCol>
           </CRow>

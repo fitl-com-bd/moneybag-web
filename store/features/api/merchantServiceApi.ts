@@ -88,6 +88,7 @@ export const merchantServiceApi = createApi({
         url: "merchants/categories",
         params: formatParams(params),
       }),
+      transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,
     }),
   }),
@@ -100,4 +101,5 @@ export const {
   useMerchantNidQuery,
   useCreateMerchantPaymentServiceMutation,
   useCreateMerchantBankAccountMutation,
+  useMerchantCategoriesQuery,
 } = merchantServiceApi

@@ -1,7 +1,9 @@
-// /api/v2/merchants/nid-details
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
+import {
+  useCreateMerchantRepresentativeMutation,
+  useMerchantNidMutation,
+} from "@/store/features/api/merchantServiceApi"
 import { getErrorMessage, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
@@ -18,11 +20,12 @@ export const BusinessRepresentative = () => {
     formState: { errors, isValid },
   } = useForm()
 
-  const [createBusinessDetails] = useCreateBusinessDetailsMutation()
+  const [createMerchantRepresentative] = useCreateMerchantRepresentativeMutation()
+  const [merchantNid, { isLoading: isSearching }] = useMerchantNidMutation()
   const router = useRouter()
 
   const onSubmit = async (data: any) => {
-    const response = await createBusinessDetails(data)
+    const response = await createMerchantRepresentative(data)
 
     if (response?.error) {
       return Swal.fire({
@@ -46,6 +49,49 @@ export const BusinessRepresentative = () => {
     }
   }
 
+  const handleSearch = async () => {
+    const nid = watch("nid_number")
+    const birthdate = watch("birthdate")
+
+    if (!nid || !birthdate) {
+      return Swal.fire({
+        title: "Error",
+        icon: "error",
+        text: "Please enter both NID and Date of Birth before searching.",
+        confirmButtonText: "Ok",
+      })
+    }
+
+    try {
+      const response = await merchantNid({ nid_number: nid, date_of_birth: birthdate })
+      if (response?.error) {
+        return Swal.fire({
+          title: "Error",
+          icon: "error",
+          text: getErrorMessage(response.error),
+          confirmButtonText: "Ok",
+        })
+      }
+
+      if (response?.data) {
+        Swal.fire({
+          title: "Success",
+          icon: "success",
+          text: "NID details retrieved successfully.",
+          confirmButtonText: "Ok",
+        })
+        // Handle the response data as needed
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        icon: "error",
+        text: "An unexpected error occurred.",
+        confirmButtonText: "Ok",
+      })
+    }
+  }
+
   return (
     <>
       <SectionHeader
@@ -61,32 +107,36 @@ export const BusinessRepresentative = () => {
                 <CFormInput
                   type="text"
                   placeholder="Enter NID"
-                  {...register("nid", {
+                  {...register("nid_number", {
                     required: {
                       value: true,
                       message: "Please enter the NID",
                     },
                   })}
-                  invalid={errors?.nid as any}
-                  feedbackInvalid={errors?.nid?.message as any}
+                  invalid={errors?.nid_number as any}
+                  feedbackInvalid={errors?.nid_number?.message as any}
                 />
               </div>
               <div className="form-group">
                 <FormLabel required>Date of Birth</FormLabel>
                 <CFormInput
                   type="date"
-                  {...register("date_of_birth", {
+                  {...register("birthdate", {
                     required: {
                       value: true,
                       message: "Please enter the date of birth",
                     },
                   })}
-                  invalid={errors?.date_of_birth as any}
-                  feedbackInvalid={errors?.date_of_birth?.message as any}
+                  invalid={errors?.birthdate as any}
+                  feedbackInvalid={errors?.birthdate?.message as any}
                 />
               </div>
             </CCol>
-            <CCol></CCol>
+            <CCol>
+              <Button type="button" onClick={handleSearch} disabled={isSearching}>
+                {isSearching ? "Searching..." : "Search"}
+              </Button>
+            </CCol>
           </CRow>
         </Card>
         <Card className="space-y-6">
@@ -128,14 +178,14 @@ export const BusinessRepresentative = () => {
               <CFormInput
                 type="text"
                 placeholder="Enter Phone Number"
-                {...register("phone_number", {
+                {...register("phone", {
                   required: {
                     value: true,
                     message: "Please enter the phone number",
                   },
                 })}
-                invalid={errors?.phone_number as any}
-                feedbackInvalid={errors?.phone_number?.message as any}
+                invalid={errors?.phone as any}
+                feedbackInvalid={errors?.phone?.message as any}
               />
             </CCol>
             <CCol>
@@ -143,14 +193,14 @@ export const BusinessRepresentative = () => {
               <CFormInput
                 type="email"
                 placeholder="Enter Email Address"
-                {...register("email_address", {
+                {...register("email", {
                   required: {
                     value: true,
                     message: "Please enter the email address",
                   },
                 })}
-                invalid={errors?.email_address as any}
-                feedbackInvalid={errors?.email_address?.message as any}
+                invalid={errors?.email as any}
+                feedbackInvalid={errors?.email?.message as any}
               />
             </CCol>
           </CRow>

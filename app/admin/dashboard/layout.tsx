@@ -54,7 +54,7 @@ const DashboardMainLayout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push(config.ADMIN_SIGN_IN_URL)
+      router.push(config.SIGN_IN_URL)
     }
     if (!isLoading && user && !hasAccess) {
       router.push(config.ADMIN_DASHBOARD_URL)

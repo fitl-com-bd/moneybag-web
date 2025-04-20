@@ -13,6 +13,7 @@ export const commonApi = createApi({
         url: "address",
         params: formatParams(params),
       }),
+      transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,
       providesTags: ["Address"],
     }),

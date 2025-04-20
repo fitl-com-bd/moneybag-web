@@ -1,6 +1,6 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
+import { useAddressQuery, useCreateBusinessDetailsMutation } from "@/store"
 import { getErrorMessage, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
@@ -29,10 +29,12 @@ export const BusinessDetails = () => {
 
   const [createBusinessDetails] = useCreateBusinessDetailsMutation()
   const router = useRouter()
+  const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
+  console.log(`🔥 | addressData:`, addressData)
 
   const onSubmit = async (data: any) => {
     const response = await createBusinessDetails(data)
-    
+
     if (response?.error) {
       return Swal.fire({
         title: "Error",
@@ -252,34 +254,44 @@ export const BusinessDetails = () => {
           </CRow>
           <CRow>
             <CCol>
-              <FormLabel required>City</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter City"
-                {...register("city_id", {
+              <FormLabel required>Division</FormLabel>
+              <CFormSelect
+                {...register("division_id", {
                   required: {
                     value: true,
-                    message: "Please enter the city",
+                    message: "Please select a division",
                   },
                 })}
-                invalid={errors?.city_id as any}
-                feedbackInvalid={errors?.city_id?.message as any}
-              />
+                invalid={errors?.division_id as any}
+                feedbackInvalid={errors?.division_id?.message as any}
+                disabled={isAddressLoading}>
+                <option value="">Select Division</option>
+                {addressData?.division?.map((division: any) => (
+                  <option value={division.id} key={division.id}>
+                    {division.name}
+                  </option>
+                ))}
+              </CFormSelect>
             </CCol>
             <CCol>
               <FormLabel required>District</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter District"
+              <CFormSelect
                 {...register("district_id", {
                   required: {
                     value: true,
-                    message: "Please enter the district",
+                    message: "Please select a district",
                   },
                 })}
                 invalid={errors?.district_id as any}
                 feedbackInvalid={errors?.district_id?.message as any}
-              />
+                disabled={isAddressLoading}>
+                <option value="">Select District</option>
+                {addressData?.district?.map((district: any) => (
+                  <option value={district.id} key={district.id}>
+                    {district.name}
+                  </option>
+                ))}
+              </CFormSelect>
             </CCol>
           </CRow>
           <CRow>

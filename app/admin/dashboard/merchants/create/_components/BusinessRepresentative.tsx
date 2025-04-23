@@ -1,7 +1,9 @@
-// /api/v2/merchants/nid-details
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateMerchantRepresentativeMutation } from "@/store/features/api/merchantServiceApi"
+import {
+  useCreateMerchantRepresentativeMutation,
+  useMerchantNidMutation,
+} from "@/store/features/api/merchantServiceApi"
 import { getErrorMessage, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
@@ -19,6 +21,7 @@ export const BusinessRepresentative = () => {
   } = useForm()
 
   const [createMerchantRepresentative] = useCreateMerchantRepresentativeMutation()
+  const [merchantNidSearch] = useMerchantNidMutation()
   const router = useRouter()
 
   const onSubmit = async (data: any) => {
@@ -43,6 +46,36 @@ export const BusinessRepresentative = () => {
       // .then(() => {
       //   router.back()
       // })
+    }
+  }
+
+  const handleSearchNid = async () => {
+    const arg = {
+      nid_number: watch("nid"),
+      date_of_birth: watch("date_of_birth"),
+    }
+
+    const response = await merchantNidSearch(arg)
+
+    if (response?.error) {
+      return Swal.fire({
+        title: "Error",
+        icon: "error",
+        text: getErrorMessage(response.error),
+        confirmButtonText: "Ok",
+      })
+    }
+
+    if (response?.data?.success) {
+      Swal.fire({
+        title: "Success",
+        icon: "success",
+        text: "NID details fetched successfully.",
+        confirmButtonText: "Ok",
+      })
+      // Optionally, populate form fields with response data
+      // setValue("first_name", response.data.first_name)
+      // setValue("last_name", response.data.last_name)
     }
   }
 
@@ -86,7 +119,11 @@ export const BusinessRepresentative = () => {
                 />
               </div>
             </CCol>
-            <CCol></CCol>
+            <CCol>
+              <Button onClick={handleSearchNid} className="mt-4">
+                Search
+              </Button>
+            </CCol>
           </CRow>
         </Card>
         <Card className="space-y-6">

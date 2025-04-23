@@ -1,5 +1,8 @@
+import { baseQuery } from "@/store/config"
+import { formatParams } from "@/utils"
+import { createApi } from "@reduxjs/toolkit/query/react"
 // TypeScript type support
-export interface MerchantPaymentServicePayload {
+interface MerchantPaymentServicePayload {
   api_key: { api_key: string; secret: string }
   bank_rate: string
   financial_organization_id: number
@@ -13,9 +16,10 @@ export interface MerchantPaymentServicePayload {
   total_rate: string
 }
 
-import { baseQuery } from "@/store/config"
-import { formatParams } from "@/utils"
-import { createApi } from "@reduxjs/toolkit/query/react"
+interface MerchantNid {
+  date_of_birth: string
+  nid_number: string
+}
 
 export const merchantServiceApi = createApi({
   reducerPath: "merchantServiceApi",
@@ -49,13 +53,13 @@ export const merchantServiceApi = createApi({
       invalidatesTags: ["Merchants"],
     }),
     // /api/v2/merchants/nid-details
-    merchantNid: builder.query({
-      query: params => ({
+    merchantNid: builder.mutation({
+      query: (payload: MerchantNid) => ({
         url: "merchants/nid-details",
-        params: formatParams(params),
+        method: "POST",
+        body: { ...payload, english_translation: true },
       }),
       transformErrorResponse: error => error,
-      providesTags: ["Merchants"],
     }),
     createMerchantPaymentService: builder.mutation({
       query: (payload: MerchantPaymentServicePayload) => ({
@@ -98,7 +102,7 @@ export const {
   useMerchantsQuery,
   useCreateBusinessDetailsMutation,
   useCreateMerchantRepresentativeMutation,
-  useMerchantNidQuery,
+  useMerchantNidMutation,
   useCreateMerchantPaymentServiceMutation,
   useCreateMerchantBankAccountMutation,
   useMerchantCategoriesQuery,

@@ -7,16 +7,6 @@ import { useRouter } from "next/navigation"
 import React from "react"
 import { useForm } from "react-hook-form"
 
-const businessOption = [
-  "CORPORATION",
-  "Educational Institute",
-  "Public Limited",
-  "Partnership",
-  "Proprietorship",
-  "Non Profit",
-  "Private Limited",
-]
-
 const getDivisions = (data: any, countryId: number = 1) => {
   const country = (data?.countries || []).find((country: any) => country.id === countryId)
   return country ? country.divisions : []
@@ -45,7 +35,7 @@ const handleErrorResponse = (response: any, setError: any) => {
   }
 }
 
-const legalIdentityOptions = [
+const LEGAL_IDENTITY_OPTIONS = [
   { label: "Educational Institution", value: "Educational Institution" },
   { label: "Corporation", value: "Corporation" },
   { label: "Sole Proprietorship", value: "Sole Proprietorship" },
@@ -54,6 +44,13 @@ const legalIdentityOptions = [
   { label: "Public Company", value: "Public Company" },
   { label: "Non-Governmental Organization", value: "Non-Governmental Organization" },
   { label: "Other", value: "Other" },
+]
+
+const STATUS = [
+  { label: "Active", value: "ACTIVE" },
+  { label: "Inactive", value: "INACTIVE" },
+  { label: "Suspended", value: "SUSPENDED" },
+  { label: "Draft", value: "DRAFT" },
 ]
 
 export const BusinessDetails = () => {
@@ -93,6 +90,8 @@ export const BusinessDetails = () => {
     }
 
     if (response?.data?.success) {
+      console.log(`🔥 | response?.data:`, response?.data)
+
       Swal.fire({
         title: "Success",
         icon: "success",
@@ -176,7 +175,7 @@ export const BusinessDetails = () => {
               invalid={errors?.legal_identity as any}
               feedbackInvalid={errors?.legal_identity?.message as any}>
               <option value="">Select</option>
-              {legalIdentityOptions.map((option, index) => (
+              {LEGAL_IDENTITY_OPTIONS.map((option, index) => (
                 <option value={option.value} key={index}>
                   {option.label}
                 </option>
@@ -411,58 +410,22 @@ export const BusinessDetails = () => {
             <CCol>
               <FormLabel required>Status</FormLabel>
               <div className="d-flex gap-4">
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="active"
-                  label="Active"
-                  id="active"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="inactive"
-                  label="Inactive"
-                  id="inactive"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="suspended"
-                  label="Suspended"
-                  id="suspended"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="draft"
-                  label="Draft"
-                  id="draft"
-                  invalid={errors?.merchant_status as any}
-                />
+                {STATUS.map(status => (
+                  <CFormCheck
+                    type="radio"
+                    {...register("merchant_status", {
+                      required: {
+                        value: true,
+                        message: "Please select a status",
+                      },
+                    })}
+                    value={status.value}
+                    label={status.label}
+                    id={status.value}
+                    invalid={errors?.merchant_status as any}
+                    key={status.value}
+                  />
+                ))}
               </div>
               {errors?.merchant_status && (
                 <div className="invalid-feedback d-block">{errors?.merchant_status?.message as any}</div>
@@ -472,7 +435,7 @@ export const BusinessDetails = () => {
         </Card>
         <FormFooter>
           <Button secondary>Cancel</Button>
-          <Button submit>Update</Button>
+          <Button submit>Next</Button>
         </FormFooter>
       </CForm>
     </>

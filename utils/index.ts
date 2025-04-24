@@ -107,15 +107,44 @@ export const getOptions = (list: { data: any[] }, label: string, value: string) 
   }))
 }
 
+export const getDivisions = (data: any, countryId: number = 1) => {
+  const country = (data?.countries || []).find((country: any) => country.id === countryId)
+  return country ? country.divisions : []
+}
+
+export const getDistrictsByDivision = (data: any, divisionId: string) => {
+  const division = getDivisions(data).find((div: any) => div.id === parseInt(divisionId))
+  const districts: any[] = []
+  division?.cities?.forEach((city: any) => {
+    const cityDistricts = city.districts.forEach((district: any) => {
+      districts.push(district)
+    })
+  })
+  return districts
+}
+
+export const handleErrorResponse = (response: any, setError: any) => {
+  const error = response?.error
+  console.log(`🔥 | error:`, error)
+
+  if (error?.status === 422 && error?.data?.detail) {
+    error.data.detail.forEach((error: any) => {
+      const field = error.loc[1] // Extract the field name from the error location
+      const message = error.msg // Extract the error message
+      setError(field, { type: "manual", message }) // Set the error in the form
+      console.log(`🔥 | field:`, field, message)
+    })
+  }
+}
+
 export const getErrorMessage = (error: any) => {
   const errorDetail = error?.data?.detail
   if (isString(errorDetail)) return errorDetail
   if (isArray(errorDetail)) {
     const [firstError] = errorDetail
     const { loc, msg } = firstError
-    const field = loc[loc.length - 1]
+    // const field = loc[loc.length - 1]
     // return `${field}: ${msg}`
-    console.log(`🔥 | field:`, field)
     return msg
   }
   return "Something went wrong"

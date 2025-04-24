@@ -1,39 +1,11 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { useAddressQuery, useCreateBusinessDetailsMutation, useMerchantCategoriesQuery } from "@/store"
-import { getErrorMessage, Swal } from "@/utils"
+import { getDistrictsByDivision, getDivisions, getErrorMessage, handleErrorResponse, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import React from "react"
 import { useForm } from "react-hook-form"
-
-const getDivisions = (data: any, countryId: number = 1) => {
-  const country = (data?.countries || []).find((country: any) => country.id === countryId)
-  return country ? country.divisions : []
-}
-
-const getDistrictsByDivision = (data: any, divisionId: string) => {
-  const division = getDivisions(data).find((div: any) => div.id === parseInt(divisionId))
-  const districts: any[] = []
-  division?.cities?.forEach((city: any) => {
-    const cityDistricts = city.districts.forEach((district: any) => {
-      districts.push(district)
-    })
-  })
-  return districts
-}
-
-const handleErrorResponse = (response: any, setError: any) => {
-  const error = response?.error
-
-  if (error?.status === 422 && error?.data?.detail) {
-    error.data.detail.forEach((error: any) => {
-      const field = error.loc[1] // Extract the field name from the error location
-      const message = error.msg // Extract the error message
-      setError(field, { type: "manual", message }) // Set the error in the form
-    })
-  }
-}
 
 const LEGAL_IDENTITY_OPTIONS = [
   { label: "Educational Institution", value: "Educational Institution" },
@@ -53,7 +25,7 @@ const STATUS = [
   { label: "Draft", value: "DRAFT" },
 ]
 
-export const BusinessDetails = () => {
+export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -90,17 +62,15 @@ export const BusinessDetails = () => {
     }
 
     if (response?.data?.success) {
-      console.log(`🔥 | response?.data:`, response?.data)
-
       Swal.fire({
         title: "Success",
         icon: "success",
         text: response?.data?.message,
         confirmButtonText: "Continue",
+      }).then(() => {
+        setMerchantId(response?.data?.merchant_id)
+        changeTab("business_representative")
       })
-      // .then(() => {
-      //   router.back()
-      // })
     }
   }
 

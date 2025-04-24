@@ -1,5 +1,6 @@
-import { Nav, NavItem, SectionHeader } from "@/components/ui"
-import React, { FC, Fragment, ReactNode, useState } from "react"
+"use client"
+import { Nav, NavItem } from "@/components/ui"
+import { FC, Fragment, useState } from "react"
 
 export type TabItem = NavItem & {
   component?: FC
@@ -7,18 +8,28 @@ export type TabItem = NavItem & {
 
 type TabsProps = {
   items: TabItem[]
+  activeTab?: string
+  onTabChange?: (value: string) => void
 }
 
-export const Tabs: FC<TabsProps> = ({ items = [] }) => {
-  const [tab, setTab] = useState(items.length > 0 ? items[0].value : "")
-  const selectedTab = items.find(item => item.value === tab)
+export const Tabs: FC<TabsProps> = ({ items = [], activeTab, onTabChange }) => {
+  const [internalTab, setInternalTab] = useState(items.length > 0 ? items[0].value : "")
+
+  const currentTab = activeTab ?? internalTab
+
+  const handleTabChange = (value: string) => {
+    setInternalTab(value)
+    onTabChange?.(value)
+  }
+
+  const selectedTab = items.find(item => item.value === currentTab)
   const TabComponent = selectedTab?.component || Fragment
 
   return (
     <div className="d-flex">
       <div className="">
         <h5 className="text-lg mb-6">Add New Merchant</h5>
-        <Nav items={items} value={tab} setValue={setTab} />
+        <Nav items={items} value={currentTab} setValue={handleTabChange} />
       </div>
       <div className="flex-1">
         <div className="tab-container">

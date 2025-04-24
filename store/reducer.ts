@@ -11,6 +11,7 @@ import {
   merchantSetupApi,
   pageApi,
   paymentApi,
+  transactionApi,
 } from "./features"
 
 export const apiSlices = [
@@ -25,6 +26,7 @@ export const apiSlices = [
   accessControlApi,
   bankApi,
   paymentApi,
+  transactionApi,
 ]
 export const middleware = apiSlices.map(api => api.middleware)
 
@@ -34,6 +36,7 @@ const reducer = {
   [commonApi.reducerPath]: commonApi.reducer,
   [bankApi.reducerPath]: bankApi.reducer,
   [paymentApi.reducerPath]: paymentApi.reducer,
+  [transactionApi.reducerPath]: transactionApi.reducer,
   [customerApi.reducerPath]: customerApi.reducer,
   [invoiceApi.reducerPath]: invoiceApi.reducer,
   [merchantSetupApi.reducerPath]: merchantSetupApi.reducer,

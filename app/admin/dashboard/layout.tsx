@@ -28,7 +28,7 @@ const routes = {
   "/add-merchant-service": "create-merchant-service",
   "/merchant-service/update-merchant-service": "update-merchant-service",
   "/merchant-transaction": "merchant-transaction-list",
-  "/transaction": "transaction-list",
+  "/transactions": "transaction-list",
   "/settlement": "pending-settlements",
   "/settlement-report": "settlement-report",
   "/settlement-report/:id": "settlement-report",

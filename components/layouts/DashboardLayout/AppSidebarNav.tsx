@@ -187,7 +187,7 @@ const ADMIN_NAV: NavType = [
       {
         component: CNavItem,
         name: "Transaction List",
-        href: "/dashboard/transaction",
+        href: "/dashboard/transactions",
         slug: "transaction-list",
       },
       {

@@ -1,40 +1,50 @@
 "use client"
 import { DataTablePage } from "@/components/shared"
 import { Icon } from "@/components/ui"
-import { useFinancialOrganizationsQuery, useUsersQuery } from "@/store"
+import { useTransactionsQuery } from "@/store"
 import { DataTableColumn } from "@/types"
+import { formatPrice } from "@/utils"
 import { CButton, CTooltip } from "@coreui/react"
 import moment from "moment"
 import Link from "next/link"
 
 const columns: DataTableColumn = [
   {
-    name: "Name",
+    name: "TRANSACTION DATE",
+    selector: row => moment(row.initiated_at).format("lll"),
     sortable: true,
-    selector: row => row.first_name + " " + row.last_name,
   },
   {
-    name: "USER ID",
-    selector: row => row.user_id,
+    name: "TRANSACTION ID",
+    selector: row => row.transaction_id,
   },
   {
-    name: "EMAIL",
-    selector: row => row.email,
-    width: "190px",
+    name: "MERCHANT ID",
+    selector: row => row.payment_session.merchant_id,
   },
   {
-    name: "PHONE",
-    selector: row => row.phone,
-    width: "150px",
+    name: "ORDER AMOUNT",
+    selector: row => formatPrice(row.merchant_order_amount),
   },
   {
-    name: "STATUS",
+    name: "ORDER ID",
+    selector: row => row.payment_session.order_id,
+  },
+  {
+    name: "TRANSACTION STATUS",
     selector: row => row.status,
   },
   {
-    name: "DATE CREATED",
-    selector: row => moment(row.account_created_at).format("lll"),
-    width: "170px",
+    name: "SETTLEMENT STATUS",
+    selector: row => row.settlement_status,
+  },
+  {
+    name: "PAYMENT MODE",
+    selector: row => row.service_charge_details.provider_name,
+  },
+  {
+    name: "GATEWAY",
+    selector: row => row.service_charge_details.financial_organization_name,
   },
   {
     name: "Action",
@@ -55,9 +65,8 @@ const columns: DataTableColumn = [
 
 const Bank = () => (
   <DataTablePage
-    apiFunction={useUsersQuery}
-    defaultParams={{ merchant_user: true }}
-    title="Merchant User List"
+    apiFunction={useTransactionsQuery}
+    title="Transaction List"
     columns={columns}
     actionsProps={{
       href: "/dashboard/banks/create",

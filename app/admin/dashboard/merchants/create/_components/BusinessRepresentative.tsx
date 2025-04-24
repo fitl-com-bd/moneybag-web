@@ -1,13 +1,16 @@
-// /api/v2/merchants/nid-details
 "use client"
-import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
-import { getErrorMessage, Swal } from "@/utils"
-import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
+import { Button, Card, FormFooter, FormLabel, Icon, SectionHeader } from "@/components/ui"
+import { useAddressQuery } from "@/store"
+import {
+  useCreateMerchantRepresentativeMutation,
+  useMerchantNidMutation,
+} from "@/store/features/api/merchantServiceApi"
+import { getDistrictsByDivision, getDivisions, getErrorMessage, handleErrorResponse, Swal } from "@/utils"
+import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
-export const BusinessRepresentative = () => {
+export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -17,14 +20,23 @@ export const BusinessRepresentative = () => {
     clearErrors,
     formState: { errors, isValid },
   } = useForm()
-
-  const [createBusinessDetails] = useCreateBusinessDetailsMutation()
+  const [createMerchantRepresentative] = useCreateMerchantRepresentativeMutation()
+  const [merchantNidSearch] = useMerchantNidMutation()
   const router = useRouter()
+  const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
+  const selectedDivision = watch("division_id")
 
   const onSubmit = async (data: any) => {
-    const response = await createBusinessDetails(data)
+    const arg = {
+      ...data,
+      merchantId,
+      city_id: 1,
+    }
+
+    const response = await createMerchantRepresentative(arg)
 
     if (response?.error) {
+      handleErrorResponse(response, setError)
       return Swal.fire({
         title: "Error",
         icon: "error",
@@ -39,10 +51,40 @@ export const BusinessRepresentative = () => {
         icon: "success",
         text: response?.data?.message,
         confirmButtonText: "Continue",
+      }).then(() => {
+        changeTab("payment_service")
       })
-      // .then(() => {
-      //   router.back()
-      // })
+    }
+  }
+
+  const handleSearchNid = async () => {
+    const arg = {
+      nid_number: watch("nid_number"),
+      date_of_birth: watch("birthdate"),
+    }
+
+    const response = await merchantNidSearch(arg)
+
+    if (response?.error) {
+      handleErrorResponse(response, setError)
+      return Swal.fire({
+        title: "Error",
+        icon: "error",
+        text: getErrorMessage(response.error),
+        confirmButtonText: "Ok",
+      })
+    }
+
+    if (response?.data?.success) {
+      Swal.fire({
+        title: "Success",
+        icon: "success",
+        text: "NID details fetched successfully.",
+        confirmButtonText: "Ok",
+      })
+      // Optionally, populate form fields with response data
+      // setValue("first_name", response.data.first_name)
+      // setValue("last_name", response.data.last_name)
     }
   }
 
@@ -55,36 +97,40 @@ export const BusinessRepresentative = () => {
       <CForm onSubmit={handleSubmit(onSubmit)}>
         <Card className="space-y-6">
           <CRow>
-            <CCol>
-              <div className="form-group">
+            <CCol className="">
+              <div className="form-group mb-3">
                 <FormLabel required>NID</FormLabel>
                 <CFormInput
                   type="text"
                   placeholder="Enter NID"
-                  {...register("nid", {
+                  {...register("nid_number", {
                     required: {
                       value: true,
                       message: "Please enter the NID",
                     },
                   })}
-                  invalid={errors?.nid as any}
-                  feedbackInvalid={errors?.nid?.message as any}
+                  invalid={errors?.nid_number as any}
+                  feedbackInvalid={errors?.nid_number?.message as any}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group mb-3">
                 <FormLabel required>Date of Birth</FormLabel>
                 <CFormInput
                   type="date"
-                  {...register("date_of_birth", {
+                  {...register("birthdate", {
                     required: {
                       value: true,
                       message: "Please enter the date of birth",
                     },
                   })}
-                  invalid={errors?.date_of_birth as any}
-                  feedbackInvalid={errors?.date_of_birth?.message as any}
+                  invalid={errors?.birthdate as any}
+                  feedbackInvalid={errors?.birthdate?.message as any}
                 />
               </div>
+              <Button secondary onClick={handleSearchNid} className="px-4 d-inline-flex align-items-center">
+                <Icon name="search" size={16} className="me-2" />
+                Search
+              </Button>
             </CCol>
             <CCol></CCol>
           </CRow>
@@ -143,14 +189,14 @@ export const BusinessRepresentative = () => {
               <CFormInput
                 type="email"
                 placeholder="Enter Email Address"
-                {...register("email_address", {
+                {...register("email", {
                   required: {
                     value: true,
                     message: "Please enter the email address",
                   },
                 })}
-                invalid={errors?.email_address as any}
-                feedbackInvalid={errors?.email_address?.message as any}
+                invalid={errors?.email as any}
+                feedbackInvalid={errors?.email?.message as any}
               />
             </CCol>
           </CRow>
@@ -161,6 +207,49 @@ export const BusinessRepresentative = () => {
                 {...register("is_merchant_user")}
                 label="Is Merchant User (Merchant Admin)"
                 id="isMerchantUser"
+              />
+            </CCol>
+          </CRow>
+        </Card>
+        <Card className="space-y-6">
+          <CRow>
+            <CCol>
+              <FormLabel required>Password</FormLabel>
+              <CFormInput
+                type="password"
+                placeholder="Enter Password"
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "Please enter the password",
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters long",
+                  },
+                  pattern: {
+                    value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).*$/,
+                    message: "Password must contain at least one letter, one number, and one special character",
+                  },
+                })}
+                invalid={errors?.password as any}
+                feedbackInvalid={errors?.password?.message as any}
+              />
+            </CCol>
+            <CCol>
+              <FormLabel required>Confirm Password</FormLabel>
+              <CFormInput
+                type="password"
+                placeholder="Confirm Password"
+                {...register("confirm_password", {
+                  required: {
+                    value: true,
+                    message: "Please confirm the password",
+                  },
+                  validate: value => value === watch("password") || "Passwords do not match",
+                })}
+                invalid={errors?.confirm_password as any}
+                feedbackInvalid={errors?.confirm_password?.message as any}
               />
             </CCol>
           </CRow>
@@ -185,34 +274,44 @@ export const BusinessRepresentative = () => {
           </CRow>
           <CRow>
             <CCol>
-              <FormLabel required>City</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter City"
-                {...register("city_id", {
+              <FormLabel required>Division</FormLabel>
+              <CFormSelect
+                {...register("division_id", {
                   required: {
                     value: true,
-                    message: "Please enter the city",
+                    message: "Please select a division",
                   },
                 })}
-                invalid={errors?.city_id as any}
-                feedbackInvalid={errors?.city_id?.message as any}
-              />
+                invalid={errors?.division_id as any}
+                feedbackInvalid={errors?.division_id?.message as any}
+                disabled={isAddressLoading}>
+                <option value="">Select Division</option>
+                {getDivisions(addressData).map((division: any) => (
+                  <option value={division.id} key={division.id}>
+                    {division.name}
+                  </option>
+                ))}
+              </CFormSelect>
             </CCol>
             <CCol>
               <FormLabel required>District</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter District"
+              <CFormSelect
                 {...register("district_id", {
                   required: {
                     value: true,
-                    message: "Please enter the district",
+                    message: "Please select a district",
                   },
                 })}
                 invalid={errors?.district_id as any}
                 feedbackInvalid={errors?.district_id?.message as any}
-              />
+                disabled={isAddressLoading || !selectedDivision}>
+                <option value="">Select District</option>
+                {getDistrictsByDivision(addressData, selectedDivision).map(district => (
+                  <option value={district.id} key={district.id}>
+                    {district.name}
+                  </option>
+                ))}
+              </CFormSelect>
             </CCol>
           </CRow>
           <CRow>

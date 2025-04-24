@@ -173,7 +173,7 @@ const ADMIN_NAV: NavType = [
       {
         component: CNavItem,
         name: "Default Service",
-        href: "/dashboard/default-servic/add-default-service",
+        href: "/dashboard/default-service",
         slug: "default-service",
       },
     ],
@@ -187,15 +187,14 @@ const ADMIN_NAV: NavType = [
       {
         component: CNavItem,
         name: "Transaction List",
-        href: "/dashboard/transaction",
+        href: "/dashboard/transactions",
         slug: "transaction-list",
       },
       {
         component: CNavItem,
         name: "Settlement",
-        href: "/dashboard/settlement",
+        href: "/dashboard/settlements",
         slug: "pending-settlements",
-        active: pathname => pathname === "/dashboard/settlement",
       },
       {
         component: CNavItem,

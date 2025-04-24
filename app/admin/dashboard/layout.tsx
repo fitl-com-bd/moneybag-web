@@ -20,7 +20,7 @@ const routes = {
   "/fintech/add-fintech": "create-fintech",
   "/fintech/update-fintech": "update-fintech",
   // "/settlement": "settlement-account",
-  "/default-servic/add-default-service": "default-service",
+  "/default-service": "default-service",
   "/merchant": "merchant-list",
   "/create-new-merchant": "create-new-merchant",
   "/merchant/update-merchant-management": "update-merchant",
@@ -28,8 +28,8 @@ const routes = {
   "/add-merchant-service": "create-merchant-service",
   "/merchant-service/update-merchant-service": "update-merchant-service",
   "/merchant-transaction": "merchant-transaction-list",
-  "/transaction": "transaction-list",
-  "/settlement": "pending-settlements",
+  "/transactions": "transaction-list",
+  "/settlements": "pending-settlements",
   "/settlement-report": "settlement-report",
   "/settlement-report/:id": "settlement-report",
   "/role": "role-list",
@@ -54,12 +54,12 @@ const DashboardMainLayout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push(config.ADMIN_SIGN_IN_URL)
+      router.push(config.SIGN_IN_URL)
     }
     if (!isLoading && user && !hasAccess) {
       router.push(config.ADMIN_DASHBOARD_URL)
     }
-  }, [isLoading, user, router, pathname])
+  }, [isLoading, user, router, pathname, hasAccess])
 
   // If user is loading, show loading indicator
   if (isLoading) return null

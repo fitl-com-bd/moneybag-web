@@ -47,6 +47,7 @@ const columns: DataTableColumn = [
 
 const Users = () => (
   <DataTablePage
+    search
     apiFunction={useUsersQuery}
     title="User List"
     columns={columns}

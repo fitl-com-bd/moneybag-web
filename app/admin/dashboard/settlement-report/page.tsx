@@ -1,36 +1,52 @@
 "use client"
 import { DataTablePage } from "@/components/shared"
 import { Icon } from "@/components/ui"
-import { useBanksQuery } from "@/store"
+import { useSettlementsQuery } from "@/store"
 import { DataTableColumn } from "@/types"
 import { CButton, CTooltip } from "@coreui/react"
 import Link from "next/link"
 
 const columns: DataTableColumn = [
   {
-    name: "BANK NAME",
-    selector: row => row.bank.name,
+    name: "SETTLEMENT",
+    selector: row => row.settlement_name,
     sortable: true,
   },
   {
-    name: "SWIFT CODE",
-    selector: row => row.bank.swift_code,
+    name: "SETTLEMENT ID",
+    selector: row => row.settlement_id,
   },
   {
-    name: "CONTACT",
-    selector: row => row.bank.primary_phone,
+    name: "FROM",
+    selector: row => row.settlement_from,
   },
   {
-    name: "ADDRESS",
-    selector: row => row.bank.address,
+    name: "SETTLEMENT TO",
+    selector: row => row.settlement_to,
   },
   {
-    name: "TOTAL BRANCHES",
-    selector: row => row.total_branches,
+    name: "COLLECTION AMOUNT",
+    selector: row => row.collection_amount,
   },
   {
-    name: "STATUS",
-    selector: row => (row.bank.is_active ? "Active" : "Inactive"),
+    name: "BANK FEE",
+    selector: row => row.bank_fee,
+  },
+  {
+    name: "PGW FEE",
+    selector: row => row.pgw_fee,
+  },
+  {
+    name: "SETTLEMENT AMOUNT",
+    selector: row => row.settlement_amount,
+  },
+  {
+    name: "SETTLEMENT DATE",
+    selector: row => row.settlement_date,
+  },
+  {
+    name: "EMPLOYEE ID",
+    selector: row => row.employee_id,
   },
   {
     name: "Action",
@@ -51,13 +67,11 @@ const columns: DataTableColumn = [
 
 const Bank = () => (
   <DataTablePage
-    apiFunction={useBanksQuery}
-    title="Bank List"
+    apiFunction={useSettlementsQuery}
+    title="Settlement Report"
     columns={columns}
     actionsProps={{
       href: "/dashboard/banks/create",
-      name: "Create Bank",
-      // icon: "addUser",
     }}
   />
 )

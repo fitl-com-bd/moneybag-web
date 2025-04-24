@@ -2,22 +2,22 @@ import { baseQuery } from "@/store/config"
 import { formatParams } from "@/utils"
 import { createApi } from "@reduxjs/toolkit/query/react"
 
-export const financeApi = createApi({
-  reducerPath: "financeApi",
+export const settlementApi = createApi({
+  reducerPath: "settlementApi",
   baseQuery,
-  tagTypes: ["FinancialOrganizations"],
+  tagTypes: ["Settlements"],
   endpoints: builder => ({
-    // /api/v2/financial-organizations
-    financialOrganizations: builder.query({
+    // /api/v2/settlements
+    settlements: builder.query({
       query: params => ({
-        url: `financial-organizations`,
+        url: `settlements`,
         params: formatParams(params),
       }),
       // transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,
-      providesTags: ["FinancialOrganizations"],
+      providesTags: ["Settlements"],
     }),
   }),
 })
 
-export const { useFinancialOrganizationsQuery } = financeApi
+export const { useSettlementsQuery } = settlementApi

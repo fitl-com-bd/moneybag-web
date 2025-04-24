@@ -235,6 +235,7 @@ type DataTablePageProps = {
   fields?: FilterField[]
   statusOptions?: OptionType[]
   actionsProps: Omit<DataTableActionsProps, "search" | "onSearchChange">
+  defaultParams?: any
 } & Omit<DataTableProps, "data" | "columns">
 
 export const DataTablePage = ({
@@ -245,12 +246,13 @@ export const DataTablePage = ({
   fields = [],
   statusOptions,
   actionsProps,
+  defaultParams = {},
   ...props
 }: DataTablePageProps) => {
   const [searchKey, setSearchKey] = useState("")
   const [selectedStatus, setSelectedStatus] = useState("")
   const [showFilter, setFilter] = useState(false)
-  const [params, setParams] = useState({})
+  const [params, setParams] = useState(defaultParams)
   const { data: apiData, isLoading } = apiFunction({
     ...params,
     search_key: !search ? null : formatSearch(searchKey),

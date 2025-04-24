@@ -2,7 +2,7 @@
 import { LoadingTable } from "@/components/ui"
 import { useStatementsQuery } from "@/store"
 import DataTable from "react-data-table-component"
-import { column } from "../statement/page"
+import { column } from "../statement/_components/column"
 
 export const LastStatement = () => {
   const { data, isLoading } = useStatementsQuery({
@@ -18,7 +18,8 @@ export const LastStatement = () => {
         data={data?.slice(0, 10)}
         pagination={false}
         progressPending={isLoading}
-        progressComponent={<LoadingTable className="w-100 mx-3 mb-2" style={{ height: "588px" }} />}
+        // style={{ height: "588px" }}
+        progressComponent={<LoadingTable className="w-100 mx-3 mb-2" />}
       />
     </div>
   )

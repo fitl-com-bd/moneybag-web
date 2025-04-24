@@ -1,7 +1,6 @@
-// /api/v2/banks/accounts/merchant/:merchant_id/
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
+import { useAllBranchesQuery, useBanksQuery, useCreateMerchantBankAccountMutation } from "@/store"
 import { getErrorMessage, Swal } from "@/utils"
 import {
   CCardBody,
@@ -18,7 +17,8 @@ import {
 } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
-export const SettlementBank = () => {
+
+export const SettlementBank = ({ merchantId, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -29,11 +29,21 @@ export const SettlementBank = () => {
     formState: { errors, isValid },
   } = useForm()
 
-  const [createBusinessDetails] = useCreateBusinessDetailsMutation()
+  const [createMerchantBankAccount] = useCreateMerchantBankAccountMutation()
+  const { data: banks, isLoading: isBanksLoading } = useBanksQuery({})
+  const { data: branches, isLoading: isBranchesLoading } = useAllBranchesQuery({})
   const router = useRouter()
 
   const onSubmit = async (data: any) => {
-    const response = await createBusinessDetails(data)
+    const arg = {
+      merchantId,
+      account_name: data.account_name,
+      account_number: data.account_number,
+      branch_id: data.branch_id, // Replace with actual branch ID
+      notes: data.notes || "Merchant bank account",
+    }
+
+    const response = await createMerchantBankAccount(arg)
 
     if (response?.error) {
       return Swal.fire({
@@ -50,10 +60,9 @@ export const SettlementBank = () => {
         icon: "success",
         text: response?.data?.message,
         confirmButtonText: "Continue",
+      }).then(() => {
+        router.back()
       })
-      // .then(() => {
-      //   router.back()
-      // })
     }
   }
 
@@ -68,34 +77,43 @@ export const SettlementBank = () => {
           <CRow>
             <CCol>
               <FormLabel required>Bank Name</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Bank Name"
+              {/* <CFormSelect
                 {...register("bank_name", {
                   required: {
                     value: true,
-                    message: "Please enter the bank name",
+                    message: "Please select the bank name",
                   },
                 })}
                 invalid={errors?.bank_name as any}
                 feedbackInvalid={errors?.bank_name?.message as any}
-              />
+                disabled={isBanksLoading}>
+                <option value="">Select Bank Name</option>
+                {banks?.map((bank: any) => (
+                  <option key={bank.id} value={bank.name}>
+                    {bank.name}
+                  </option>
+                ))}
+              </CFormSelect> */}
             </CCol>
 
             <CCol>
               <FormLabel required>Branch Name</FormLabel>
               <CFormSelect
-                {...register("branch_name", {
+                {...register("branch_id", {
                   required: {
                     value: true,
                     message: "Please select the branch name",
                   },
                 })}
-                invalid={errors?.branch_name as any}
-                feedbackInvalid={errors?.branch_name?.message as any}>
-                <option value="">Choose...</option>
-                <option value="branch1">Branch 1</option>
-                <option value="branch2">Branch 2</option>
+                invalid={errors?.branch_id as any}
+                feedbackInvalid={errors?.branch_id?.message as any}
+                disabled={isBranchesLoading}>
+                <option value="">Select Branch Name</option>
+                {branches?.map((branch: any) => (
+                  <option key={branch.id} value={branch.id}>
+                    {branch.name}
+                  </option>
+                ))}
               </CFormSelect>
             </CCol>
           </CRow>
@@ -166,10 +184,18 @@ export const SettlementBank = () => {
               />
             </CCol>
           </CRow>
+          <CRow>
+            <CCol>
+              <FormLabel>Notes</FormLabel>
+              <CFormTextarea rows={4} placeholder="Enter Notes" {...register("notes")} />
+            </CCol>
+          </CRow>
         </Card>
         <FormFooter>
-          <Button secondary>Previous</Button>
-          <Button submit>Next</Button>
+          <Button secondary onClick={() => changeTab("payment_service")}>
+            Previous
+          </Button>
+          <Button submit>Submit</Button>
         </FormFooter>
       </CForm>
     </>

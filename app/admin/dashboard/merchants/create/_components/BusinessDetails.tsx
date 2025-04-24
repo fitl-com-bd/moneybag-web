@@ -1,22 +1,31 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateBusinessDetailsMutation } from "@/store/features/api/merchantServiceApi"
-import { getErrorMessage, Swal } from "@/utils"
+import { useAddressQuery, useCreateBusinessDetailsMutation, useMerchantCategoriesQuery } from "@/store"
+import { getDistrictsByDivision, getDivisions, getErrorMessage, handleErrorResponse, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
+import React from "react"
 import { useForm } from "react-hook-form"
 
-const businessOption = [
-  "CORPORATION",
-  "Educational Institute",
-  "Public Limited",
-  "Partnership",
-  "Proprietorship",
-  "Non Profit",
-  "Private Limited",
+const LEGAL_IDENTITY_OPTIONS = [
+  { label: "Educational Institution", value: "Educational Institution" },
+  { label: "Corporation", value: "Corporation" },
+  { label: "Sole Proprietorship", value: "Sole Proprietorship" },
+  { label: "Partnership", value: "Partnership" },
+  { label: "Limited Liability Company", value: "Limited Liability Company" },
+  { label: "Public Company", value: "Public Company" },
+  { label: "Non-Governmental Organization", value: "Non-Governmental Organization" },
+  { label: "Other", value: "Other" },
 ]
 
-export const BusinessDetails = () => {
+const STATUS = [
+  { label: "Active", value: "ACTIVE" },
+  { label: "Inactive", value: "INACTIVE" },
+  { label: "Suspended", value: "SUSPENDED" },
+  { label: "Draft", value: "DRAFT" },
+]
+
+export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -24,16 +33,26 @@ export const BusinessDetails = () => {
     watch,
     setError,
     clearErrors,
+    setValue,
     formState: { errors, isValid },
   } = useForm()
 
   const [createBusinessDetails] = useCreateBusinessDetailsMutation()
   const router = useRouter()
+  const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
+  const { data: merchantCategories, isLoading: isCategoriesLoading } = useMerchantCategoriesQuery({})
+  const selectedDivision = watch("division_id")
+  // const selectedIndustryType = watch("industry_type")
 
   const onSubmit = async (data: any) => {
-    const response = await createBusinessDetails(data)
-    
+    const arg = {
+      ...data,
+      city_id: 1,
+    }
+    const response = await createBusinessDetails(arg)
+
     if (response?.error) {
+      handleErrorResponse(response, setError)
       return Swal.fire({
         title: "Error",
         icon: "error",
@@ -48,10 +67,10 @@ export const BusinessDetails = () => {
         icon: "success",
         text: response?.data?.message,
         confirmButtonText: "Continue",
+      }).then(() => {
+        setMerchantId(response?.data?.merchant_id)
+        changeTab("business_representative")
       })
-      // .then(() => {
-      //   router.back()
-      // })
     }
   }
 
@@ -126,9 +145,9 @@ export const BusinessDetails = () => {
               invalid={errors?.legal_identity as any}
               feedbackInvalid={errors?.legal_identity?.message as any}>
               <option value="">Select</option>
-              {businessOption.map((option, index) => (
-                <option value={option} key={index}>
-                  {option}
+              {LEGAL_IDENTITY_OPTIONS.map((option, index) => (
+                <option value={option.value} key={index}>
+                  {option.label}
                 </option>
               ))}
             </CFormSelect>
@@ -136,11 +155,25 @@ export const BusinessDetails = () => {
           <CRow>
             <CCol>
               <FormLabel required>Industry/Business Type</FormLabel>
-              <CFormSelect>
+              <CFormSelect
+                {...register("industry_type", {
+                  required: {
+                    value: true,
+                    message: "Please select an industry/business type",
+                  },
+                })}
+                invalid={errors?.industry_type as any}
+                feedbackInvalid={errors?.industry_type?.message as any}
+                onChange={e => {
+                  const selectedValue = e.target.value
+                  setValue("merchant_category_id", selectedValue)
+                  clearErrors("merchant_category_id")
+                }}
+                disabled={isCategoriesLoading}>
                 <option value="">Select Industry/Business</option>
-                {businessOption.map((country, index) => (
-                  <option value={country} key={index}>
-                    {country}
+                {merchantCategories?.map((category: any) => (
+                  <option value={category.id} key={category.id}>
+                    {category.name}
                   </option>
                 ))}
               </CFormSelect>
@@ -149,15 +182,16 @@ export const BusinessDetails = () => {
               <FormLabel required>Merchant Category Code</FormLabel>
               <CFormInput
                 type="text"
-                placeholder="Enter Merchant Category Code"
+                placeholder="Merchant Category Code"
                 {...register("merchant_category_id", {
                   required: {
                     value: true,
-                    message: "Please enter the merchant category code",
+                    message: "Merchant category code is required",
                   },
                 })}
                 invalid={errors?.merchant_category_id as any}
                 feedbackInvalid={errors?.merchant_category_id?.message as any}
+                readOnly
               />
             </CCol>
           </CRow>
@@ -252,34 +286,44 @@ export const BusinessDetails = () => {
           </CRow>
           <CRow>
             <CCol>
-              <FormLabel required>City</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter City"
-                {...register("city_id", {
+              <FormLabel required>Division</FormLabel>
+              <CFormSelect
+                {...register("division_id", {
                   required: {
                     value: true,
-                    message: "Please enter the city",
+                    message: "Please select a division",
                   },
                 })}
-                invalid={errors?.city_id as any}
-                feedbackInvalid={errors?.city_id?.message as any}
-              />
+                invalid={errors?.division_id as any}
+                feedbackInvalid={errors?.division_id?.message as any}
+                disabled={isAddressLoading}>
+                <option value="">Select Division</option>
+                {getDivisions(addressData).map((division: any) => (
+                  <option value={division.id} key={division.id}>
+                    {division.name}
+                  </option>
+                ))}
+              </CFormSelect>
             </CCol>
             <CCol>
               <FormLabel required>District</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter District"
+              <CFormSelect
                 {...register("district_id", {
                   required: {
                     value: true,
-                    message: "Please enter the district",
+                    message: "Please select a district",
                   },
                 })}
                 invalid={errors?.district_id as any}
                 feedbackInvalid={errors?.district_id?.message as any}
-              />
+                disabled={isAddressLoading || !selectedDivision}>
+                <option value="">Select District</option>
+                {getDistrictsByDivision(addressData, selectedDivision).map(district => (
+                  <option value={district.id} key={district.id}>
+                    {district.name}
+                  </option>
+                ))}
+              </CFormSelect>
             </CCol>
           </CRow>
           <CRow>
@@ -321,10 +365,11 @@ export const BusinessDetails = () => {
               <FormLabel>Service Charge by Merchant*</FormLabel>
               <CFormSwitch
                 {...register("bleeding", {})}
-                reverse
+                // reverse
                 id="serviceCharge"
                 label="Activate this option if the merchant will apply a service charge for transactions."
                 invalid={errors?.bleeding as any}
+                className="small"
                 // feedbackInvalid={errors?.serviceCharge?.message as any}
               />
             </CCol>
@@ -335,58 +380,22 @@ export const BusinessDetails = () => {
             <CCol>
               <FormLabel required>Status</FormLabel>
               <div className="d-flex gap-4">
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="active"
-                  label="Active"
-                  id="active"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="inactive"
-                  label="Inactive"
-                  id="inactive"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="suspended"
-                  label="Suspended"
-                  id="suspended"
-                  invalid={errors?.merchant_status as any}
-                />
-                <CFormCheck
-                  type="radio"
-                  {...register("merchant_status", {
-                    required: {
-                      value: true,
-                      message: "Please select a status",
-                    },
-                  })}
-                  value="draft"
-                  label="Draft"
-                  id="draft"
-                  invalid={errors?.merchant_status as any}
-                />
+                {STATUS.map(status => (
+                  <CFormCheck
+                    type="radio"
+                    {...register("merchant_status", {
+                      required: {
+                        value: true,
+                        message: "Please select a status",
+                      },
+                    })}
+                    value={status.value}
+                    label={status.label}
+                    id={status.value}
+                    invalid={errors?.merchant_status as any}
+                    key={status.value}
+                  />
+                ))}
               </div>
               {errors?.merchant_status && (
                 <div className="invalid-feedback d-block">{errors?.merchant_status?.message as any}</div>
@@ -395,8 +404,10 @@ export const BusinessDetails = () => {
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary>Cancel</Button>
-          <Button submit>Update</Button>
+          <Button secondary back>
+            Cancel
+          </Button>
+          <Button submit>Next</Button>
         </FormFooter>
       </CForm>
     </>

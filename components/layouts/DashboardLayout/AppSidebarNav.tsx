@@ -193,9 +193,8 @@ const ADMIN_NAV: NavType = [
       {
         component: CNavItem,
         name: "Settlement",
-        href: "/dashboard/settlement",
+        href: "/dashboard/settlements",
         slug: "pending-settlements",
-        active: pathname => pathname === "/dashboard/settlement",
       },
       {
         component: CNavItem,

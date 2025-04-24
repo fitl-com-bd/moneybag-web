@@ -1,36 +1,24 @@
 "use client"
 import { DataTablePage } from "@/components/shared"
 import { Icon } from "@/components/ui"
-import { useBanksQuery } from "@/store"
+import { useDefaultPaymentServicesQuery, useFinancialOrganizationsQuery } from "@/store"
 import { DataTableColumn } from "@/types"
 import { CButton, CTooltip } from "@coreui/react"
 import Link from "next/link"
 
 const columns: DataTableColumn = [
   {
-    name: "BANK NAME",
-    selector: row => row.bank.name,
+    name: "SERVICE",
+    selector: row => row.payment_provider.name,
     sortable: true,
   },
   {
-    name: "SWIFT CODE",
-    selector: row => row.bank.swift_code,
-  },
-  {
-    name: "CONTACT",
-    selector: row => row.bank.primary_phone,
-  },
-  {
-    name: "ADDRESS",
-    selector: row => row.bank.address,
-  },
-  {
-    name: "TOTAL BRANCHES",
-    selector: row => row.total_branches,
+    name: "FINTECH",
+    selector: row => row.financial_organizations?.map((f: any) => f.name)?.join(", "),
   },
   {
     name: "STATUS",
-    selector: row => (row.bank.is_active ? "Active" : "Inactive"),
+    selector: row => (row.is_active ? "Active" : "Inactive"),
   },
   {
     name: "Action",
@@ -51,13 +39,11 @@ const columns: DataTableColumn = [
 
 const Bank = () => (
   <DataTablePage
-    apiFunction={useBanksQuery}
-    title="Bank List"
+    apiFunction={useDefaultPaymentServicesQuery}
+    title="Default Service List"
     columns={columns}
     actionsProps={{
       href: "/dashboard/banks/create",
-      name: "Create Bank",
-      // icon: "addUser",
     }}
   />
 )

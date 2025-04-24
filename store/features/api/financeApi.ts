@@ -5,18 +5,19 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 export const financeApi = createApi({
   reducerPath: "financeApi",
   baseQuery,
-  tagTypes: ["Banks"],
+  tagTypes: ["FinancialOrganizations"],
   endpoints: builder => ({
-    banks: builder.query({
+    // /api/v2/financial-organizations
+    financialOrganizations: builder.query({
       query: params => ({
-        url: `banks`,
+        url: `financial-organizations`,
         params: formatParams(params),
       }),
-      // transformResponse: (response: any) => response.data.users,
+      // transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,
-      providesTags: ["Banks"],
+      providesTags: ["FinancialOrganizations"],
     }),
   }),
 })
 
-export const { useBanksQuery } = financeApi
+export const { useFinancialOrganizationsQuery } = financeApi

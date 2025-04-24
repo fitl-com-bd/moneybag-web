@@ -173,7 +173,7 @@ const ADMIN_NAV: NavType = [
       {
         component: CNavItem,
         name: "Default Service",
-        href: "/dashboard/default-servic/add-default-service",
+        href: "/dashboard/default-service",
         slug: "default-service",
       },
     ],

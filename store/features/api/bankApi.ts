@@ -10,8 +10,11 @@ export const bankApi = createApi({
     // /api/v2/banks/
     banks: builder.query({
       query: params => ({
-        url: "banks",
+        url: "banks/",
         params: formatParams(params),
+      }),
+      transformResponse: (response: any) => ({
+        data: response.data.banks,
       }),
       transformErrorResponse: error => error,
       providesTags: ["Banks"],

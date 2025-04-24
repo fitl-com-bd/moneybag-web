@@ -29,7 +29,7 @@ export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
   const onSubmit = async (data: any) => {
     const arg = {
       ...data,
-      merchantId: merchantId || 3,
+      merchantId,
       city_id: 1,
     }
 

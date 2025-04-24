@@ -24,7 +24,7 @@ interface MerchantNid {
 export const merchantServiceApi = createApi({
   reducerPath: "merchantServiceApi",
   baseQuery,
-  tagTypes: ["Merchants"],
+  tagTypes: ["Merchants", "PaymentService"],
   endpoints: builder => ({
     merchants: builder.query({
       query: params => ({
@@ -95,6 +95,16 @@ export const merchantServiceApi = createApi({
       transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,
     }),
+    // GET: /payment-providers
+    paymentProviders: builder.query({
+      query: params => ({
+        url: "payment-providers",
+        params: formatParams(params),
+      }),
+      transformResponse: (response: any) => response.data,
+      transformErrorResponse: error => error,
+      providesTags: ["PaymentService"],
+    }),
   }),
 })
 
@@ -106,4 +116,5 @@ export const {
   useCreateMerchantPaymentServiceMutation,
   useCreateMerchantBankAccountMutation,
   useMerchantCategoriesQuery,
+  usePaymentProvidersQuery,
 } = merchantServiceApi

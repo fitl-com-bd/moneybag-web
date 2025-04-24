@@ -404,7 +404,9 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary>Cancel</Button>
+          <Button secondary back>
+            Cancel
+          </Button>
           <Button submit>Next</Button>
         </FormFooter>
       </CForm>

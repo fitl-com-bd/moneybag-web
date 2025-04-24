@@ -1,5 +1,6 @@
 export * from "./accessControlApi"
 export * from "./authApi"
+export * from "./bankApi"
 export * from "./commonApi"
 export * from "./customerApi"
 export * from "./financeApi"

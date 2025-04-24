@@ -1,10 +1,8 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateMerchantPaymentServiceMutation } from "@/store/features/api/merchantServiceApi"
-import { getErrorMessage, Swal } from "@/utils"
+import { useCreateMerchantPaymentServiceMutation, usePaymentProvidersQuery } from "@/store"
+import { getErrorMessage, handleErrorResponse, Swal } from "@/utils"
 import {
-  CCardBody,
-  CCardLink,
   CCardTitle,
   CCol,
   CForm,
@@ -18,20 +16,13 @@ import {
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
-// TypeScript type support
-interface PaymentServiceFormData {
-  api_key: string
-  secret: string
-  bank_rate: string
-  custom_rate: boolean
-  moneybag_rate: string
-  note?: string
-  rate_type: string
-  status: string
-  merchant_service_fee: string
-}
+// Define RateType as an array of objects
+const RATE_TYPES = [
+  { value: "F", label: "Fixed" },
+  { value: "P", label: "Percentage" },
+]
 
-export const PaymentService = () => {
+export const PaymentService = ({ merchantId, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -43,10 +34,12 @@ export const PaymentService = () => {
   } = useForm()
 
   const [createMerchantPaymentService] = useCreateMerchantPaymentServiceMutation()
+  const { data: paymentProviders, isLoading: isProvidersLoading } = usePaymentProvidersQuery({})
   const router = useRouter()
 
-  const onSubmit = async (data: PaymentServiceFormData) => {
-    const payload = {
+  const onSubmit = async (data: any) => {
+    const arg = {
+      merchant_id: merchantId,
       api_key: {
         api_key: data.api_key,
         secret: data.secret,
@@ -55,7 +48,6 @@ export const PaymentService = () => {
       financial_organization_id: 1, // Replace with actual value
       is_active: data.status === "active",
       is_custom_rate: data.custom_rate || false,
-      merchant_id: 1, // Replace with actual value
       moneybag_rate: data.moneybag_rate,
       note: data.note || "",
       payment_provider_id: 1, // Replace with actual value
@@ -63,9 +55,10 @@ export const PaymentService = () => {
       total_rate: data.merchant_service_fee || "",
     }
 
-    const response = await createMerchantPaymentService(payload)
+    const response = await createMerchantPaymentService(arg)
 
     if (response?.error) {
+      handleErrorResponse(response, setError)
       return Swal.fire({
         title: "Error",
         icon: "error",
@@ -80,10 +73,9 @@ export const PaymentService = () => {
         icon: "success",
         text: response?.data?.message,
         confirmButtonText: "Continue",
+      }).then(() => {
+        changeTab("settlement_bank")
       })
-      // .then(() => {
-      //   router.back()
-      // })
     }
   }
 
@@ -119,10 +111,14 @@ export const PaymentService = () => {
                   },
                 })}
                 invalid={errors?.service as any}
-                feedbackInvalid={errors?.service?.message as any}>
-                <option value="">Choose...</option>
-                <option value="service1">Service 1</option>
-                <option value="service2">Service 2</option>
+                feedbackInvalid={errors?.service?.message as any}
+                disabled={isProvidersLoading}>
+                <option value="">Select Service</option>
+                {paymentProviders?.map((provider: any) => (
+                  <option value={provider.id} key={provider.id}>
+                    {provider.name}
+                  </option>
+                ))}
               </CFormSelect>
             </CCol>
             <CCol>
@@ -136,9 +132,12 @@ export const PaymentService = () => {
                 })}
                 invalid={errors?.rate_type as any}
                 feedbackInvalid={errors?.rate_type?.message as any}>
-                <option value="">Choose...</option>
-                <option value="moneybag_rate">Moneybag Rate</option>
-                <option value="bank_rate">Bank Rate</option>
+                <option value="">Select Rate Type</option>
+                {RATE_TYPES.map(rateType => (
+                  <option value={rateType.value} key={rateType.value}>
+                    {rateType.label}
+                  </option>
+                ))}
               </CFormSelect>
             </CCol>
             <CCol>

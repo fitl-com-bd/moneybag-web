@@ -4,7 +4,7 @@ import { LoadingTable } from "@/components/ui"
 import { useCustomerQuery } from "@/store"
 import { useState } from "react"
 import DataTable from "react-data-table-component"
-import { column } from "../../invoice/page"
+import { column } from "../../invoice/_components/column"
 
 type Props = {
   params: {

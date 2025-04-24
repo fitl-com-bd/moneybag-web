@@ -52,7 +52,7 @@ const AppHeader = () => {
     if (newPass != conPass) {
       toast.error("Password don't match")
     } else {
-      let data = {
+      const data = {
         current_pwd: e.Prev_password,
         new_pwd: e.new_password,
       }
@@ -91,7 +91,7 @@ const AppHeader = () => {
   }
 
   const showPassword = () => {
-    var x = document.getElementById("password1") as any
+    const x = document.getElementById("password1") as any
     if (x.type === "password") {
       x.type = "text"
     } else {
@@ -99,7 +99,7 @@ const AppHeader = () => {
     }
   }
   const showPassword2 = () => {
-    var x = document.getElementById("password2") as any
+    const x = document.getElementById("password2") as any
     if (x.type === "password") {
       x.type = "text"
     } else {
@@ -107,7 +107,7 @@ const AppHeader = () => {
     }
   }
   const showPassword3 = () => {
-    var x = document.getElementById("password3") as any
+    const x = document.getElementById("password3") as any
     if (x.type === "password") {
       x.type = "text"
     } else {
@@ -168,7 +168,8 @@ const AppHeader = () => {
           <CModal
             visible={visible}
             onClose={() => {
-              setVisible(false), reset()
+              setVisible(false)
+              reset()
             }}>
             <CModalHeader
               className="border border-light"

@@ -17,7 +17,7 @@ export const Search = ({ className, value, onChange, ...props }: SearchProps) =>
     debounce((value: string) => {
       onChange(value)
     }, 500),
-    [onChange]
+    []
   )
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

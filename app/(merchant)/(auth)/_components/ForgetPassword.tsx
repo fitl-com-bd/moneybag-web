@@ -39,7 +39,7 @@ const ForgetPassword = () => {
   const [passwordHide, setPasswordHide] = useState(true)
 
   const showPassword = () => {
-    var x = document.getElementById("password") as any
+    const x = document.getElementById("password") as any
     if (x.type === "password") {
       x.type = "text"
     } else {
@@ -47,7 +47,7 @@ const ForgetPassword = () => {
     }
   }
   const showConPassword = () => {
-    var x = document.getElementById("showPassword") as any
+    const x = document.getElementById("showPassword") as any
     if (x.type === "password") {
       x.type = "text"
     } else {
@@ -62,7 +62,7 @@ const ForgetPassword = () => {
   }
 
   const submitMerchantUerName = () => {
-    let data = {
+    const data = {
       merchant_id: username,
     }
     // TODO: transfer this to rtk query
@@ -96,7 +96,7 @@ const ForgetPassword = () => {
   }
 
   const submitOtp = () => {
-    let data = {
+    const data = {
       merchant_id: username,
       session_id: merchantUser?.session_id[0],
       otp_code: otp,
@@ -122,8 +122,8 @@ const ForgetPassword = () => {
     //   })
   }
 
-  const changePassword = e => {
-    let data = {
+  const changePassword = (e: any) => {
+    const data = {
       session_id: merchantUser?.session_id[0],
       merchant_no: merchantUser?.user_no,
       new_pwd: e.new_password,
@@ -154,7 +154,7 @@ const ForgetPassword = () => {
           className="my-3 custom-input"
           placeholder="Username"
           type="text"
-          onChange={e => {
+          onChange={(e: any) => {
             setUsername(e.target.value)
           }}
         />
@@ -168,7 +168,7 @@ const ForgetPassword = () => {
           className="my-3 custom-input border"
           placeholder="OTP"
           type="text"
-          onChange={e => {
+          onChange={(e: any) => {
             setOtp(e.target.value)
           }}
         />
@@ -197,11 +197,11 @@ const ForgetPassword = () => {
                 )
               },
             })}
-            onChange={e => {
+            onChange={(e: any) => {
               setNewPass(e.target.value)
             }}
           />
-          <span className="text-danger">{errors.new_password?.message}</span>
+          <span className="text-danger">{(errors as any)?.new_password?.message}</span>
           <CFormCheck name="status" onClick={showPassword} label="Show Password" />
           <CFormLabel>Confirm Password</CFormLabel>
           <CFormInput
@@ -209,7 +209,7 @@ const ForgetPassword = () => {
             placeholder="Confirm Password"
             type="password"
             id="showPassword"
-            onChange={e => {
+            onChange={(e: any) => {
               setConPass(e.target.value)
             }}
           />

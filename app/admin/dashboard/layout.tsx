@@ -59,7 +59,7 @@ const DashboardMainLayout = ({ children }: LayoutProps) => {
     if (!isLoading && user && !hasAccess) {
       router.push(config.ADMIN_DASHBOARD_URL)
     }
-  }, [isLoading, user, router, pathname])
+  }, [isLoading, user, router, pathname, hasAccess])
 
   // If user is loading, show loading indicator
   if (isLoading) return null

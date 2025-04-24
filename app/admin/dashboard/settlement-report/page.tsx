@@ -8,33 +8,45 @@ import Link from "next/link"
 
 const columns: DataTableColumn = [
   {
-    name: "ORDER ID",
-    selector: row => row.order_id,
+    name: "SETTLEMENT",
+    selector: row => row.settlement_name,
     sortable: true,
   },
   {
-    name: "TRANSACTION",
-    selector: row => row.transaction_name,
+    name: "SETTLEMENT ID",
+    selector: row => row.settlement_id,
   },
   {
-    name: "MERCHANT ID",
-    selector: row => row.merchant_id,
+    name: "FROM",
+    selector: row => row.settlement_from,
   },
   {
-    name: "DATE",
-    selector: row => row.date,
+    name: "SETTLEMENT TO",
+    selector: row => row.settlement_to,
   },
   {
-    name: "ORDER AMOUNT",
-    selector: row => row.order_amount,
+    name: "COLLECTION AMOUNT",
+    selector: row => row.collection_amount,
   },
   {
-    name: "BANK SETTLEMENT AMOUNT",
-    selector: row => row.bank_settlement_amount,
+    name: "BANK FEE",
+    selector: row => row.bank_fee,
   },
   {
-    name: "TRANSACTION STATUS",
-    selector: row => row.transaction_status,
+    name: "PGW FEE",
+    selector: row => row.pgw_fee,
+  },
+  {
+    name: "SETTLEMENT AMOUNT",
+    selector: row => row.settlement_amount,
+  },
+  {
+    name: "SETTLEMENT DATE",
+    selector: row => row.settlement_date,
+  },
+  {
+    name: "EMPLOYEE ID",
+    selector: row => row.employee_id,
   },
   {
     name: "Action",
@@ -56,7 +68,7 @@ const columns: DataTableColumn = [
 const Bank = () => (
   <DataTablePage
     apiFunction={useSettlementsQuery}
-    title="Settlement List"
+    title="Settlement Report"
     columns={columns}
     actionsProps={{
       href: "/dashboard/banks/create",

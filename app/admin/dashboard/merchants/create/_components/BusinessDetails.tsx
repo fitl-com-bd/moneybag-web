@@ -6,6 +6,7 @@ import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTex
 import { useRouter } from "next/navigation"
 import React from "react"
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
 
 const LEGAL_IDENTITY_OPTIONS = [
   { label: "Educational Institution", value: "Educational Institution" },
@@ -37,7 +38,7 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
     formState: { errors, isValid },
   } = useForm()
 
-  const [createBusinessDetails] = useCreateBusinessDetailsMutation()
+  const [createBusinessDetails, { isLoading }] = useCreateBusinessDetailsMutation()
   const router = useRouter()
   const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
   const { data: merchantCategories, isLoading: isCategoriesLoading } = useMerchantCategoriesQuery({})
@@ -62,15 +63,9 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
     }
 
     if (response?.data?.success) {
-      Swal.fire({
-        title: "Success",
-        icon: "success",
-        text: response?.data?.message,
-        confirmButtonText: "Continue",
-      }).then(() => {
-        setMerchantId(response?.data?.merchant_id)
-        changeTab("business_representative")
-      })
+      toast.success(response?.data?.message)
+      setMerchantId(response?.data?.data?.merchant_id)
+      changeTab("business_representative")
     }
   }
 
@@ -124,6 +119,10 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
                   required: {
                     value: true,
                     message: "Please enter the BIN",
+                  },
+                  pattern: {
+                    value: /^\d+$/,
+                    message: "BIN must be a number",
                   },
                 })}
                 invalid={errors?.bin_no as any}
@@ -226,6 +225,10 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
                   required: {
                     value: true,
                     message: "Please enter the phone number",
+                  },
+                  pattern: {
+                    value: /^\d+$/,
+                    message: "Phone number must be a number",
                   },
                 })}
                 invalid={errors?.business_phone as any}
@@ -337,6 +340,10 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
                     value: true,
                     message: "Please enter the postal code",
                   },
+                  pattern: {
+                    value: /^\d+$/,
+                    message: "Postal code must be a number",
+                  },
                 })}
                 invalid={errors?.postal_code as any}
                 feedbackInvalid={errors?.postal_code?.message as any}
@@ -355,6 +362,10 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
                   required: {
                     value: true,
                     message: "Please enter the max ticket size",
+                  },
+                  pattern: {
+                    value: /^\d+$/,
+                    message: "Max ticket size must be a number",
                   },
                 })}
                 invalid={errors?.max_ticket_size as any}
@@ -404,10 +415,12 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary back>
+          <Button secondary back disabled={isLoading}>
             Cancel
           </Button>
-          <Button submit>Next</Button>
+          <Button submit disabled={isLoading} isLoading={isLoading}>
+            Next
+          </Button>
         </FormFooter>
       </CForm>
     </>

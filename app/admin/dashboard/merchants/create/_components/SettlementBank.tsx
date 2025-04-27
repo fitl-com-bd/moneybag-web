@@ -29,7 +29,7 @@ export const SettlementBank = ({ merchantId, changeTab }: any) => {
     formState: { errors, isValid },
   } = useForm()
 
-  const [createMerchantBankAccount] = useCreateMerchantBankAccountMutation()
+  const [createMerchantBankAccount, { isLoading }] = useCreateMerchantBankAccountMutation()
   const { data: banks, isLoading: isBanksLoading } = useBanksQuery({})
   const { data: branches, isLoading: isBranchesLoading } = useAllBranchesQuery({})
   const router = useRouter()
@@ -192,10 +192,12 @@ export const SettlementBank = ({ merchantId, changeTab }: any) => {
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary onClick={() => changeTab("payment_service")}>
+          <Button secondary onClick={() => changeTab("payment_service")} disabled={isLoading} isLoading={isLoading}>
             Previous
           </Button>
-          <Button submit>Submit</Button>
+          <Button submit disabled={isLoading} isLoading={isLoading}>
+            Submit
+          </Button>
         </FormFooter>
       </CForm>
     </>

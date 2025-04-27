@@ -2,6 +2,20 @@ import { baseQuery } from "@/store/config"
 import { formatParams } from "@/utils"
 import { createApi } from "@reduxjs/toolkit/query/react"
 
+// TypeScript interface for createBank payload
+interface CreateBankPayload {
+  name: string
+  short_name: string
+  swift_code: string
+  website: string
+  primary_phone: string
+  secondary_phone: string
+  email: string
+  customer_support_number: string
+  notes: string
+  is_active: boolean
+}
+
 export const bankApi = createApi({
   reducerPath: "bankApi",
   baseQuery,
@@ -31,7 +45,7 @@ export const bankApi = createApi({
     }),
     // POST: /api/v2/banks/
     createBank: builder.mutation({
-      query: body => ({
+      query: (body: CreateBankPayload) => ({
         url: "banks/",
         method: "POST",
         body,

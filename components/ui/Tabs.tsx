@@ -7,12 +7,13 @@ export type TabItem = NavItem & {
 }
 
 type TabsProps = {
+  title?: string
   items: TabItem[]
   activeTab?: string
   onTabChange?: (value: string) => void
 }
 
-export const Tabs: FC<TabsProps> = ({ items = [], activeTab, onTabChange }) => {
+export const Tabs: FC<TabsProps> = ({ title = "Add New", items = [], activeTab, onTabChange }) => {
   const [internalTab, setInternalTab] = useState(items.length > 0 ? items[0].value : "")
 
   const currentTab = activeTab ?? internalTab
@@ -28,7 +29,7 @@ export const Tabs: FC<TabsProps> = ({ items = [], activeTab, onTabChange }) => {
   return (
     <div className="d-flex">
       <div className="">
-        <h5 className="text-lg mb-6">Add New Merchant</h5>
+        <h5 className="text-lg mb-6">{title}</h5>
         <Nav items={items} value={currentTab} setValue={handleTabChange} />
       </div>
       <div className="flex-1">

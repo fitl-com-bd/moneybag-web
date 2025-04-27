@@ -55,7 +55,7 @@ const Bank = () => (
     title="Bank List"
     columns={columns}
     actionsProps={{
-      href: "/dashboard/banks/create",
+      href: "banks/create",
       name: "Create Bank",
       // icon: "addUser",
     }}

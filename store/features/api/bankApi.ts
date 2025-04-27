@@ -29,7 +29,18 @@ export const bankApi = createApi({
       transformErrorResponse: error => error,
       providesTags: ["Banks"],
     }),
+    // POST: /api/v2/banks/
+    createBank: builder.mutation({
+      query: body => ({
+        url: "banks/",
+        method: "POST",
+        body,
+      }),
+      // transformResponse: (response: any) => response.data,
+      transformErrorResponse: error => error,
+      invalidatesTags: ["Banks"],
+    }),
   }),
 })
 
-export const { useBanksQuery, useAllBranchesQuery } = bankApi
+export const { useBanksQuery, useAllBranchesQuery, useCreateBankMutation } = bankApi

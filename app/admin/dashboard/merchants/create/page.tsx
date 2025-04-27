@@ -36,7 +36,12 @@ const MerchantDetails = () => {
   const changeTab = (value: string) => setActiveTab(value)
 
   return (
-    <Tabs items={tabItems({ merchantId, setMerchantId, changeTab })} activeTab={activeTab} onTabChange={setActiveTab} />
+    <Tabs
+      title="Add New Merchant"
+      items={tabItems({ merchantId, setMerchantId, changeTab })}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+    />
   )
 }
 

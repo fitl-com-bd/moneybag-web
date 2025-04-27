@@ -15,6 +15,7 @@ import {
 } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
 
 // Define RateType as an array of objects
 const RATE_TYPES = [
@@ -33,7 +34,7 @@ export const PaymentService = ({ merchantId, changeTab }: any) => {
     formState: { errors, isValid },
   } = useForm()
 
-  const [createMerchantPaymentService] = useCreateMerchantPaymentServiceMutation()
+  const [createMerchantPaymentService, { isLoading }] = useCreateMerchantPaymentServiceMutation()
   const { data: paymentProviders, isLoading: isProvidersLoading } = usePaymentProvidersQuery({})
   const router = useRouter()
 
@@ -68,14 +69,8 @@ export const PaymentService = ({ merchantId, changeTab }: any) => {
     }
 
     if (response?.data?.success) {
-      Swal.fire({
-        title: "Success",
-        icon: "success",
-        text: response?.data?.message,
-        confirmButtonText: "Continue",
-      }).then(() => {
-        changeTab("settlement_bank")
-      })
+      toast.success(response?.data?.message)
+      changeTab("settlement_bank")
     }
   }
 
@@ -245,8 +240,12 @@ export const PaymentService = ({ merchantId, changeTab }: any) => {
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary>Previous</Button>
-          <Button submit>Next</Button>
+          <Button secondary onClick={() => changeTab("business_representative")} disabled={isLoading}>
+            Previous
+          </Button>
+          <Button submit disabled={isLoading} isLoading={isLoading}>
+            Next
+          </Button>
         </FormFooter>
       </CForm>
     </>

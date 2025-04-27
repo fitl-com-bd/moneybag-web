@@ -9,6 +9,7 @@ import { getDistrictsByDivision, getDivisions, getErrorMessage, handleErrorRespo
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
 
 export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
   const {
@@ -20,7 +21,7 @@ export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
     clearErrors,
     formState: { errors, isValid },
   } = useForm()
-  const [createMerchantRepresentative] = useCreateMerchantRepresentativeMutation()
+  const [createMerchantRepresentative, { isLoading }] = useCreateMerchantRepresentativeMutation()
   const [merchantNidSearch] = useMerchantNidMutation()
   const router = useRouter()
   const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
@@ -46,14 +47,8 @@ export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
     }
 
     if (response?.data?.success) {
-      Swal.fire({
-        title: "Success",
-        icon: "success",
-        text: response?.data?.message,
-        confirmButtonText: "Continue",
-      }).then(() => {
-        changeTab("payment_service")
-      })
+      toast.success(response?.data?.message)
+      changeTab("payment_service")
     }
   }
 
@@ -76,12 +71,7 @@ export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
     }
 
     if (response?.data?.success) {
-      Swal.fire({
-        title: "Success",
-        icon: "success",
-        text: "NID details fetched successfully.",
-        confirmButtonText: "Ok",
-      })
+      toast.success(response?.data?.message || "NID details fetched successfully.")
       // Optionally, populate form fields with response data
       // setValue("first_name", response.data.first_name)
       // setValue("last_name", response.data.last_name)
@@ -352,8 +342,12 @@ export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
           </CRow>
         </Card>
         <FormFooter>
-          <Button secondary>Previous</Button>
-          <Button submit>Next</Button>
+          <Button secondary onClick={() => changeTab("business_details")} disabled={isLoading}>
+            Previous
+          </Button>
+          <Button submit disabled={isLoading} isLoading={isLoading}>
+            Next
+          </Button>
         </FormFooter>
       </CForm>
     </>

@@ -1,15 +1,8 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import {
-  useAddressQuery,
-  useCreateBankMutation,
-  useCreateBusinessDetailsMutation,
-  useMerchantCategoriesQuery,
-} from "@/store"
-import { getDistrictsByDivision, getDivisions, getErrorMessage, handleErrorResponse, Swal } from "@/utils"
-import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
-import { useRouter } from "next/navigation"
-import React from "react"
+import { useCreateBankMutation } from "@/store"
+import { getErrorMessage, handleErrorResponse, Swal } from "@/utils"
+import { CCol, CForm, CFormCheck, CFormInput, CFormTextarea, CRow } from "@coreui/react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
@@ -26,7 +19,6 @@ export const BankInformation = ({ setId, changeTab }: any) => {
   } = useForm()
 
   const [createBank, { isLoading }] = useCreateBankMutation()
-  // const selectedIndustryType = watch("industry_type")
 
   const onSubmit = async (data: any) => {
     const arg = {
@@ -47,7 +39,7 @@ export const BankInformation = ({ setId, changeTab }: any) => {
     if (response?.data?.success) {
       toast.success(response?.data?.message)
       setId(response?.data?.data?.merchant_id)
-      changeTab("business_representative")
+      changeTab("add_branch")
     }
   }
 
@@ -62,14 +54,14 @@ export const BankInformation = ({ setId, changeTab }: any) => {
               <CFormInput
                 type="text"
                 placeholder="Enter Bank Name"
-                {...register("bank_name", {
+                {...register("name", {
                   required: {
                     value: true,
                     message: "Please enter the bank Name",
                   },
                 })}
-                invalid={errors?.bank_name as any}
-                feedbackInvalid={errors?.bank_name?.message as any}
+                invalid={errors?.name as any}
+                feedbackInvalid={errors?.name?.message as any}
               />
             </CCol>
             <CCol>
@@ -77,14 +69,14 @@ export const BankInformation = ({ setId, changeTab }: any) => {
               <CFormInput
                 type="text"
                 placeholder="Enter Bank Short Name"
-                {...register("bank_short_name", {
+                {...register("short_name", {
                   required: {
                     value: true,
                     message: "Please enter the bank short name",
                   },
                 })}
-                invalid={errors?.bank_short_name as any}
-                feedbackInvalid={errors?.bank_short_name?.message as any}
+                invalid={errors?.short_name as any}
+                feedbackInvalid={errors?.short_name?.message as any}
               />
             </CCol>
           </CRow>
@@ -149,14 +141,14 @@ export const BankInformation = ({ setId, changeTab }: any) => {
               <CFormInput
                 type="email"
                 placeholder="Enter Email Address"
-                {...register("email_address", {
+                {...register("email", {
                   required: {
                     value: true,
                     message: "Please enter the email address",
                   },
                 })}
-                invalid={errors?.email_address as any}
-                feedbackInvalid={errors?.email_address?.message as any}
+                invalid={errors?.email as any}
+                feedbackInvalid={errors?.email?.message as any}
               />
             </CCol>
             <CCol>
@@ -164,14 +156,14 @@ export const BankInformation = ({ setId, changeTab }: any) => {
               <CFormInput
                 type="text"
                 placeholder="Enter Official Website"
-                {...register("official_website", {
+                {...register("website", {
                   required: {
                     value: true,
                     message: "Please enter the official website",
                   },
                 })}
-                invalid={errors?.official_website as any}
-                feedbackInvalid={errors?.official_website?.message as any}
+                invalid={errors?.website as any}
+                feedbackInvalid={errors?.website?.message as any}
               />
             </CCol>
           </CRow>
@@ -201,7 +193,7 @@ export const BankInformation = ({ setId, changeTab }: any) => {
           <CRow>
             <CCol>
               <FormLabel>Remarks / Note</FormLabel>
-              <CFormTextarea rows={4} placeholder="Enter Note" {...register("note")} />
+              <CFormTextarea rows={4} placeholder="Enter Note" {...register("notes")} />
             </CCol>
             <CCol>
               <FormLabel required>Status</FormLabel>
@@ -209,15 +201,15 @@ export const BankInformation = ({ setId, changeTab }: any) => {
                 <CFormCheck
                   type="radio"
                   label="Active"
-                  value="active"
-                  {...register("status", {
+                  value="true"
+                  {...register("is_active", {
                     required: {
                       value: true,
                       message: "Please select the status",
                     },
                   })}
                 />
-                <CFormCheck type="radio" label="Inactive" value="inactive" {...register("status")} />
+                <CFormCheck type="radio" label="Inactive" value="false" {...register("is_active")} />
               </div>
             </CCol>
           </CRow>

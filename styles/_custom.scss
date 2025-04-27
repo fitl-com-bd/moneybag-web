@@ -111,6 +111,21 @@ button {
   }
 }
 
+.btn-rounded {
+  border-color: transparent !important;
+  &:focus,
+  &:hover {
+    border-color: transparent !important;
+  }
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
 .btn-icon {
   @extend .btn-clear;
   padding: 0;

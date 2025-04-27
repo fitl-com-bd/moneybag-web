@@ -1,10 +1,11 @@
-import { Icon, ICONS, LoadingTable, Search } from "@/components/ui"
+import { Button, Card, FormFooter, Icon, ICONS, LoadingTable, Search } from "@/components/ui"
 import { DataTableColumn, OptionType } from "@/types"
 import { formatSearch, getRandomNumber } from "@/utils"
 import {
   CButton,
   CCard,
   CCardBody,
+  CCardTitle,
   CCol,
   CCollapse,
   CForm,
@@ -13,6 +14,7 @@ import {
   CFormSelect,
   CTooltip,
 } from "@coreui/react"
+import classNames from "classnames"
 import isBoolean from "lodash/isBoolean"
 import isString from "lodash/isString"
 import Link from "next/link"
@@ -52,17 +54,17 @@ type ActionsWithoutSearchProps = {
 
 type ActionsSearchProps = ActionsWithSearchProps | ActionsWithoutSearchProps
 
-type ActionsWithFilterProps = {
-  filter: boolean
-  setFilter: (value: boolean) => void
-}
+// type ActionsWithFilterProps = {
+//   filter: boolean
+//   setFilter: (value: boolean) => void
+// }
 
-type ActionsWithoutFilterProps = {
-  filter?: false
-  setFilter?: never
-}
+// type ActionsWithoutFilterProps = {
+//   filter?: false
+//   setFilter?: never
+// }
 
-type ActionsFilterProps = ActionsWithFilterProps | ActionsWithoutFilterProps
+// type ActionsFilterProps = ActionsWithFilterProps
 
 type ActionsWithStatusProps = {
   statusOptions: OptionType[]
@@ -78,7 +80,7 @@ type ActionsWithoutStatusProps = {
 
 type ActionsStatusProps = ActionsWithStatusProps | ActionsWithoutStatusProps
 
-type DataTableActionsProps = ActionsButtonProps & ActionsSearchProps & ActionsFilterProps & ActionsStatusProps
+type DataTableActionsProps = ActionsButtonProps & ActionsSearchProps & ActionsStatusProps
 
 export const DataTableActions = ({
   href,
@@ -88,8 +90,6 @@ export const DataTableActions = ({
   searchPlaceholder = "Search",
   name = "Add New",
   icon = "add",
-  filter,
-  setFilter,
   statusOptions,
   selectedStatus,
   onStatusChange,
@@ -116,7 +116,7 @@ export const DataTableActions = ({
           ))}
         </CFormSelect>
       )}
-      {isBoolean(filter) && (
+      {/* {isBoolean(filter) && (
         <CTooltip content="Filter">
           <CButton
             type="button"
@@ -126,7 +126,7 @@ export const DataTableActions = ({
             <Icon name="filter" size={16} />
           </CButton>
         </CTooltip>
-      )}
+      )} */}
       <CTooltip content={name}>
         {href ? (
           <Link href={href}>
@@ -157,11 +157,12 @@ export type FilterField = {
 
 type DataTableFilterProps = {
   filter: boolean
+  setFilter?: (value: boolean) => void
   setParams: (params: any) => void
   fields?: FilterField[]
 }
 
-export const DataTableFilter = ({ filter, setParams, fields = [] }: DataTableFilterProps) => {
+export const DataTableFilter = ({ filter, setFilter, setParams, fields = [] }: DataTableFilterProps) => {
   const { register, handleSubmit, control, watch, reset } = useForm()
 
   const onSubmit = (data: any) => {
@@ -174,40 +175,51 @@ export const DataTableFilter = ({ filter, setParams, fields = [] }: DataTableFil
   }
 
   return (
-    <CCollapse visible={filter} className="w-100">
-      <CCard className="bg-anti-flash-white bg-opacity-50 border-0 mb-3">
-        <CCardBody>
-          <CForm className="row m-0 gy-2 gx-3 align-items-end mb-2" onSubmit={handleSubmit(onSubmit)}>
-            {fields.map((field, index) => (
-              <CCol md={3} key={index}>
-                <CFormLabel className="mt-2">{field.label}</CFormLabel>
-                {field.type === "text" && <CFormInput type="text" {...register(field.name)} />}
-                {field.type === "select" && (
-                  <CFormSelect {...register(field.name)}>
-                    <option value="" selected key="">
-                      {field.placeholder || `Select ${field.label}`}
+    <Card
+      className="space-y-6 pb-3"
+      header={
+        <div className="d-flex justify-content-between align-items-center">
+          <CCardTitle className="mb-0">Advance Filter</CCardTitle>
+          <CTooltip content="Filter">
+            <CButton
+              type="button"
+              color={filter ? "dark" : "light"}
+              onClick={() => setFilter && setFilter(!filter)}
+              className="btn-rounded">
+              <Icon name="filter" size={18} />
+            </CButton>
+          </CTooltip>
+        </div>
+      }>
+      <CCollapse visible={filter} className="w-100">
+        <CForm className="row m-0 gy-2 gx-3 align-items-end" onSubmit={handleSubmit(onSubmit)}>
+          {fields.map((field, index) => (
+            <CCol md={3} key={index}>
+              <CFormLabel className="mt-2">{field.label}</CFormLabel>
+              {field.type === "text" && <CFormInput type="text" {...register(field.name)} />}
+              {field.type === "select" && (
+                <CFormSelect {...register(field.name)}>
+                  <option value="" selected key="">
+                    {field.placeholder || `Select ${field.label}`}
+                  </option>
+                  {field.options?.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
                     </option>
-                    {field.options?.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </CFormSelect>
-                )}
-              </CCol>
-            ))}
-            <CCol md={3} className="d-flex align-items-center gap-2">
-              <CButton type="button" color="dark" onClick={handleReset}>
-                Reset
-              </CButton>
-              <CButton type="submit" className="border-0 text-light">
-                Filter
-              </CButton>
+                  ))}
+                </CFormSelect>
+              )}
             </CCol>
-          </CForm>
-        </CCardBody>
-      </CCard>
-    </CCollapse>
+          ))}
+          <FormFooter className="mt-4">
+            <Button secondary onClick={handleReset}>
+              Reset
+            </Button>
+            <Button submit>Filter</Button>
+          </FormFooter>
+        </CForm>
+      </CCollapse>
+    </Card>
   )
 }
 
@@ -251,7 +263,7 @@ export const DataTablePage = ({
 }: DataTablePageProps) => {
   const [searchKey, setSearchKey] = useState("")
   const [selectedStatus, setSelectedStatus] = useState("")
-  const [showFilter, setFilter] = useState(false)
+  const [showFilter, setFilter] = useState(true)
   const [params, setParams] = useState(defaultParams)
   const { data: apiData, isLoading } = apiFunction({
     ...params,
@@ -265,31 +277,34 @@ export const DataTablePage = ({
     dataTableActionsProps.search = searchKey
     dataTableActionsProps.onSearchChange = setSearchKey
   }
-  if (filter) {
-    dataTableActionsProps.filter = showFilter
-    dataTableActionsProps.setFilter = setFilter
-  }
+  // if (filter) {
+  //   dataTableActionsProps.filter = showFilter
+  //   dataTableActionsProps.setFilter = setFilter
+  // }
   if (statusOptions) {
     dataTableActionsProps.statusOptions = statusOptions
     dataTableActionsProps.selectedStatus = selectedStatus
     dataTableActionsProps.onStatusChange = setSelectedStatus
   }
 
-  const dataTableProps: Omit<DataTableProps, "data" | "columns"> = {}
-  if (filter) {
-    dataTableProps.subHeader = true
-    dataTableProps.subHeaderWrap = false
-    dataTableProps.subHeaderComponent = <DataTableFilter filter={showFilter} setParams={setParams} fields={fields} />
-  }
+  // const dataTableProps: Omit<DataTableProps, "data" | "columns"> = {}
+  // if (filter) {
+  //   dataTableProps.subHeader = true
+  //   dataTableProps.subHeaderWrap = false
+  //   dataTableProps.subHeaderComponent = <DataTableFilter filter={showFilter} setParams={setParams} fields={fields} />
+  // }
 
   return (
-    <DataTable
-      {...props}
-      columns={columns}
-      actions={<DataTableActions {...dataTableActionsProps} />}
-      data={data}
-      isLoading={isLoading}
-      {...dataTableProps}
-    />
+    <>
+      {filter && <DataTableFilter filter={showFilter} setFilter={setFilter} setParams={setParams} fields={fields} />}
+      <DataTable
+        {...props}
+        columns={columns}
+        actions={<DataTableActions {...dataTableActionsProps} />}
+        data={data}
+        isLoading={isLoading}
+        // {...dataTableProps}
+      />
+    </>
   )
 }

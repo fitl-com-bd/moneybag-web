@@ -101,15 +101,11 @@ export const BankInformation = ({ setId, changeTab }: any) => {
         <Card className="space-y-6">
           <CRow>
             <CCol>
-              <FormLabel required>Primary Phone Number</FormLabel>
+              <FormLabel>Primary Phone Number</FormLabel>
               <CFormInput
                 type="text"
                 placeholder="Enter Primary Phone Number"
                 {...register("primary_phone", {
-                  required: {
-                    value: true,
-                    message: "Please enter the primary phone number",
-                  },
                   pattern: {
                     value: /^\d+$/,
                     message: "Phone number must be a number",
@@ -137,31 +133,21 @@ export const BankInformation = ({ setId, changeTab }: any) => {
           </CRow>
           <CRow>
             <CCol>
-              <FormLabel required>Email Address</FormLabel>
+              <FormLabel>Email Address</FormLabel>
               <CFormInput
                 type="email"
                 placeholder="Enter Email Address"
-                {...register("email", {
-                  required: {
-                    value: true,
-                    message: "Please enter the email address",
-                  },
-                })}
+                {...register("email")}
                 invalid={errors?.email as any}
                 feedbackInvalid={errors?.email?.message as any}
               />
             </CCol>
             <CCol>
-              <FormLabel required>Official Website</FormLabel>
+              <FormLabel>Official Website</FormLabel>
               <CFormInput
                 type="text"
                 placeholder="Enter Official Website"
-                {...register("website", {
-                  required: {
-                    value: true,
-                    message: "Please enter the official website",
-                  },
-                })}
+                {...register("website")}
                 invalid={errors?.website as any}
                 feedbackInvalid={errors?.website?.message as any}
               />
@@ -169,15 +155,11 @@ export const BankInformation = ({ setId, changeTab }: any) => {
           </CRow>
           <CRow>
             <CCol>
-              <FormLabel required>Customer Support Number</FormLabel>
+              <FormLabel>Customer Support Number</FormLabel>
               <CFormInput
                 type="text"
                 placeholder="Enter Customer Support Number"
                 {...register("customer_support_number", {
-                  required: {
-                    value: true,
-                    message: "Please enter the customer support number",
-                  },
                   pattern: {
                     value: /^\d+$/,
                     message: "Phone number must be a number",

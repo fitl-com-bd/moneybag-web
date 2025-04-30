@@ -23,7 +23,7 @@ const RATE_TYPES = [
   { value: "P", label: "Percentage" },
 ]
 
-export const PaymentService = ({ merchantId, changeTab }: any) => {
+export const PaymentService = ({ id, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -40,7 +40,7 @@ export const PaymentService = ({ merchantId, changeTab }: any) => {
 
   const onSubmit = async (data: any) => {
     const arg = {
-      merchant_id: merchantId,
+      merchant_id: id,
       api_key: {
         api_key: data.api_key,
         secret: data.secret,

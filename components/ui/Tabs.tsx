@@ -4,6 +4,7 @@ import { FC, Fragment, useState } from "react"
 
 export type TabItem = NavItem & {
   component?: FC
+  disabled?: boolean | (() => boolean) // Replace `hide` with `disabled`
 }
 
 type TabsProps = {
@@ -19,8 +20,13 @@ export const Tabs: FC<TabsProps> = ({ title = "Add New", items = [], activeTab, 
   const currentTab = activeTab ?? internalTab
 
   const handleTabChange = (value: string) => {
-    setInternalTab(value)
-    onTabChange?.(value)
+    const selectedItem = items.find(item => item.value === value)
+    const isDisabled = typeof selectedItem?.disabled === "function" ? selectedItem.disabled() : selectedItem?.disabled
+
+    if (!isDisabled) {
+      setInternalTab(value)
+      onTabChange?.(value)
+    }
   }
 
   const selectedTab = items.find(item => item.value === currentTab)
@@ -30,7 +36,14 @@ export const Tabs: FC<TabsProps> = ({ title = "Add New", items = [], activeTab, 
     <div className="d-flex">
       <div className="">
         <h5 className="text-lg mb-6">{title}</h5>
-        <Nav items={items} value={currentTab} setValue={handleTabChange} />
+        <Nav
+          items={items.map(item => ({
+            ...item,
+            disabled: typeof item.disabled === "function" ? item.disabled() : item.disabled,
+          }))}
+          value={currentTab}
+          setValue={handleTabChange}
+        />
       </div>
       <div className="flex-1">
         <div className="tab-container">

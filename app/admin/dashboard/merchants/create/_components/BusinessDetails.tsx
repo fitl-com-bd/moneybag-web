@@ -26,7 +26,7 @@ const STATUS = [
   { label: "Draft", value: "DRAFT" },
 ]
 
-export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
+export const BusinessDetails = ({ setId, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -64,7 +64,7 @@ export const BusinessDetails = ({ setMerchantId, changeTab }: any) => {
 
     if (response?.data?.success) {
       toast.success(response?.data?.message)
-      setMerchantId(response?.data?.data?.merchant_id)
+      setId(response?.data?.data?.merchant_id)
       changeTab("business_representative")
     }
   }

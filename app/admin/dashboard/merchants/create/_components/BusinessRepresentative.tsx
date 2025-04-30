@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
+export const BusinessRepresentative = ({ id, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -30,7 +30,7 @@ export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
   const onSubmit = async (data: any) => {
     const arg = {
       ...data,
-      merchantId,
+      id,
       city_id: 1,
     }
 
@@ -164,14 +164,14 @@ export const BusinessRepresentative = ({ merchantId, changeTab }: any) => {
               <CFormInput
                 type="text"
                 placeholder="Enter Phone Number"
-                {...register("phone_number", {
+                {...register("phone", {
                   required: {
                     value: true,
                     message: "Please enter the phone number",
                   },
                 })}
-                invalid={errors?.phone_number as any}
-                feedbackInvalid={errors?.phone_number?.message as any}
+                invalid={errors?.phone as any}
+                feedbackInvalid={errors?.phone?.message as any}
               />
             </CCol>
             <CCol>

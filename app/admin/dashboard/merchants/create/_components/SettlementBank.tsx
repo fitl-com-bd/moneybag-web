@@ -18,7 +18,7 @@ import {
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
-export const SettlementBank = ({ merchantId, changeTab }: any) => {
+export const SettlementBank = ({ id, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -36,7 +36,7 @@ export const SettlementBank = ({ merchantId, changeTab }: any) => {
 
   const onSubmit = async (data: any) => {
     const arg = {
-      merchantId,
+      id,
       account_name: data.account_name,
       account_number: data.account_number,
       branch_id: data.branch_id, // Replace with actual branch ID

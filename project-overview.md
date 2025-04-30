@@ -199,3 +199,6 @@ These APIs are integrated into the `BankInformation` and `AddBranch` components 
 
 #### Import Practices
 - **Path Aliases**: We use path aliases (e.g., `@/components`) for cleaner and more maintainable imports, as configured in the `tsconfig.json` file.
+
+## JavaScript Version
+The project uses modern JavaScript (ESNext) as specified in the `tsconfig.json` file. This includes the latest ECMAScript features supported by the Next.js framework. Note that semicolons are not used in this project, following a specific coding style preference.

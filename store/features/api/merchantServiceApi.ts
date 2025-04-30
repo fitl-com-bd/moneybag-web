@@ -45,8 +45,8 @@ export const merchantServiceApi = createApi({
     }),
     // /api/v2/merchants/{merchant_id}/representatives
     createMerchantRepresentative: builder.mutation({
-      query: ({ merchantId, ...data }) => ({
-        url: `merchants/${merchantId}/representatives`,
+      query: ({ id, ...data }) => ({
+        url: `merchants/${id}/representatives`,
         method: "POST",
         body: data,
       }),
@@ -71,16 +71,16 @@ export const merchantServiceApi = createApi({
     }),
     createMerchantBankAccount: builder.mutation({
       query: ({
-        merchantId,
+        id,
         ...payload
       }: {
-        merchantId: number
+        id: number
         account_name: string
         account_number: string
         branch_id: number
         notes: string
       }) => ({
-        url: `banks/accounts/merchant/${merchantId}/`,
+        url: `banks/accounts/merchant/${id}/`,
         method: "POST",
         body: payload,
       }),

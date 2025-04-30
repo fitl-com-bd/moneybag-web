@@ -18,7 +18,7 @@ import {
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
-export const AddBranch = ({ id, changeTab }: any) => {
+export const Services = ({ id, changeTab }: any) => {
   const {
     register,
     handleSubmit,
@@ -69,8 +69,8 @@ export const AddBranch = ({ id, changeTab }: any) => {
   return (
     <>
       <SectionHeader
-        title="Branch Information"
-        subtitle="Enter branch details to associate with the bank, including location, contact information, and operational status."
+        title="Provide Settlement Bank Details"
+        subtitle="Enter the banking information required to process and settle transactions securely."
       />
       <CForm onSubmit={handleSubmit(onSubmit)}>
         <Card className="space-y-6">

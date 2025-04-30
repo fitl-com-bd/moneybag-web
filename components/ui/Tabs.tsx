@@ -2,9 +2,9 @@
 import { Nav, NavItem } from "@/components/ui"
 import { FC, Fragment, useState } from "react"
 
-export type TabItem = NavItem & {
+export type TabItem = Omit<NavItem, "disabled"> & {
   component?: FC
-  disabled?: boolean | (() => boolean) // Replace `hide` with `disabled`
+  disabled?: boolean | (() => boolean)
 }
 
 type TabsProps = {

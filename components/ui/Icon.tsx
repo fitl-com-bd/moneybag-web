@@ -26,6 +26,7 @@ import {
   RiWallet2Line,
 } from "react-icons/ri"
 import {
+  TbAdjustmentsHorizontal,
   TbBuildingBank,
   TbBuildingStore,
   TbDashboard,
@@ -45,7 +46,7 @@ export const ICONS = {
   add: TbPlus,
   view: TbEye,
   edit: TbEdit,
-  filter: TbFilter,
+  filter: TbAdjustmentsHorizontal,
   lock: TbLock,
   user: TbUser,
   settings: TbSettings,

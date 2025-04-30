@@ -55,7 +55,7 @@ const Bank = () => (
     title="Fintech List"
     columns={columns}
     actionsProps={{
-      href: "/dashboard/banks/create",
+      href: "fintech/create",
     }}
   />
 )

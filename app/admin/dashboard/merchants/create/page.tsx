@@ -33,7 +33,7 @@ const tabItems = (tabProps: any = {}): TabItem[] => [
   },
 ]
 
-const MerchantDetails = () => {
+const CreateMerchant = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const id = searchParams.get("id")
@@ -60,4 +60,4 @@ const MerchantDetails = () => {
   )
 }
 
-export default MerchantDetails
+export default CreateMerchant

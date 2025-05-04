@@ -1,52 +1,64 @@
 "use client"
-import { Card, TabItem, Tabs } from "@/components/ui"
+import { TabItem, Tabs } from "@/components/ui"
+import { useMerchantDetailsQuery } from "@/store"
+import { FC } from "react"
+import { BusinessDetails } from "./_components/BusinessDetails"
+import { BusinessRepresentative } from "./_components/BusinessRepresentative"
+import { BusinessStructure } from "./_components/BusinessStructure"
+import { MerchantUser } from "./_components/MerchantUser"
+import { PaymentService } from "./_components/PaymentService"
+import { SettlementBank } from "./_components/SettlementBank"
 
-const tabItems: TabItem[] = [
-  {
-    label: "Business Structure",
-    value: "business_structure",
-    component: () => (
-      <Card>
-        <div className="d-grid grid-cols-3">
-          <div className="fw-semibold p-2.5">Business Name:</div>
-          <div className="col-span-2 p-2.5">Full business Name Here</div>
-          <div className="fw-semibold p-2.5">Business Short Name:</div>
-          <div className="col-span-2 p-2.5">Sort Name (Business)</div>
-          <div className="fw-semibold p-2.5">BIN No:</div>
-          <div className="col-span-2 p-2.5">1234</div>
-        </div>
-        <hr />
-        <div className="d-grid grid-cols-3">
-          <div className="fw-semibold p-2.5">Business Name:</div>
-          <div className="col-span-2 p-2.5">Full business Name Here</div>
-          <div className="fw-semibold p-2.5">Business Short Name:</div>
-          <div className="col-span-2 p-2.5">Sort Name (Business)</div>
-          <div className="fw-semibold p-2.5">BIN No:</div>
-          <div className="col-span-2 p-2.5">1234</div>
-        </div>
-      </Card>
-    ),
-  },
+interface MerchantDetailsProps {
+  params: {
+    id: string
+  }
+}
+
+const tabItems = (tabProps: any = {}): TabItem[] => [
   {
     label: "Business Details",
     value: "business_details",
+    component: () => <BusinessDetails {...tabProps} />,
+  },
+  {
+    label: "Business Structure",
+    value: "business_structure",
+    component: () => <BusinessStructure {...tabProps} />,
   },
   {
     label: "Business Representative",
     value: "business_representative",
+    component: () => <BusinessRepresentative {...tabProps} />,
+    disabled: () => !tabProps.id,
   },
   {
     label: "Settlement Bank",
     value: "settlement_bank",
+    component: () => <SettlementBank {...tabProps} />,
+    disabled: () => !tabProps.id,
   },
   {
-    label: "Merchant Service",
-    value: "merchant_service",
+    label: "Payment Service",
+    value: "payment_service",
+    component: () => <PaymentService {...tabProps} />,
+    disabled: () => !tabProps.id,
+  },
+  {
+    label: "Merchant User",
+    value: "merchant_user",
+    component: () => <MerchantUser {...tabProps} />,
+    disabled: () => !tabProps.id,
   },
 ]
 
-const MerchantDetails = () => {
-  return <Tabs items={tabItems} />
+const MerchantDetails: FC<MerchantDetailsProps> = ({ params }) => {
+  const id = parseInt(params.id)
+  const { data, isFetching, isLoading } = useMerchantDetailsQuery(id)
+  const tabProps = { id, data }
+  // useMerchantDetailsQuery
+
+  return <Tabs items={tabItems(tabProps)} />
 }
 
 export default MerchantDetails

@@ -1,6 +1,7 @@
 import { baseQuery } from "@/store/config"
 import { formatParams } from "@/utils"
 import { createApi } from "@reduxjs/toolkit/query/react"
+import { MerchantUser } from "./../../../app/admin/dashboard/merchants/[id]/_components/MerchantUser"
 // TypeScript type support
 interface MerchantPaymentServicePayload {
   api_key: { api_key: string; secret: string }
@@ -24,7 +25,7 @@ interface MerchantNid {
 export const merchantServiceApi = createApi({
   reducerPath: "merchantServiceApi",
   baseQuery,
-  tagTypes: ["Merchants", "PaymentService"],
+  tagTypes: ["Merchants", "PaymentService", "MerchantDetails"],
   endpoints: builder => ({
     merchants: builder.query({
       query: params => ({
@@ -105,6 +106,16 @@ export const merchantServiceApi = createApi({
       transformErrorResponse: error => error,
       providesTags: ["PaymentService"],
     }),
+    // GET: /api/v2/merchants/{merchant_id}/
+    merchantDetails: builder.query({
+      query: (id: number) => ({
+        url: `merchants/${id}/`,
+        // params: formatParams({}),
+      }),
+      transformResponse: (response: any) => response.data,
+      transformErrorResponse: error => error,
+      providesTags: (result, error, id) => [{ type: "MerchantDetails", id }],
+    }),
   }),
 })
 
@@ -117,4 +128,5 @@ export const {
   useCreateMerchantBankAccountMutation,
   useMerchantCategoriesQuery,
   usePaymentProvidersQuery,
+  useMerchantDetailsQuery,
 } = merchantServiceApi

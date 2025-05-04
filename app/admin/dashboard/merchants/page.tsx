@@ -3,7 +3,6 @@ import { DataTablePage } from "@/components/shared"
 import { Icon } from "@/components/ui"
 import { useMerchantsQuery } from "@/store"
 import { DataTableColumn } from "@/types"
-import { toLowerCase, toNormalCase } from "@/utils"
 import { CButton, CTooltip } from "@coreui/react"
 import Link from "next/link"
 

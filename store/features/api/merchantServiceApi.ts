@@ -1,17 +1,16 @@
 import { baseQuery } from "@/store/config"
 import { formatParams } from "@/utils"
 import { createApi } from "@reduxjs/toolkit/query/react"
-import { MerchantUser } from "./../../../app/admin/dashboard/merchants/[id]/_components/MerchantUser"
 // TypeScript type support
-interface MerchantPaymentServicePayload {
-  api_key: { api_key: string; secret: string }
+export interface MerchantPaymentServicePayload {
+  api_key: any
   bank_rate: string
   financial_organization_id?: number
   is_active: boolean
   is_custom_rate: boolean
   merchant_id: number
   moneybag_rate: string
-  note: string
+  note?: string
   payment_provider_id: number
   rate_type: string
   total_rate: string
@@ -25,7 +24,7 @@ interface MerchantNid {
 export const merchantServiceApi = createApi({
   reducerPath: "merchantServiceApi",
   baseQuery,
-  tagTypes: ["Merchants", "PaymentService", "MerchantDetails"],
+  tagTypes: ["Merchants", "PaymentService", "MerchantDetails", "MerchantPaymentService"],
   endpoints: builder => ({
     merchants: builder.query({
       query: params => ({
@@ -116,6 +115,15 @@ export const merchantServiceApi = createApi({
       transformErrorResponse: error => error,
       providesTags: (result, error, id) => [{ type: "MerchantDetails", id }],
     }),
+    // GET: /api/v2/payment-configs/merchant-payment-services?merchant_id=1
+    merchantPaymentService: builder.query({
+      query: params => ({
+        url: "payment-configs/merchant-payment-services",
+        params: formatParams({ merchant_id: params.id }),
+      }),
+      transformErrorResponse: error => error,
+      providesTags: (result, error, id) => [{ type: "MerchantPaymentService", id }],
+    }),
   }),
 })
 
@@ -129,4 +137,5 @@ export const {
   useMerchantCategoriesQuery,
   usePaymentProvidersQuery,
   useMerchantDetailsQuery,
+  useMerchantPaymentServiceQuery,
 } = merchantServiceApi

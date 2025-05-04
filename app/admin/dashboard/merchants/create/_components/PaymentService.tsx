@@ -2,6 +2,7 @@
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { RATE_TYPES } from "@/constants"
 import {
+  MerchantPaymentServicePayload,
   useCreateMerchantPaymentServiceMutation,
   useFinancialOrganizationsQuery,
   usePaymentProvidersQuery,
@@ -45,14 +46,14 @@ export const PaymentService = ({ id, changeTab }: any) => {
   })
 
   const onSubmit = async (data: any) => {
-    const arg: any = {
+    const arg: MerchantPaymentServicePayload = {
       merchant_id: id,
-      api_key: data.api_key,
+      api_key: JSON.parse(data.api_key),
       bank_rate: data.bank_rate,
       is_active: data.status === "active",
       is_custom_rate: data.custom_rate || false,
       moneybag_rate: data.moneybag_rate,
-      payment_provider_id: 1, // Replace with actual value
+      payment_provider_id: data.payment_provider_id,
       rate_type: data.rate_type,
       total_rate: data.merchant_service_fee || "",
     }
@@ -103,14 +104,14 @@ export const PaymentService = ({ id, changeTab }: any) => {
             <CCol>
               <FormLabel required>Service</FormLabel>
               <CFormSelect
-                {...register("service", {
+                {...register("payment_provider_id", {
                   required: {
                     value: true,
                     message: "Please select a service",
                   },
                 })}
-                invalid={errors?.service as any}
-                feedbackInvalid={errors?.service?.message as any}
+                invalid={errors?.payment_provider_id as any}
+                feedbackInvalid={errors?.payment_provider_id?.message as any}
                 disabled={isProvidersLoading}>
                 <option value="">Select Service</option>
                 {paymentProviders?.map((provider: any) => (
@@ -197,6 +198,8 @@ export const PaymentService = ({ id, changeTab }: any) => {
               <FormLabel required>Merchant Service Fee (MSF)</FormLabel>
               <CFormInput
                 type="text"
+                readOnly
+                value={parseFloat(watch("bank_rate") || 10) + parseFloat(watch("moneybag_rate") || 0)}
                 placeholder="Enter Merchant Service Fee"
                 {...register("merchant_service_fee", {
                   required: {
@@ -231,15 +234,29 @@ export const PaymentService = ({ id, changeTab }: any) => {
                 <CFormCheck
                   type="radio"
                   label="Active"
-                  value="active"
-                  {...register("status", {
+                  value="true"
+                  id="active"
+                  {...register("is_active", {
                     required: {
                       value: true,
                       message: "Please select the status",
                     },
                   })}
+                  invalid={errors?.is_active as any}
                 />
-                <CFormCheck type="radio" label="Inactive" value="inactive" {...register("status")} />
+                <CFormCheck
+                  type="radio"
+                  label="Inactive"
+                  value="false"
+                  id="inactive"
+                  {...register("is_active", {
+                    required: {
+                      value: true,
+                      message: "Please select the status",
+                    },
+                  })}
+                  invalid={errors?.is_active as any}
+                />
               </div>
             </CCol>
           </CRow>

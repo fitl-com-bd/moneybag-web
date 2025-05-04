@@ -80,8 +80,8 @@ const Login = () => {
                   </div>
                   <CFormInput
                     className="mb-4 custom-input"
-                    placeholder="User Name"
-                    type="text"
+                    placeholder="Email"
+                    type="email"
                     {...register("email")}
                     invalid={errors?.email as any}
                     feedbackInvalid={errors?.email?.message as any}

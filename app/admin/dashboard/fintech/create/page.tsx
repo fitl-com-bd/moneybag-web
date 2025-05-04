@@ -1,5 +1,6 @@
 "use client"
 import { TabItem, Tabs } from "@/components/ui"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { BasicInformation } from "./_components/BasicInformation"
 import { Services } from "./_components/Services"
@@ -23,15 +24,26 @@ const tabItems = (tabProps: any = {}): TabItem[] => [
   },
 ]
 
-const CreateBank = () => {
-  const [id, setId] = useState<string | null>(null)
+const CreateFintech = () => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const id = searchParams.get("id")
   const [activeTab, setActiveTab] = useState<string>("basic_information")
 
-  const changeTab = (value: string) => setActiveTab(value)
+  const changeTab = (value: string) => {
+    setActiveTab(value)
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const setId = (id: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("id", id)
+    router.push(`?${params.toString()}`)
+  }
 
   return (
     <Tabs title="Options" items={tabItems({ id, setId, changeTab })} activeTab={activeTab} onTabChange={setActiveTab} />
   )
 }
 
-export default CreateBank
+export default CreateFintech

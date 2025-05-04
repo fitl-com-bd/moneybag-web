@@ -1,3 +1,6 @@
+export const LS_TOKEN = "moneybag_token"
+export const LS_TERMS_AND_CONDITIONS = "terms_and_conditions"
+
 export const PAYMENT_STATUS_OPTIONS = [
   { value: "paid", label: "Paid" },
   { value: "due", label: "Due" },
@@ -19,5 +22,12 @@ export const GENDERS = [
   { label: "Other", value: "OTHER" },
 ]
 
-export const LS_TOKEN = "moneybag_token"
-export const LS_TERMS_AND_CONDITIONS = "terms_and_conditions"
+export const ORGANIZATION_TYPE = [
+  { label: "BANK", value: "BANK" },
+  { label: "MFS", value: "MFS" },
+]
+
+export const RATE_TYPES = [
+  { value: "F", label: "Fixed" },
+  { value: "P", label: "Percentage" },
+]

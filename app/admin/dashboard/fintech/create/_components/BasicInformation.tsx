@@ -1,8 +1,9 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateBankMutation } from "@/store"
+import { ORGANIZATION_TYPE } from "@/constants"
+import { useCreateFinancialOrganizationMutation } from "@/store"
 import { getErrorMessage, handleErrorResponse, Swal } from "@/utils"
-import { CCol, CForm, CFormCheck, CFormInput, CFormTextarea, CRow } from "@coreui/react"
+import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
@@ -18,13 +19,15 @@ export const BasicInformation = ({ setId, changeTab }: any) => {
     formState: { errors, isValid },
   } = useForm()
 
-  const [createBank, { isLoading }] = useCreateBankMutation()
+  const [createFinancialOrganization, { isLoading }] = useCreateFinancialOrganizationMutation()
 
   const onSubmit = async (data: any) => {
     const arg = {
       ...data,
     }
-    const response = await createBank(arg)
+    console.log(`🔥 | arg:`, arg)
+
+    const response = await createFinancialOrganization(arg)
 
     if (response?.error) {
       handleErrorResponse(response, setError)
@@ -38,7 +41,7 @@ export const BasicInformation = ({ setId, changeTab }: any) => {
 
     if (response?.data?.success) {
       toast.success(response?.data?.message)
-      setId(response?.data?.data?.merchant_id)
+      setId(response?.data?.data?.id)
       changeTab("add_branch")
     }
   }
@@ -82,13 +85,17 @@ export const BasicInformation = ({ setId, changeTab }: any) => {
           <CRow>
             <CCol>
               <FormLabel>Fintech Type</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Select Fintech Type"
-                {...register("type")}
-                invalid={errors?.type as any}
-                feedbackInvalid={errors?.type?.message as any}
-              />
+              <CFormSelect
+                {...register("organization_type")}
+                invalid={errors?.organization_type as any}
+                feedbackInvalid={errors?.organization_type?.message as any}>
+                <option value="">Select Fintech Type</option>
+                {ORGANIZATION_TYPE.map(type => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </CFormSelect>
             </CCol>
           </CRow>
         </Card>
@@ -140,9 +147,9 @@ export const BasicInformation = ({ setId, changeTab }: any) => {
               <CFormInput
                 type="text"
                 placeholder="Enter Official Website"
-                {...register("website")}
-                invalid={errors?.website as any}
-                feedbackInvalid={errors?.website?.message as any}
+                {...register("official_website")}
+                invalid={errors?.official_website as any}
+                feedbackInvalid={errors?.official_website?.message as any}
               />
             </CCol>
             <CCol>
@@ -175,14 +182,28 @@ export const BasicInformation = ({ setId, changeTab }: any) => {
                   type="radio"
                   label="Active"
                   value="true"
+                  id="active"
                   {...register("is_active", {
                     required: {
                       value: true,
                       message: "Please select the status",
                     },
                   })}
+                  invalid={errors?.is_active as any}
                 />
-                <CFormCheck type="radio" label="Inactive" value="false" {...register("is_active")} />
+                <CFormCheck
+                  type="radio"
+                  label="Inactive"
+                  value="false"
+                  id="inactive"
+                  {...register("is_active", {
+                    required: {
+                      value: true,
+                      message: "Please select the status",
+                    },
+                  })}
+                  invalid={errors?.is_active as any}
+                />
               </div>
             </CCol>
           </CRow>

@@ -5,7 +5,7 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 interface MerchantPaymentServicePayload {
   api_key: { api_key: string; secret: string }
   bank_rate: string
-  financial_organization_id: number
+  financial_organization_id?: number
   is_active: boolean
   is_custom_rate: boolean
   merchant_id: number

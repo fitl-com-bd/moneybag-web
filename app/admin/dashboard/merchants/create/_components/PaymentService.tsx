@@ -1,6 +1,11 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useCreateMerchantPaymentServiceMutation, usePaymentProvidersQuery } from "@/store"
+import { RATE_TYPES } from "@/constants"
+import {
+  useCreateMerchantPaymentServiceMutation,
+  useFinancialOrganizationsQuery,
+  usePaymentProvidersQuery,
+} from "@/store"
 import { getErrorMessage, handleErrorResponse, Swal } from "@/utils"
 import {
   CCardTitle,
@@ -17,12 +22,6 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-// Define RateType as an array of objects
-const RATE_TYPES = [
-  { value: "F", label: "Fixed" },
-  { value: "P", label: "Percentage" },
-]
-
 export const PaymentService = ({ id, changeTab }: any) => {
   const {
     register,
@@ -38,22 +37,27 @@ export const PaymentService = ({ id, changeTab }: any) => {
   const { data: paymentProviders, isLoading: isProvidersLoading } = usePaymentProvidersQuery({})
   const router = useRouter()
 
+  const isCustomRate = watch("custom_rate")
+
+  // useFinancialOrganizationsQuery
+  const { data: financialOrganizations, isLoading: isFinancialOrganizationsLoading } = useFinancialOrganizationsQuery({
+    skip: !isCustomRate,
+  })
+
   const onSubmit = async (data: any) => {
-    const arg = {
+    const arg: any = {
       merchant_id: id,
-      api_key: {
-        api_key: data.api_key,
-        secret: data.secret,
-      },
+      api_key: data.api_key,
       bank_rate: data.bank_rate,
-      financial_organization_id: 1, // Replace with actual value
       is_active: data.status === "active",
       is_custom_rate: data.custom_rate || false,
       moneybag_rate: data.moneybag_rate,
-      note: data.note || "",
       payment_provider_id: 1, // Replace with actual value
       rate_type: data.rate_type,
       total_rate: data.merchant_service_fee || "",
+    }
+    if (isCustomRate) {
+      arg.financial_organization_id = data.financial_organization_id
     }
 
     const response = await createMerchantPaymentService(arg)
@@ -152,6 +156,28 @@ export const PaymentService = ({ id, changeTab }: any) => {
             </CCol>
           </CRow>
           <CRow>
+            {isCustomRate && (
+              <CCol>
+                <FormLabel required>Financial Organization</FormLabel>
+                <CFormSelect
+                  {...register("financial_organization_id", {
+                    required: {
+                      value: true,
+                      message: "Please select a financial organization",
+                    },
+                  })}
+                  invalid={errors?.financial_organization_id as any}
+                  feedbackInvalid={errors?.financial_organization_id?.message as any}
+                  disabled={isFinancialOrganizationsLoading}>
+                  <option value="">Select Financial Organization</option>
+                  {financialOrganizations?.data?.map((organization: any) => (
+                    <option value={organization.id} key={organization.id}>
+                      {organization.name}
+                    </option>
+                  ))}
+                </CFormSelect>
+              </CCol>
+            )}
             <CCol>
               <FormLabel required>Bank Rate</FormLabel>
               <CFormInput
@@ -182,6 +208,23 @@ export const PaymentService = ({ id, changeTab }: any) => {
                 feedbackInvalid={errors?.merchant_service_fee?.message as any}
               />
             </CCol>
+          </CRow>
+          <CRow>
+            <CCol>
+              <FormLabel>API Key & Pass</FormLabel>
+              <CFormTextarea
+                rows={4}
+                placeholder="Enter API Key & Pass"
+                {...register("api_key", {
+                  required: {
+                    value: true,
+                    message: "Please enter the API key & pass",
+                  },
+                })}
+                invalid={errors?.api_key as any}
+                feedbackInvalid={errors?.api_key?.message as any}
+              />
+            </CCol>
             <CCol>
               <FormLabel required>Status</FormLabel>
               <div className="d-flex gap-3">
@@ -198,44 +241,6 @@ export const PaymentService = ({ id, changeTab }: any) => {
                 />
                 <CFormCheck type="radio" label="Inactive" value="inactive" {...register("status")} />
               </div>
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol>
-              <FormLabel required>API Key</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter API Key"
-                {...register("api_key", {
-                  required: {
-                    value: true,
-                    message: "Please enter the API key",
-                  },
-                })}
-                invalid={errors?.api_key as any}
-                feedbackInvalid={errors?.api_key?.message as any}
-              />
-            </CCol>
-            <CCol>
-              <FormLabel required>Secret</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Secret"
-                {...register("secret", {
-                  required: {
-                    value: true,
-                    message: "Please enter the secret",
-                  },
-                })}
-                invalid={errors?.secret as any}
-                feedbackInvalid={errors?.secret?.message as any}
-              />
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol>
-              <FormLabel>Note</FormLabel>
-              <CFormTextarea rows={4} placeholder="Enter Note" {...register("note")} />
             </CCol>
           </CRow>
         </Card>

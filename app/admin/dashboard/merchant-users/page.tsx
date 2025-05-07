@@ -53,7 +53,7 @@ const columns: DataTableColumn = [
   },
 ]
 
-const Bank = () => (
+const MerchantUserList = () => (
   <DataTablePage
     apiFunction={useUsersQuery}
     defaultParams={{ merchant_user: true }}
@@ -65,4 +65,4 @@ const Bank = () => (
   />
 )
 
-export default Bank
+export default MerchantUserList

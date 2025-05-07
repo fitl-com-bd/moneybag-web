@@ -1,7 +1,6 @@
 "use client"
 import { TabItem, Tabs } from "@/components/ui"
-import { useRouter, useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { useParams } from "@/hooks"
 import { BusinessDetails } from "./_components/BusinessDetails"
 import { BusinessRepresentative } from "./_components/BusinessRepresentative"
 import { PaymentService } from "./_components/PaymentService"
@@ -34,20 +33,12 @@ const tabItems = (tabProps: any = {}): TabItem[] => [
 ]
 
 const CreateMerchant = () => {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const id = searchParams.get("id")
-  const [activeTab, setActiveTab] = useState<string>("business_details")
+  const [id, setId] = useParams<number | null>("id", null)
+  const [activeTab, setActiveTab] = useParams<string>("tab", "business_details")
 
   const changeTab = (value: string) => {
     setActiveTab(value)
     window.scrollTo({ top: 0, behavior: "smooth" })
-  }
-
-  const setId = (id: string) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set("id", id)
-    router.push(`?${params.toString()}`)
   }
 
   return (

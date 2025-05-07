@@ -3,11 +3,12 @@ import { formatCurrency } from "@/utils"
 import moment from "moment"
 
 export const BusinessRepresentative = ({ id, data }: any) => {
+  const businessDetails = data?.business_detail || {}
   const representative = data?.business_representative || {}
 
   return (
     <>
-      <SectionHeader title={representative?.business_name} subtitle={representative?.category?.name} />
+      <SectionHeader title={businessDetails?.business_name} subtitle={businessDetails?.category?.name} />
       <Card>
         <div className="d-grid grid-cols-3">
           <div className="fw-semibold p-2.5">NID:</div>

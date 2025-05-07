@@ -6,3 +6,4 @@ export const useAppDispatch: () => StoreDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<StoreState> = useSelector
 
 export * from "./useAuth"
+export * from "./useParams"

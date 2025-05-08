@@ -60,6 +60,7 @@ const MERCHANT_NAV: NavType = [
     component: CNavGroup,
     name: "Customer Invoice",
     icon: <Icon name="invoice" className="nav-icon" />,
+    href: "",
     items: [
       {
         component: CNavItem,
@@ -86,6 +87,7 @@ const MERCHANT_NAV: NavType = [
     component: CNavGroup,
     name: "Report",
     icon: <Icon name="report" className="nav-icon" />,
+    href: "",
     items: [
       {
         component: CNavItem,
@@ -268,5 +270,7 @@ export const AppSidebarNav = () => {
     )
   }
 
-  return <>{navbarItems.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))}</>
+  return (
+    <>{navbarItems.map((item: any, index: number) => (item.items ? navGroup(item, index) : navItem(item, index)))}</>
+  )
 }

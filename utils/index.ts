@@ -12,6 +12,8 @@ export const cn = (...classes: ClassValue[]) => clsx(classes)
 export const isBrowser = () => typeof window !== "undefined"
 
 export const handleSingout = () => {
+  if (!isBrowser()) return
+
   localStorage.removeItem(LS_TOKEN)
   const isAdmin = window.location.pathname.startsWith("/admin")
   window.location.href = config.SIGN_IN_URL
@@ -44,11 +46,11 @@ export const isUrl = (string: string) => {
   return true
 }
 
-export const getRandomFromArray = (numbers = []) => numbers[Math.floor(Math.random() * numbers.length)]
+export const getRandomFromArray = (numbers: any[] = []) => numbers[Math.floor(Math.random() * numbers.length)]
 
-export const formatPrice = (price = "0") => parseFloat(price).toFixed(2)
+export const formatPrice = (price: any = "0") => parseFloat(price).toFixed(2)
 
-export const formatCurrency = (price = "0", currency = "BDT") => `${currency} ${formatPrice(price)}`
+export const formatCurrency = (price: any = "0", currency = "BDT") => `${currency} ${formatPrice(price)}`
 
 export const formatNumberWithPadding = (number: number, minimumDigits = 2) =>
   number.toString().padStart(minimumDigits, "0")

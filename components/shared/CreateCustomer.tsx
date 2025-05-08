@@ -54,7 +54,9 @@ export const CreateCustomer = ({ show, setShow, onConfirm, onError, onClose }: C
   return (
     <CModal visible={show} onClose={handleClose} aria-labelledby="createCustomer" alignment="center" backdrop="static">
       <CForm onSubmit={handleSubmit(onSubmit)}>
-        <CModalHeader onClose={handleClose}>
+        <CModalHeader
+        // onClose={handleClose}
+        >
           <CModalTitle id="createCustomer">Create Customer</CModalTitle>
         </CModalHeader>
         <CModalBody className="row">

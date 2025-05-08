@@ -5,7 +5,7 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 export const settlementApi = createApi({
   reducerPath: "settlementApi",
   baseQuery,
-  tagTypes: ["Settlement", "EligibleSettlement", "SettlementMerchants"],
+  tagTypes: ["Settlements", "EligibleSettlement", "SettlementMerchants"],
   endpoints: builder => ({
     // /api/v2/settlements
     settlements: builder.query({

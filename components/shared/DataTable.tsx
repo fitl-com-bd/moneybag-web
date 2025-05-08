@@ -3,8 +3,6 @@ import { DataTableColumn, OptionType } from "@/types"
 import { formatSearch, getRandomNumber } from "@/utils"
 import {
   CButton,
-  CCard,
-  CCardBody,
   CCardTitle,
   CCol,
   CCollapse,
@@ -14,8 +12,6 @@ import {
   CFormSelect,
   CTooltip,
 } from "@coreui/react"
-import classNames from "classnames"
-import isBoolean from "lodash/isBoolean"
 import isString from "lodash/isString"
 import Link from "next/link"
 import { ReactNode, useState } from "react"

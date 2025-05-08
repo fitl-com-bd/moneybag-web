@@ -1,5 +1,6 @@
 "use client"
 import { TabItem, Tabs } from "@/components/ui"
+import { isBrowser } from "@/utils"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { BasicInformation } from "./_components/BasicInformation"
@@ -32,6 +33,7 @@ const CreateFintech = () => {
 
   const changeTab = (value: string) => {
     setActiveTab(value)
+    if (!isBrowser()) return
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 

@@ -43,8 +43,8 @@ const Invoice = () => {
             name="Create Invoice"
             href="/dashboard/invoice/create"
             icon="addInvoice"
-            filter={filter}
-            setFilter={setFilter}
+            // filter={filter}
+            // setFilter={setFilter}
           />
         }
         subHeader

@@ -12,7 +12,7 @@ const IntegrationDetails = () => {
   const [activeKey, setActiveKey] = useState(1)
   return (
     <div className="shadow-sm bg-white border-0 rounded overflow-hidden p-3">
-      <CNav variant="underline" role="tablist" className="mb-3">
+      <CNav variant={"underline" as any} role="tablist" className="mb-3">
         <CNavItem role="presentation">
           <CNavLink
             active={activeKey === 1}

@@ -2,6 +2,7 @@
 import { TabItem, Tabs } from "@/components/ui"
 import { useParams } from "@/hooks"
 import { useMerchantDetailsQuery } from "@/store"
+import { isBrowser } from "@/utils"
 import { BusinessDetails } from "./_components/BusinessDetails"
 import { BusinessRepresentative } from "./_components/BusinessRepresentative"
 import { PaymentService } from "./_components/PaymentService"
@@ -61,6 +62,7 @@ const CreateMerchant = () => {
 
   const changeTab = (value: string) => {
     setActiveTab(value)
+    if (!isBrowser()) return
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 

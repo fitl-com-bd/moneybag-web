@@ -39,6 +39,6 @@ export default sweetAlertSlice.reducer
 
 export const toggleSweetAlert = () => sweetAlertToggled()
 
-export const showSweetAlert = props => sweetAlertShowed(props)
+export const showSweetAlert = (props: any) => sweetAlertShowed(props)
 
 export const hideSweetAlert = () => sweetAlertHided()

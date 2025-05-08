@@ -2,23 +2,11 @@
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { useAllBranchesQuery, useBanksQuery, useCreateMerchantBankAccountMutation } from "@/store"
 import { getErrorMessage, Swal } from "@/utils"
-import {
-  CCardBody,
-  CCardLink,
-  CCardTitle,
-  CCol,
-  CForm,
-  CFormCheck,
-  CFormInput,
-  CFormSelect,
-  CFormSwitch,
-  CFormTextarea,
-  CRow,
-} from "@coreui/react"
+import { CCol, CForm, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
-export const SettlementBank = ({ id, changeTab }: any) => {
+export const SettlementBank = ({ id, changeTab, defaultValues }: any) => {
   const {
     register,
     handleSubmit,
@@ -27,7 +15,7 @@ export const SettlementBank = ({ id, changeTab }: any) => {
     setError,
     clearErrors,
     formState: { errors, isValid },
-  } = useForm()
+  } = useForm({ defaultValues })
 
   const [createMerchantBankAccount, { isLoading }] = useCreateMerchantBankAccountMutation()
   const { data: banks, isLoading: isBanksLoading } = useBanksQuery({})

@@ -34,37 +34,84 @@ const tabItems = (tabProps: any = {}): TabItem[] => [
   },
 ]
 
+const getDefaultValues = (data: any, activeTab: string) => {
+  let defaultValues = {}
+  if (activeTab === "business_details") {
+    defaultValues = {
+      bin_no: data?.business_detail?.bin_no || "",
+      bleeding: data?.business_detail?.bleeding || false,
+      business_desc: data?.business_detail?.business_desc || "",
+      business_email: data?.business_detail?.business_email || "",
+      business_name: data?.business_detail?.business_name || "",
+      business_phone: data?.business_detail?.business_phone || "",
+      business_short_name: data?.business_detail?.business_short_name || "",
+      business_website: data?.business_detail?.business_website || "",
+      city_id: data?.business_detail?.city_id || "",
+      district_id: data?.business_detail?.district_id || "",
+      division_id: data?.business_detail?.division_id || "",
+      legal_identity: data?.business_detail?.legal_identity || "",
+      max_ticket_size: data?.business_detail?.max_ticket_size || "",
+      merchant_category_id: data?.business_detail?.merchant_category_id || "",
+      merchant_status: data?.business_detail?.merchant_status || "active",
+      postal_code: data?.business_detail?.postal_code || "",
+      street: data?.business_detail?.street || "",
+    }
+  }
+  if (activeTab === "business_representative") {
+    defaultValues = {
+      birthdate: data?.business_representative?.birthdate || "",
+      city_id: data?.business_representative?.city_id || 1,
+      district_id: data?.business_representative?.district_id || 1,
+      division_id: data?.business_representative?.division_id || 1,
+      email: data?.business_representative?.email || "",
+      first_name: data?.business_representative?.first_name || "",
+      is_merchant_user: data?.business_representative?.is_merchant_user || false,
+      last_name: data?.business_representative?.last_name || "",
+      nid_number: data?.business_representative?.nid_number || "",
+      password: data?.business_representative?.password || "",
+      phone: data?.business_representative?.phone || "",
+      postal_code: data?.business_representative?.postal_code || "",
+      street: data?.business_representative?.street || "",
+    }
+  }
+  if (activeTab === "payment_service") {
+    defaultValues = {
+      is_custom_rate: data?.payment_service?.is_custom_rate || false,
+      financial_organization_id: data?.payment_service?.financial_organization_id || "",
+      rate_type: data?.payment_service?.rate_type || "",
+      moneybag_rate: data?.payment_service?.moneybag_rate || "",
+      bank_rate: data?.payment_service?.bank_rate || "",
+      total_rate: data?.payment_service?.total_rate || "",
+      api_key: data?.payment_service?.api_key || "",
+      note: data?.payment_service?.note || "",
+      is_active: data?.payment_service?.is_active || false,
+    }
+  }
+  if (activeTab === "settlement_bank") {
+    defaultValues = {
+      account_name: data.settlement_bank?.account_name || "",
+      account_number: data.settlement_bank?.account_number || "",
+      branch_id: data.settlement_bank?.branch_id || "",
+      notes: data.settlement_bank?.notes || "",
+    }
+  }
+  return defaultValues
+}
+
 const CreateMerchant = () => {
   const [id, setId] = useParams<number | null>("id", null)
   const [activeTab, setActiveTab] = useParams<string>("tab", "business_details")
   const { data, isFetching, isLoading } = useMerchantDetailsQuery(id as number, {
     skip: !id,
   })
-  const defaultValues = {
-    bin_no: data?.business_detail?.bin_no || "",
-    bleeding: data?.business_detail?.bleeding || false,
-    business_desc: data?.business_detail?.business_desc || "",
-    business_email: data?.business_detail?.business_email || "",
-    business_name: data?.business_detail?.business_name || "",
-    business_phone: data?.business_detail?.business_phone || "",
-    business_short_name: data?.business_detail?.business_short_name || "",
-    business_website: data?.business_detail?.business_website || "",
-    city_id: data?.business_detail?.city_id || 1,
-    district_id: data?.business_detail?.district_id || 1,
-    division_id: data?.business_detail?.division_id || 1,
-    legal_identity: data?.business_detail?.legal_identity || "",
-    max_ticket_size: data?.business_detail?.max_ticket_size || 0,
-    merchant_category_id: data?.business_detail?.merchant_category_id || 1,
-    merchant_status: data?.business_detail?.merchant_status || "active",
-    postal_code: data?.business_detail?.postal_code || "",
-    street: data?.business_detail?.street || "",
-  }
 
   const changeTab = (value: string) => {
     setActiveTab(value)
     if (!isBrowser()) return
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
+
+  const defaultValues = getDefaultValues(data, activeTab)
 
   return (
     <Tabs

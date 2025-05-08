@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export const PaymentService = ({ id, changeTab }: any) => {
+export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
   const {
     register,
     handleSubmit,
@@ -32,7 +32,7 @@ export const PaymentService = ({ id, changeTab }: any) => {
     setError,
     clearErrors,
     formState: { errors, isValid },
-  } = useForm()
+  } = useForm({ defaultValues })
 
   const [createMerchantPaymentService, { isLoading }] = useCreateMerchantPaymentServiceMutation()
   const { data: paymentProviders, isLoading: isProvidersLoading } = usePaymentProvidersQuery({})

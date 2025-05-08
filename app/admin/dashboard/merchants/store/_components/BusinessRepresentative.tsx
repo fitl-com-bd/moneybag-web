@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export const BusinessRepresentative = ({ id, changeTab }: any) => {
+export const BusinessRepresentative = ({ id, changeTab, defaultValues }: any) => {
   const {
     register,
     handleSubmit,
@@ -20,7 +20,7 @@ export const BusinessRepresentative = ({ id, changeTab }: any) => {
     setError,
     clearErrors,
     formState: { errors, isValid },
-  } = useForm()
+  } = useForm({ defaultValues })
   const [createMerchantRepresentative, { isLoading }] = useCreateMerchantRepresentativeMutation()
   const [merchantNidSearch] = useMerchantNidMutation()
   const router = useRouter()

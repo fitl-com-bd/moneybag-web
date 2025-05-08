@@ -26,7 +26,7 @@ const STATUS = [
   { label: "Draft", value: "DRAFT" },
 ]
 
-export const BusinessDetails = ({ setId, changeTab }: any) => {
+export const BusinessDetails = ({ setId, changeTab, defaultValues }: any) => {
   const {
     register,
     handleSubmit,
@@ -36,7 +36,7 @@ export const BusinessDetails = ({ setId, changeTab }: any) => {
     clearErrors,
     setValue,
     formState: { errors, isValid },
-  } = useForm()
+  } = useForm({ defaultValues })
 
   const [createBusinessDetails, { isLoading }] = useCreateBusinessDetailsMutation()
   const router = useRouter()

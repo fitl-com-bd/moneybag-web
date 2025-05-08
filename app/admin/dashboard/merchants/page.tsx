@@ -68,7 +68,7 @@ const Merchants = () => (
       { label: "Inactive", value: "0" },
     ]}
     actionsProps={{
-      href: "merchants/create",
+      href: "merchants/store",
     }}
   />
 )

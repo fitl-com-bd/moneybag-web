@@ -1,5 +1,6 @@
 "use client"
 import { TabItem, Tabs } from "@/components/ui"
+import { useParams } from "@/hooks"
 import { useMerchantDetailsQuery } from "@/store"
 import { FC } from "react"
 import { BusinessDetails } from "./_components/BusinessDetails"
@@ -54,11 +55,12 @@ const tabItems = (tabProps: any = {}): TabItem[] => [
 
 const MerchantDetails: FC<MerchantDetailsProps> = ({ params }) => {
   const id = parseInt(params.id)
+  const [activeTab, setActiveTab] = useParams<string>("tab", "business_details")
   const { data, isFetching, isLoading } = useMerchantDetailsQuery(id)
   const tabProps = { id, data }
   // useMerchantDetailsQuery
 
-  return <Tabs items={tabItems(tabProps)} />
+  return <Tabs items={tabItems(tabProps)} activeTab={activeTab} onTabChange={setActiveTab} />
 }
 
 export default MerchantDetails

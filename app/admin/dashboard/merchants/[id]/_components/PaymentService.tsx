@@ -61,7 +61,7 @@ export const PaymentService = ({ id, data }: any) => {
         title="Merchant Service"
         columns={columns}
         actionsProps={{
-          href: `${id}/edit`,
+          href: `store?id=${id}`,
           name: "Add New Service",
         }}
       />

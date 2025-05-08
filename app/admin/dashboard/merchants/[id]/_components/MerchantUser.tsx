@@ -64,7 +64,7 @@ export const MerchantUser = ({ id, data }: any) => {
         title="Merchant User List"
         columns={columns}
         actionsProps={{
-          href: `${id}/edit`,
+          href: `store?id=${id}`,
         }}
       />
     </>

@@ -27,7 +27,7 @@ export const SettlementBank = ({ id, data }: any) => {
         </div>
       </Card>
       <FormFooter>
-        <Button href={`${id}/edit`}>Edit</Button>
+        <Button href={`store?id=${id}`}>Edit</Button>
       </FormFooter>
     </>
   )

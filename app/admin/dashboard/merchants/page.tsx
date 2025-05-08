@@ -46,7 +46,7 @@ const columns: DataTableColumn = [
           </Link>
         </CTooltip>
         <CTooltip content="Update">
-          <Link href={`merchants/${row.id}/edit`}>
+          <Link href={`merchants/store?id=${row.id}`}>
             <CButton color="light" size="sm" className="btn-icon">
               <Icon name="edit" size={24} />
             </CButton>

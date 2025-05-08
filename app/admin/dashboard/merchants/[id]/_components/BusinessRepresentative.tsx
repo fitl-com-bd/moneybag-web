@@ -43,7 +43,7 @@ export const BusinessRepresentative = ({ id, data }: any) => {
         </div>
       </Card>
       <FormFooter>
-        <Button href={`${id}/edit`}>Edit</Button>
+        <Button href={`store?id=${id}&tab=business_representative`}>Edit</Button>
       </FormFooter>
     </>
   )

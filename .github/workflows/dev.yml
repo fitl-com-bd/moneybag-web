@@ -63,3 +63,4 @@ jobs:
               pmois/moneybag:moneybag-portal-next-${{ github.sha }} || echo "Docker run failed"
             
             docker logout
+            

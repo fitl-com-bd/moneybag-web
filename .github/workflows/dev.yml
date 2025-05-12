@@ -61,7 +61,6 @@ jobs:
             docker run -d --name moneybag-portal-next \
               -p 7009:7009 \
               pmois/moneybag:moneybag-portal-next-${{ github.sha }} || echo "Docker run failed"
-            
             docker logout
-            
+
             

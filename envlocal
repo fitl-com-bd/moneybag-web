@@ -1,0 +1,2 @@
+NEXT_PUBLIC_API_URL=https://staging-api.moneybag.com.bd/api/v2/
+NEXT_PUBLIC_MANUAL_PAYMENT_LINK=https://dev.moneybag.com.bd/merchant-payment/?mrid=

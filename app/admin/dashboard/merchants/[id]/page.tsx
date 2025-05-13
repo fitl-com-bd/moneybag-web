@@ -2,6 +2,7 @@
 import { TabItem, Tabs } from "@/components/ui"
 import { useParams } from "@/hooks"
 import { useMerchantDetailsQuery } from "@/store"
+import { scrollToTop } from "@/utils"
 import { FC } from "react"
 import { BusinessDetails } from "./_components/BusinessDetails"
 import { BusinessRepresentative } from "./_components/BusinessRepresentative"
@@ -55,12 +56,17 @@ const tabItems = (tabProps: any = {}): TabItem[] => [
 
 const MerchantDetails: FC<MerchantDetailsProps> = ({ params }) => {
   const id = parseInt(params.id)
-  const [activeTab, setActiveTab] = useParams<string>("tab", "business_details")
+  const [prams, setParams] = useParams()
+  const tab = prams?.tab || "business_details"
   const { data, isFetching, isLoading } = useMerchantDetailsQuery(id)
   const tabProps = { id, data }
-  // useMerchantDetailsQuery
 
-  return <Tabs items={tabItems(tabProps)} activeTab={activeTab} onTabChange={setActiveTab} />
+  const setActiveTab = (value: string) => {
+    setParams({ tab: value })
+    scrollToTop()
+  }
+
+  return <Tabs items={tabItems(tabProps)} activeTab={tab} onTabChange={setActiveTab} />
 }
 
 export default MerchantDetails

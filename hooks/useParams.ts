@@ -1,24 +1,26 @@
 import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react"
 
-export const useParams = <T>(paramName: string, defaultValue: T): [T, (value: T) => void] => {
+export const useParams = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  const paramValue = (searchParams.get(paramName) as T) || defaultValue
+  const params: any = Object.fromEntries(searchParams.entries())
 
-  const setParamValue = useCallback(
-    (value: T) => {
+  const setParams = useCallback(
+    (newParams: any) => {
       const params = new URLSearchParams(searchParams.toString())
-      if (value === null || value === undefined) {
-        params.delete(paramName)
-      } else {
-        params.set(paramName, String(value))
-      }
+      Object.entries(newParams).forEach(([key, value]) => {
+        if (value === null || value === undefined) {
+          params.delete(key)
+        } else {
+          params.set(key, String(value))
+        }
+      })
       router.push(`?${params.toString()}`)
     },
-    [searchParams, router, paramName]
+    [searchParams, router]
   )
 
-  return [paramValue, setParamValue]
+  return [params, setParams]
 }

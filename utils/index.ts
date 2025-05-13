@@ -11,6 +11,11 @@ export const cn = (...classes: ClassValue[]) => clsx(classes)
 
 export const isBrowser = () => typeof window !== "undefined"
 
+export const scrollToTop = () => {
+  if (!isBrowser()) return
+  window.scrollTo({ top: 0, behavior: "smooth" })
+}
+
 export const handleSingout = () => {
   if (!isBrowser()) return
 

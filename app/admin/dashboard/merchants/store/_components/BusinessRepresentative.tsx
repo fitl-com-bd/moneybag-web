@@ -4,10 +4,11 @@ import { useAddressQuery } from "@/store"
 import {
   useCreateMerchantRepresentativeMutation,
   useMerchantNidMutation,
+  useUpdateMerchantRepresentativeMutation,
 } from "@/store/features/api/merchantServiceApi"
 import { getDistrictsByDivision, getDivisions, getErrorMessage, handleErrorResponse, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
-import { useRouter } from "next/navigation"
+import isEmpty from "lodash/isEmpty"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
@@ -21,9 +22,11 @@ export const BusinessRepresentative = ({ id, changeTab, defaultValues }: any) =>
     clearErrors,
     formState: { errors, isValid },
   } = useForm({ defaultValues })
-  const [createMerchantRepresentative, { isLoading }] = useCreateMerchantRepresentativeMutation()
+  const isCreate = isEmpty(defaultValues)
+  const [createMerchantRepresentative, { isLoading: isCreateLoading }] = useCreateMerchantRepresentativeMutation()
+  const [updateMerchantRepresentative, { isLoading: isUpdateLoading }] = useUpdateMerchantRepresentativeMutation()
+  const isLoading = isCreateLoading || isUpdateLoading
   const [merchantNidSearch] = useMerchantNidMutation()
-  const router = useRouter()
   const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
   const selectedDivision = watch("division_id")
 
@@ -34,7 +37,7 @@ export const BusinessRepresentative = ({ id, changeTab, defaultValues }: any) =>
       city_id: 1,
     }
 
-    const response = await createMerchantRepresentative(arg)
+    const response = await (isCreate ? createMerchantRepresentative(arg) : updateMerchantRepresentative(arg))
 
     if (response?.error) {
       handleErrorResponse(response, setError)

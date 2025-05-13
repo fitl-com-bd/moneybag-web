@@ -3,6 +3,7 @@ import { TabItem, Tabs } from "@/components/ui"
 import { useParams } from "@/hooks"
 import { useMerchantDetailsQuery } from "@/store"
 import { isBrowser, scrollToTop } from "@/utils"
+import moment from "moment"
 import { BusinessDetails } from "./_components/BusinessDetails"
 import { BusinessRepresentative } from "./_components/BusinessRepresentative"
 import { PaymentService } from "./_components/PaymentService"
@@ -64,7 +65,7 @@ const getDefaultValues = (data: any, activeTab: string) => {
     const hasBusinessRepresentative = !!data?.business_representative
     if (!hasBusinessRepresentative) return defaultValues
     defaultValues = {
-      birthdate: data?.business_representative?.birthdate || "",
+      birthdate: moment(data?.business_representative?.birthdate).format("YYYY-MM-DD") || "",
       city_id: data?.business_representative?.city_id || 1,
       district_id: data?.business_representative?.district_id || 1,
       division_id: data?.business_representative?.division_id || 1,

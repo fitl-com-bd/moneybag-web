@@ -2,7 +2,7 @@
 import { TabItem, Tabs } from "@/components/ui"
 import { useParams } from "@/hooks"
 import { useMerchantDetailsQuery } from "@/store"
-import { isBrowser } from "@/utils"
+import { isBrowser, scrollToTop } from "@/utils"
 import { BusinessDetails } from "./_components/BusinessDetails"
 import { BusinessRepresentative } from "./_components/BusinessRepresentative"
 import { PaymentService } from "./_components/PaymentService"
@@ -37,6 +37,8 @@ const tabItems = (tabProps: any = {}): TabItem[] => [
 const getDefaultValues = (data: any, activeTab: string) => {
   let defaultValues = {}
   if (activeTab === "business_details") {
+    const hasBusinessDetails = !!data?.business_detail
+    if (!hasBusinessDetails) return defaultValues
     defaultValues = {
       bin_no: data?.business_detail?.bin_no || "",
       bleeding: data?.business_detail?.bleeding || false,
@@ -58,6 +60,8 @@ const getDefaultValues = (data: any, activeTab: string) => {
     }
   }
   if (activeTab === "business_representative") {
+    const hasBusinessRepresentative = !!data?.business_representative
+    if (!hasBusinessRepresentative) return defaultValues
     defaultValues = {
       birthdate: data?.business_representative?.birthdate || "",
       city_id: data?.business_representative?.city_id || 1,
@@ -99,26 +103,26 @@ const getDefaultValues = (data: any, activeTab: string) => {
 }
 
 const CreateMerchant = () => {
-  const [id, setId] = useParams<number | null>("id", null)
-  const [activeTab, setActiveTab] = useParams<string>("tab", "business_details")
+  const [prams, setParams] = useParams()
+  const id = parseInt(prams?.id as string)
+  const tab = prams?.tab || "business_details"
   const { data, isFetching, isLoading } = useMerchantDetailsQuery(id as number, {
     skip: !id,
   })
 
   const changeTab = (value: string) => {
-    setActiveTab(value)
-    if (!isBrowser()) return
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    setParams({ tab: value })
+    scrollToTop()
   }
 
-  const defaultValues = getDefaultValues(data, activeTab)
+  const defaultValues = getDefaultValues(data, tab)
 
   return (
     <Tabs
       title="Add New Merchant"
-      items={tabItems({ id, setId, changeTab, defaultValues })}
-      activeTab={activeTab}
-      onTabChange={setActiveTab}
+      items={tabItems({ id, changeTab, defaultValues })}
+      activeTab={tab}
+      onTabChange={changeTab}
     />
   )
 }

@@ -1,10 +1,15 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
-import { useAddressQuery, useCreateBusinessDetailsMutation, useMerchantCategoriesQuery } from "@/store"
-import { getDistrictsByDivision, getDivisions, getErrorMessage, handleErrorResponse, Swal } from "@/utils"
+import { useParams } from "@/hooks"
+import {
+  useAddressQuery,
+  useCreateBusinessDetailsMutation,
+  useMerchantCategoriesQuery,
+  useUpdateBusinessDetailsMutation,
+} from "@/store"
+import { getDistrictsByDivision, getDivisions, getErrorMessage, handleErrorResponse, scrollToTop, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormSwitch, CFormTextarea, CRow } from "@coreui/react"
-import { useRouter } from "next/navigation"
-import React from "react"
+import isEmpty from "lodash/isEmpty"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
@@ -26,7 +31,7 @@ const STATUS = [
   { label: "Draft", value: "DRAFT" },
 ]
 
-export const BusinessDetails = ({ setId, changeTab, defaultValues }: any) => {
+export const BusinessDetails = ({ defaultValues }: any) => {
   const {
     register,
     handleSubmit,
@@ -37,9 +42,11 @@ export const BusinessDetails = ({ setId, changeTab, defaultValues }: any) => {
     setValue,
     formState: { errors, isValid },
   } = useForm({ defaultValues })
-
-  const [createBusinessDetails, { isLoading }] = useCreateBusinessDetailsMutation()
-  const router = useRouter()
+  const isCreate = isEmpty(defaultValues)
+  const [_, setParams] = useParams()
+  const [createBusinessDetails, { isLoading: isCreateLoading }] = useCreateBusinessDetailsMutation()
+  const [updateBusinessDetails, { isLoading: isUpdateLoading }] = useUpdateBusinessDetailsMutation()
+  const isLoading = isCreateLoading || isUpdateLoading
   const { data: addressData, isLoading: isAddressLoading } = useAddressQuery({})
   const { data: merchantCategories, isLoading: isCategoriesLoading } = useMerchantCategoriesQuery({})
   const selectedDivision = watch("division_id")
@@ -50,7 +57,7 @@ export const BusinessDetails = ({ setId, changeTab, defaultValues }: any) => {
       ...data,
       city_id: 1,
     }
-    const response = await createBusinessDetails(arg)
+    const response = await (isCreate ? createBusinessDetails(arg) : updateBusinessDetails(arg))
 
     if (response?.error) {
       handleErrorResponse(response, setError)
@@ -64,8 +71,9 @@ export const BusinessDetails = ({ setId, changeTab, defaultValues }: any) => {
 
     if (response?.data?.success) {
       toast.success(response?.data?.message)
-      setId(response?.data?.data?.merchant_id)
-      changeTab("business_representative")
+      const id = response?.data?.data?.merchant_id
+      setParams({ id, tab: "business_representative" })
+      scrollToTop()
     }
   }
 

@@ -57,6 +57,7 @@ const getDefaultValues = (data: any, activeTab: string) => {
       merchant_status: data?.business_detail?.merchant_status || "active",
       postal_code: data?.business_detail?.postal_code || "",
       street: data?.business_detail?.street || "",
+      industry_type: data?.business_detail?.category?.id || "",
     }
   }
   if (activeTab === "business_representative") {

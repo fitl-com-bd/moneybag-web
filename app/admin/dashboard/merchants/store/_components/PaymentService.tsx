@@ -46,9 +46,19 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
   })
 
   const onSubmit = async (data: any) => {
+    let api_key = ""
+    try {
+      api_key = JSON.parse(data.api_key)
+    } catch (error) {
+      return setError("api_key", {
+        type: "manual",
+        message: "Invalid API key format",
+      })
+    }
+
     const arg: MerchantPaymentServicePayload = {
       merchant_id: id,
-      api_key: JSON.parse(data.api_key),
+      api_key,
       bank_rate: data.bank_rate,
       is_active: data.status === "active",
       is_custom_rate: data.custom_rate || false,

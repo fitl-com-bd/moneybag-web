@@ -33,7 +33,6 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
     clearErrors,
     formState: { errors, isValid },
   } = useForm({ defaultValues })
-
   const [createMerchantPaymentService, { isLoading }] = useCreateMerchantPaymentServiceMutation()
   const { data: paymentProviders, isLoading: isProvidersLoading } = usePaymentProvidersQuery({})
   const router = useRouter()

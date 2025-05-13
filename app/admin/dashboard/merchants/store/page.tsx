@@ -81,6 +81,8 @@ const getDefaultValues = (data: any, activeTab: string) => {
     }
   }
   if (activeTab === "payment_service") {
+    const hasPaymentService = !!data?.payment_service
+    if (!hasPaymentService) return defaultValues
     defaultValues = {
       is_custom_rate: data?.payment_service?.is_custom_rate || false,
       financial_organization_id: data?.payment_service?.financial_organization_id || "",

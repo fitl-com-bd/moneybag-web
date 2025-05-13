@@ -142,6 +142,15 @@ export const merchantServiceApi = createApi({
       }),
       invalidatesTags: ["Merchants", "MerchantDetails"],
     }),
+    // PUT: /api/v2/payment-configs/merchant-payment-services/{service_id}
+    updateMerchantPaymentService: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `payment-configs/merchant-payment-services/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Merchants", "MerchantDetails"],
+    }),
   }),
 })
 
@@ -158,4 +167,5 @@ export const {
   useMerchantPaymentServiceQuery,
   useUpdateBusinessDetailsMutation,
   useUpdateMerchantRepresentativeMutation,
+  useUpdateMerchantPaymentServiceMutation,
 } = merchantServiceApi

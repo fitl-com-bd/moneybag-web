@@ -53,11 +53,11 @@ const getDefaultValues = (data: any, activeTab: string) => {
       division_id: data?.business_detail?.division_id || "",
       legal_identity: data?.business_detail?.legal_identity || "",
       max_ticket_size: data?.business_detail?.max_ticket_size || "",
-      merchant_category_id: data?.business_detail?.merchant_category_id || "",
       merchant_status: data?.business_detail?.merchant_status || "active",
       postal_code: data?.business_detail?.postal_code || "",
       street: data?.business_detail?.street || "",
       industry_type: data?.business_detail?.category?.id || "",
+      merchant_category_id: data?.business_detail?.category?.id || "",
     }
   }
   if (activeTab === "business_representative") {

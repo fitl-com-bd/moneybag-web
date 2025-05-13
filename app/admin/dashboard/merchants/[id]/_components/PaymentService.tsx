@@ -9,7 +9,7 @@ const columns: DataTableColumn = [
   {
     name: "Service",
     sortable: true,
-    selector: row => row.default_payment_service_id,
+    selector: row => row.payment_provider.name,
   },
   {
     name: "Financial Org",

@@ -154,5 +154,6 @@ export const getErrorMessage = (error: any) => {
     // return `${field}: ${msg}`
     return msg
   }
-  return "Something went wrong"
+  const msg = error?.data?.message || "Something went wrong"
+  return msg
 }

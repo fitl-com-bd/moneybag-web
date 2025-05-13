@@ -41,7 +41,7 @@ export const merchantServiceApi = createApi({
         method: "POST",
         body: businessDetails,
       }),
-      invalidatesTags: ["Merchants"],
+      invalidatesTags: ["Merchants", "MerchantDetails"],
     }),
     // /api/v2/merchants/{merchant_id}/representatives
     createMerchantRepresentative: builder.mutation({
@@ -50,7 +50,7 @@ export const merchantServiceApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Merchants"],
+      invalidatesTags: ["Merchants", "MerchantDetails"],
     }),
     // /api/v2/merchants/nid-details
     merchantNid: builder.mutation({
@@ -131,7 +131,7 @@ export const merchantServiceApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["Merchants"],
+      invalidatesTags: ["Merchants", "MerchantDetails"],
     }),
     // PUT: /api/v2/merchants/{merchant_id}/representatives
     updateMerchantRepresentative: builder.mutation({
@@ -140,7 +140,7 @@ export const merchantServiceApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["Merchants"],
+      invalidatesTags: ["Merchants", "MerchantDetails"],
     }),
   }),
 })

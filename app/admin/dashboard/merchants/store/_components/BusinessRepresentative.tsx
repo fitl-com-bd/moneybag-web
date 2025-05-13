@@ -193,60 +193,64 @@ export const BusinessRepresentative = ({ id, changeTab, defaultValues }: any) =>
               />
             </CCol>
           </CRow>
-          <CRow>
-            <CCol>
-              <CFormCheck
-                type="checkbox"
-                {...register("is_merchant_user")}
-                label="Is Merchant User (Merchant Admin)"
-                id="isMerchantUser"
-              />
-            </CCol>
-          </CRow>
+          {isCreate && (
+            <CRow>
+              <CCol>
+                <CFormCheck
+                  type="checkbox"
+                  {...register("is_merchant_user")}
+                  label="Is Merchant User (Merchant Admin)"
+                  id="isMerchantUser"
+                />
+              </CCol>
+            </CRow>
+          )}
         </Card>
-        <Card className="space-y-6">
-          <CRow>
-            <CCol>
-              <FormLabel required>Password</FormLabel>
-              <CFormInput
-                type="password"
-                placeholder="Enter Password"
-                {...register("password", {
-                  required: {
-                    value: true,
-                    message: "Please enter the password",
-                  },
-                  minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters long",
-                  },
-                  pattern: {
-                    value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).*$/,
-                    message: "Password must contain at least one letter, one number, and one special character",
-                  },
-                })}
-                invalid={errors?.password as any}
-                feedbackInvalid={errors?.password?.message as any}
-              />
-            </CCol>
-            <CCol>
-              <FormLabel required>Confirm Password</FormLabel>
-              <CFormInput
-                type="password"
-                placeholder="Confirm Password"
-                {...register("confirm_password", {
-                  required: {
-                    value: true,
-                    message: "Please confirm the password",
-                  },
-                  validate: value => value === watch("password") || "Passwords do not match",
-                })}
-                invalid={errors?.confirm_password as any}
-                feedbackInvalid={errors?.confirm_password?.message as any}
-              />
-            </CCol>
-          </CRow>
-        </Card>
+        {isCreate && (
+          <Card className="space-y-6">
+            <CRow>
+              <CCol>
+                <FormLabel required>Password</FormLabel>
+                <CFormInput
+                  type="password"
+                  placeholder="Enter Password"
+                  {...register("password", {
+                    required: {
+                      value: true,
+                      message: "Please enter the password",
+                    },
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters long",
+                    },
+                    pattern: {
+                      value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).*$/,
+                      message: "Password must contain at least one letter, one number, and one special character",
+                    },
+                  })}
+                  invalid={errors?.password as any}
+                  feedbackInvalid={errors?.password?.message as any}
+                />
+              </CCol>
+              <CCol>
+                <FormLabel required>Confirm Password</FormLabel>
+                <CFormInput
+                  type="password"
+                  placeholder="Confirm Password"
+                  {...register("confirm_password", {
+                    required: {
+                      value: true,
+                      message: "Please confirm the password",
+                    },
+                    validate: value => value === watch("password") || "Passwords do not match",
+                  })}
+                  invalid={errors?.confirm_password as any}
+                  feedbackInvalid={errors?.confirm_password?.message as any}
+                />
+              </CCol>
+            </CRow>
+          </Card>
+        )}
         <Card className="space-y-6">
           <CRow>
             <CCol>

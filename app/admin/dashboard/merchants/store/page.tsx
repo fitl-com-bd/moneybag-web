@@ -3,6 +3,7 @@ import { TabItem, Tabs } from "@/components/ui"
 import { useParams } from "@/hooks"
 import { useMerchantDetailsQuery } from "@/store"
 import { isBrowser, scrollToTop } from "@/utils"
+import moment from "moment"
 import { BusinessDetails } from "./_components/BusinessDetails"
 import { BusinessRepresentative } from "./_components/BusinessRepresentative"
 import { PaymentService } from "./_components/PaymentService"
@@ -53,18 +54,18 @@ const getDefaultValues = (data: any, activeTab: string) => {
       division_id: data?.business_detail?.division_id || "",
       legal_identity: data?.business_detail?.legal_identity || "",
       max_ticket_size: data?.business_detail?.max_ticket_size || "",
-      merchant_category_id: data?.business_detail?.merchant_category_id || "",
       merchant_status: data?.business_detail?.merchant_status || "active",
       postal_code: data?.business_detail?.postal_code || "",
       street: data?.business_detail?.street || "",
       industry_type: data?.business_detail?.category?.id || "",
+      merchant_category_id: data?.business_detail?.category?.id || "",
     }
   }
   if (activeTab === "business_representative") {
     const hasBusinessRepresentative = !!data?.business_representative
     if (!hasBusinessRepresentative) return defaultValues
     defaultValues = {
-      birthdate: data?.business_representative?.birthdate || "",
+      birthdate: moment(data?.business_representative?.birthdate).format("YYYY-MM-DD") || "",
       city_id: data?.business_representative?.city_id || 1,
       district_id: data?.business_representative?.district_id || 1,
       division_id: data?.business_representative?.division_id || 1,

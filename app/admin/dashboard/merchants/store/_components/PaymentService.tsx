@@ -199,7 +199,7 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
               <CFormInput
                 type="text"
                 readOnly
-                value={parseFloat(watch("bank_rate") || 10) + parseFloat(watch("moneybag_rate") || 0)}
+                value={parseFloat(watch("bank_rate") || 0) + parseFloat(watch("moneybag_rate") || 0)}
                 placeholder="Enter Merchant Service Fee"
                 {...register("merchant_service_fee", {
                   required: {

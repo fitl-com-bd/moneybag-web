@@ -58,10 +58,10 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
     const arg: MerchantPaymentServicePayload = {
       merchant_id: id,
       api_key,
-      bank_rate: data.bank_rate,
+      bank_rate: data.custom_rate ? data.bank_rate : null,
       is_active: data.status === "active",
       is_custom_rate: data.custom_rate || false,
-      moneybag_rate: data.moneybag_rate,
+      moneybag_rate: data.custom_rate ? data.moneybag_rate : null,
       payment_provider_id: data.payment_provider_id,
       rate_type: data.rate_type,
       total_rate: data.merchant_service_fee || "",
@@ -149,21 +149,24 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
                 ))}
               </CFormSelect>
             </CCol>
-            <CCol>
-              <FormLabel required>Moneybag Rate</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Moneybag Rate"
-                {...register("moneybag_rate", {
-                  required: {
-                    value: true,
-                    message: "Please enter the moneybag rate",
-                  },
-                })}
-                invalid={errors?.moneybag_rate as any}
-                feedbackInvalid={errors?.moneybag_rate?.message as any}
-              />
-            </CCol>
+            {isCustomRate && (
+              <CCol>
+                <FormLabel required>Moneybag Rate</FormLabel>
+                <CFormInput
+                  type="text"
+                  placeholder="Enter Moneybag Rate"
+                  {...register("moneybag_rate", {
+                    required: {
+                      value: true,
+                      message: "Please enter the moneybag rate",
+                    },
+                  })}
+                  invalid={errors?.moneybag_rate as any}
+                  feedbackInvalid={errors?.moneybag_rate?.message as any}
+                />
+              </CCol>
+            )}
+
           </CRow>
           <CRow>
             {isCustomRate && (
@@ -188,27 +191,36 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
                 </CFormSelect>
               </CCol>
             )}
-            <CCol>
-              <FormLabel required>Bank Rate</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Bank Rate"
-                {...register("bank_rate", {
-                  required: {
-                    value: true,
-                    message: "Please enter the bank rate",
-                  },
-                })}
-                invalid={errors?.bank_rate as any}
-                feedbackInvalid={errors?.bank_rate?.message as any}
-              />
-            </CCol>
+
+
+            {isCustomRate && (
+              <CCol>
+                <FormLabel required>Bank Rate</FormLabel>
+                <CFormInput
+                  type="text"
+                  placeholder="Enter Bank Rate"
+                  {...register("bank_rate", {
+                    required: {
+                      value: true,
+                      message: "Please enter the bank rate",
+                    },
+                  })}
+                  invalid={errors?.bank_rate as any}
+                  feedbackInvalid={errors?.bank_rate?.message as any}
+                />
+              </CCol>
+            )}
+
             <CCol>
               <FormLabel required>Merchant Service Fee (MSF)</FormLabel>
               <CFormInput
                 type="text"
-                readOnly
-                value={parseFloat(watch("bank_rate") || 0) + parseFloat(watch("moneybag_rate") || 0)}
+                readOnly={isCustomRate}
+                value={
+                  isCustomRate
+                    ? parseFloat(watch("bank_rate") || 0) + parseFloat(watch("moneybag_rate") || 0)
+                    : watch("merchant_service_fee")
+                }
                 placeholder="Enter Merchant Service Fee"
                 {...register("merchant_service_fee", {
                   required: {

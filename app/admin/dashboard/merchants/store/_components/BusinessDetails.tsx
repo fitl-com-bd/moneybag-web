@@ -31,7 +31,7 @@ const STATUS = [
   { label: "Draft", value: "DRAFT" },
 ]
 
-export const BusinessDetails = ({ defaultValues }: any) => {
+export const BusinessDetails = ({ id, defaultValues }: any) => {
   const {
     register,
     handleSubmit,
@@ -57,7 +57,7 @@ export const BusinessDetails = ({ defaultValues }: any) => {
       ...data,
       city_id: 1,
     }
-    const response = await (isCreate ? createBusinessDetails(arg) : updateBusinessDetails(arg))
+    const response = await (isCreate ? createBusinessDetails(arg) : updateBusinessDetails({ id, ...arg }))
 
     if (response?.error) {
       handleErrorResponse(response, setError)

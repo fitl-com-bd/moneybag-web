@@ -1,0 +1,66 @@
+name: Dev CI/CD
+
+on:
+  push:
+    branches:
+      - "develop"
+      - "!dependabot/**"
+
+env:
+  FORCE_COLOR: 2
+  NODE: 18
+  ENV_FILE: envlocal
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: pmois
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # - name: Debug ENV_FILE and its contents
+      #   run: |
+      #     echo "ENV_FILE value is: ${{ env.ENV_FILE }}"
+      #     echo "Contents of ${{ env.ENV_FILE }}:"
+      #     cat ${{ env.ENV_FILE }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          build-args: |
+            ENV_FILE=${{ env.ENV_FILE }}
+          tags: |
+            pmois/moneybag:moneybag-portal-next
+            pmois/moneybag:moneybag-portal-next-${{ github.sha }}
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.DEV_SERVER_USER }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: 22
+          script: |
+            echo "Connection successful"
+            whoami
+            docker --version
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u pmois --password-stdin
+            docker pull pmois/moneybag:moneybag-portal-next-${{ github.sha }} || echo "Docker pull failed"
+            docker stop moneybag-portal-next || true
+            docker rm moneybag-portal-next || true
+            
+            # Run Docker without passing environment variables
+            docker run -d --name moneybag-portal-next \
+              -p 7009:7009 \
+              pmois/moneybag:moneybag-portal-next-${{ github.sha }} || echo "Docker run failed"
+            docker logout
+
+            

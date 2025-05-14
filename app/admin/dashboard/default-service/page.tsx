@@ -8,6 +8,11 @@ import Link from "next/link"
 
 const columns: DataTableColumn = [
   {
+    name: "SL",
+    selector: (row: any, index?: number) => (index !== undefined ? index + 1 : 0),
+    width: "55px",
+  },
+  {
     name: "SERVICE",
     selector: row => row.payment_provider.name,
     sortable: true,
@@ -43,7 +48,8 @@ const Bank = () => (
     title="Default Service List"
     columns={columns}
     actionsProps={{
-      href: "/dashboard/banks/create",
+      href: "default-service/assign",
+      name: "Assign New",
     }}
   />
 )

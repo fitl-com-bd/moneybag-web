@@ -5,7 +5,7 @@ import { DataTableColumn } from "@/types"
 import { CButton, CTooltip } from "@coreui/react"
 import Link from "next/link"
 
-const columns: DataTableColumn = [
+const columns = ({ id }: any): DataTableColumn => [
   {
     name: "Service",
     sortable: true,
@@ -13,7 +13,7 @@ const columns: DataTableColumn = [
   },
   {
     name: "Financial Org",
-    selector: row => row.financial_organization || "-",
+    selector: row => row.financial_organization?.name || "-",
   },
   {
     name: "Bank Rate",
@@ -38,7 +38,7 @@ const columns: DataTableColumn = [
     cell: row => (
       <div className="d-flex justify-content-center gap-2">
         <CTooltip content="Update">
-          <Link href={`merchants/${row.id}/edit`}>
+          <Link href={`${id}/payment_service/${row.id}`}>
             <CButton color="light" size="sm" className="btn-icon">
               <Icon name="edit" size={24} />
             </CButton>
@@ -59,7 +59,7 @@ export const PaymentService = ({ id, data }: any) => {
         apiFunction={useMerchantPaymentServiceQuery}
         defaultParams={{ id: id }}
         title="Merchant Service"
-        columns={columns}
+        columns={columns({ id })}
         actionsProps={{
           href: `store?id=${id}&tab=payment_service`,
           name: "Add New Service",

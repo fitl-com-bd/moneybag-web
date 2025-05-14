@@ -6,6 +6,7 @@ import {
   useCreateMerchantPaymentServiceMutation,
   useFinancialOrganizationsQuery,
   usePaymentProvidersQuery,
+  useUpdateMerchantPaymentServiceMutation,
 } from "@/store"
 import { getErrorMessage, handleErrorResponse, Swal } from "@/utils"
 import {
@@ -19,6 +20,7 @@ import {
   CFormTextarea,
   CRow,
 } from "@coreui/react"
+import isEmpty from "lodash/isEmpty"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -33,13 +35,12 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
     clearErrors,
     formState: { errors, isValid },
   } = useForm({ defaultValues })
-  const [createMerchantPaymentService, { isLoading }] = useCreateMerchantPaymentServiceMutation()
+  const isCreate = isEmpty(defaultValues)
+  const [createMerchantPaymentService, { isLoading: isCreateLoading }] = useCreateMerchantPaymentServiceMutation()
+  const [updateMerchantPaymentService, { isLoading: isUpdateLoading }] = useUpdateMerchantPaymentServiceMutation()
+  const isLoading = isCreateLoading || isUpdateLoading
   const { data: paymentProviders, isLoading: isProvidersLoading } = usePaymentProvidersQuery({})
-  const router = useRouter()
-
-  const isCustomRate = watch("custom_rate")
-
-  // useFinancialOrganizationsQuery
+  const isCustomRate = watch("is_custom_rate")
   const { data: financialOrganizations, isLoading: isFinancialOrganizationsLoading } = useFinancialOrganizationsQuery({
     skip: !isCustomRate,
   })
@@ -58,10 +59,10 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
     const arg: MerchantPaymentServicePayload = {
       merchant_id: id,
       api_key,
-      bank_rate: data.custom_rate ? data.bank_rate : null,
+      bank_rate: data.is_custom_rate ? data.bank_rate : null,
       is_active: data.status === "active",
-      is_custom_rate: data.custom_rate || false,
-      moneybag_rate: data.custom_rate ? data.moneybag_rate : null,
+      is_custom_rate: data.is_custom_rate || false,
+      moneybag_rate: data.is_custom_rate ? data.moneybag_rate : null,
       payment_provider_id: data.payment_provider_id,
       rate_type: data.rate_type,
       total_rate: data.merchant_service_fee || "",
@@ -70,7 +71,9 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
       arg.financial_organization_id = data.financial_organization_id
     }
 
-    const response = await createMerchantPaymentService(arg)
+    const response = await (isCreate
+      ? createMerchantPaymentService(arg)
+      : updateMerchantPaymentService({ id: watch("id"), ...arg }))
 
     if (response?.error) {
       handleErrorResponse(response, setError)
@@ -84,7 +87,7 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
 
     if (response?.data?.success) {
       toast.success(response?.data?.message)
-      changeTab("settlement_bank")
+      changeTab?.("settlement_bank")
     }
   }
 
@@ -101,10 +104,10 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
             <div className="d-flex justify-content-between align-items-center">
               <CCardTitle className="my-3c">Service Details</CCardTitle>
               <CFormSwitch
-                {...register("custom_rate", {})}
+                {...register("is_custom_rate", {})}
                 id="customRate"
                 label="Custom Rate"
-                invalid={errors?.custom_rate as any}
+                invalid={errors?.is_custom_rate as any}
                 className="switch-reverse"
               />
             </div>
@@ -124,7 +127,7 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
                 disabled={isProvidersLoading}>
                 <option value="">Select Service</option>
                 {paymentProviders?.map((provider: any) => (
-                  <option value={provider.id} key={provider.id}>
+                  <option value={provider.id} key={provider.id} selected={provider.id === watch("payment_provider_id")}>
                     {provider.name}
                   </option>
                 ))}
@@ -166,7 +169,6 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
                 />
               </CCol>
             )}
-
           </CRow>
           <CRow>
             {isCustomRate && (
@@ -191,7 +193,6 @@ export const PaymentService = ({ id, changeTab, defaultValues }: any) => {
                 </CFormSelect>
               </CCol>
             )}
-
 
             {isCustomRate && (
               <CCol>

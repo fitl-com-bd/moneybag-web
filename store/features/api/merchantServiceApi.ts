@@ -122,7 +122,7 @@ export const merchantServiceApi = createApi({
         params: formatParams({ merchant_id: params.id }),
       }),
       transformErrorResponse: error => error,
-      providesTags: (result, error, id) => [{ type: "MerchantPaymentService", id }],
+      providesTags: ["MerchantPaymentService"],
     }),
     // PUT: /api/v2/merchants/{merchant_id}/business-details
     updateBusinessDetails: builder.mutation({
@@ -141,6 +141,16 @@ export const merchantServiceApi = createApi({
         body: data,
       }),
       invalidatesTags: ["Merchants", "MerchantDetails"],
+    }),
+    // GET: /api/v2/payment-configs/merchant-payment-services/{service_id}
+    merchantPaymentServiceDetails: builder.query({
+      query: (id: number) => ({
+        url: `payment-configs/merchant-payment-services/${id}`,
+        // params: formatParams({}),
+      }),
+      transformResponse: (response: any) => response.data,
+      transformErrorResponse: error => error,
+      providesTags: (result, error, id) => [{ type: "MerchantPaymentService", id }],
     }),
     // PUT: /api/v2/payment-configs/merchant-payment-services/{service_id}
     updateMerchantPaymentService: builder.mutation({
@@ -167,5 +177,6 @@ export const {
   useMerchantPaymentServiceQuery,
   useUpdateBusinessDetailsMutation,
   useUpdateMerchantRepresentativeMutation,
+  useMerchantPaymentServiceDetailsQuery,
   useUpdateMerchantPaymentServiceMutation,
 } = merchantServiceApi

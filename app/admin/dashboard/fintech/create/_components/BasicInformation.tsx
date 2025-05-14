@@ -1,13 +1,14 @@
 "use client"
 import { Button, Card, FormFooter, FormLabel, SectionHeader } from "@/components/ui"
 import { ORGANIZATION_TYPE } from "@/constants"
+import { useParams } from "@/hooks"
 import { useCreateFinancialOrganizationMutation } from "@/store"
-import { getErrorMessage, handleErrorResponse, Swal } from "@/utils"
+import { getErrorMessage, handleErrorResponse, scrollToTop, Swal } from "@/utils"
 import { CCol, CForm, CFormCheck, CFormInput, CFormSelect, CFormTextarea, CRow } from "@coreui/react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export const BasicInformation = ({ setId, changeTab }: any) => {
+export const BasicInformation = ({}: any) => {
   const {
     register,
     handleSubmit,
@@ -18,6 +19,7 @@ export const BasicInformation = ({ setId, changeTab }: any) => {
     setValue,
     formState: { errors, isValid },
   } = useForm()
+  const [_, setParams] = useParams()
 
   const [createFinancialOrganization, { isLoading }] = useCreateFinancialOrganizationMutation()
 
@@ -41,8 +43,8 @@ export const BasicInformation = ({ setId, changeTab }: any) => {
 
     if (response?.data?.success) {
       toast.success(response?.data?.message)
-      setId(response?.data?.data?.id)
-      changeTab("add_branch")
+      setParams({ id: response?.data?.data?.id, tab: "add_branch" })
+      scrollToTop()
     }
   }
 

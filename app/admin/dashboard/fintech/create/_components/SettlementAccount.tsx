@@ -31,6 +31,8 @@ export const SettlementAccount = ({ id, changeTab }: any) => {
 
   const [createBranch, { isLoading }] = useCreateBranchMutation()
   const { data: banks, isLoading: isBanksLoading } = useBanksQuery({})
+  console.log(`🔥 | banks:`, banks)
+
   const { data: branches, isLoading: isBranchesLoading } = useAllBranchesQuery({})
   const router = useRouter()
 
@@ -76,95 +78,101 @@ export const SettlementAccount = ({ id, changeTab }: any) => {
         <Card className="space-y-6">
           <CRow>
             <CCol>
-              <FormLabel required>Branch Name</FormLabel>
+              <FormLabel required>Fintech Name</FormLabel>
               <CFormInput
                 type="text"
-                placeholder="Enter Branch Name"
-                {...register("name", {
+                placeholder="Enter Fintech Name"
+                {...register("fintech_name", {
                   required: {
                     value: true,
-                    message: "Please enter the branch name",
+                    message: "Please enter the fintech name",
                   },
                 })}
-                invalid={errors?.name as any}
-                feedbackInvalid={errors?.name?.message as any}
+                invalid={errors?.fintech_name as any}
+                feedbackInvalid={errors?.fintech_name?.message as any}
+              />
+            </CCol>
+            <CCol></CCol>
+          </CRow>
+          <CRow>
+            <CCol>
+              <FormLabel>Settlement Bank</FormLabel>
+              <CFormSelect
+                {...register("settlement_bank")}
+                invalid={errors?.settlement_bank as any}
+                feedbackInvalid={errors?.settlement_bank?.message as any}>
+                <option value="">Select Settlement Bank</option>
+                {banks?.data?.map((bank: any) => (
+                  <option value={bank.id} key={bank.id}>
+                    {bank.name}
+                  </option>
+                ))}
+              </CFormSelect>
+            </CCol>
+
+            <CCol>
+              <FormLabel required>Branch Name</FormLabel>
+              <CFormSelect
+                {...register("branch_name", {
+                  required: {
+                    value: true,
+                    message: "Please select the branch name",
+                  },
+                })}
+                invalid={errors?.branch_name as any}
+                feedbackInvalid={errors?.branch_name?.message as any}>
+                <option value="">Select Branch Name</option>
+                {branches?.map((branch: any) => (
+                  <option value={branch.id} key={branch.id}>
+                    {branch.name}
+                  </option>
+                ))}
+              </CFormSelect>
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol>
+              <FormLabel>Swift Code</FormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Enter Swift Code"
+                {...register("swift_code")}
+                invalid={errors?.swift_code as any}
+                feedbackInvalid={errors?.swift_code?.message as any}
               />
             </CCol>
             <CCol>
-              <FormLabel required>Routing Number</FormLabel>
+              <FormLabel>Routing Number</FormLabel>
               <CFormInput
                 type="text"
                 placeholder="Enter Routing Number"
-                {...register("routing_number", {
-                  required: {
-                    value: true,
-                    message: "Please enter the routing number",
-                  },
-                })}
+                {...register("routing_number")}
                 invalid={errors?.routing_number as any}
                 feedbackInvalid={errors?.routing_number?.message as any}
               />
             </CCol>
           </CRow>
         </Card>
-
         <Card className="space-y-6">
           <CRow>
             <CCol>
-              <FormLabel>Primary Phone Number</FormLabel>
+              <FormLabel>Account Name</FormLabel>
               <CFormInput
                 type="text"
-                placeholder="Enter Primary Phone Number"
-                {...register("primary_phone", {
-                  pattern: {
-                    value: /^\d+$/,
-                    message: "Phone number must be a number",
-                  },
-                })}
-                invalid={errors?.primary_phone as any}
-                feedbackInvalid={errors?.primary_phone?.message as any}
+                placeholder="Enter Account Name"
+                {...register("account_name")}
+                invalid={errors?.account_name as any}
+                feedbackInvalid={errors?.account_name?.message as any}
               />
             </CCol>
             <CCol>
-              <FormLabel>Secondary Phone Number</FormLabel>
+              <FormLabel>Account Number</FormLabel>
               <CFormInput
                 type="text"
-                placeholder="Enter Secondary Phone Number"
-                {...register("secondary_phone", {
-                  pattern: {
-                    value: /^\d+$/,
-                    message: "Phone number must be a number",
-                  },
-                })}
-                invalid={errors?.secondary_phone as any}
-                feedbackInvalid={errors?.secondary_phone?.message as any}
-              />
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol>
-              <FormLabel>Email Address</FormLabel>
-              <CFormInput
-                type="email"
-                placeholder="Enter Email Address"
-                {...register("email")}
-                invalid={errors?.email as any}
-                feedbackInvalid={errors?.email?.message as any}
-              />
-            </CCol>
-            <CCol>
-              <FormLabel>Customer Support Number</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Customer Support Number"
-                {...register("customer_support_number", {
-                  pattern: {
-                    value: /^\d+$/,
-                    message: "Phone number must be a number",
-                  },
-                })}
-                invalid={errors?.customer_support_number as any}
-                feedbackInvalid={errors?.customer_support_number?.message as any}
+                placeholder="Enter Account Number"
+                {...register("account_number")}
+                invalid={errors?.account_number as any}
+                feedbackInvalid={errors?.account_number?.message as any}
               />
             </CCol>
           </CRow>
@@ -172,103 +180,50 @@ export const SettlementAccount = ({ id, changeTab }: any) => {
         <Card className="space-y-6">
           <CRow>
             <CCol>
-              <FormLabel required>Address</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Address"
-                {...register("street", {
+              <FormLabel required>Remarks / Notes</FormLabel>
+              <CFormTextarea
+                placeholder="Notes"
+                {...register("notes", {
                   required: {
                     value: true,
-                    message: "Please enter the address",
+                    message: "Please enter a notes",
                   },
                 })}
-                invalid={errors?.street as any}
-                feedbackInvalid={errors?.street?.message as any}
+                invalid={errors?.notes as any}
+                feedbackInvalid={errors?.notes?.message as any}
               />
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol>
-              <FormLabel required>Division</FormLabel>
-              <CFormSelect
-                {...register("division_id", {
-                  required: {
-                    value: true,
-                    message: "Please select a division",
-                  },
-                })}
-                invalid={errors?.division_id as any}
-                feedbackInvalid={errors?.division_id?.message as any}
-                disabled={isAddressLoading}>
-                <option value="">Select Division</option>
-                {getDivisions(addressData).map((division: any) => (
-                  <option value={division.id} key={division.id}>
-                    {division.name}
-                  </option>
-                ))}
-              </CFormSelect>
-            </CCol>
-            <CCol>
-              <FormLabel required>District</FormLabel>
-              <CFormSelect
-                {...register("district_id", {
-                  required: {
-                    value: true,
-                    message: "Please select a district",
-                  },
-                })}
-                invalid={errors?.district_id as any}
-                feedbackInvalid={errors?.district_id?.message as any}
-                disabled={isAddressLoading || !selectedDivision}>
-                <option value="">Select District</option>
-                {getDistrictsByDivision(addressData, selectedDivision).map(district => (
-                  <option value={district.id} key={district.id}>
-                    {district.name}
-                  </option>
-                ))}
-              </CFormSelect>
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol>
-              <FormLabel required>Postal Code</FormLabel>
-              <CFormInput
-                type="text"
-                placeholder="Enter Postal Code"
-                {...register("postal_code", {
-                  required: {
-                    value: true,
-                    message: "Please enter the postal code",
-                  },
-                })}
-                invalid={errors?.postal_code as any}
-                feedbackInvalid={errors?.postal_code?.message as any}
-              />
-            </CCol>
-          </CRow>
-        </Card>
-        <Card className="space-y-6">
-          <CRow>
-            <CCol>
-              <FormLabel>Remarks / Note</FormLabel>
-              <CFormTextarea rows={4} placeholder="Enter Note" {...register("notes")} />
             </CCol>
             <CCol>
               <FormLabel required>Status</FormLabel>
-              <div className="d-flex gap-3">
+              <div className="d-flex gap-4">
                 <CFormCheck
                   type="radio"
-                  label="Active"
-                  value="true"
-                  {...register("is_active", {
+                  {...register("status", {
                     required: {
                       value: true,
-                      message: "Please select the status",
+                      message: "Please select a status",
                     },
                   })}
+                  value="active"
+                  label="Active"
+                  id="active"
+                  invalid={errors?.status as any}
                 />
-                <CFormCheck type="radio" label="Inactive" value="false" {...register("is_active")} />
+                <CFormCheck
+                  type="radio"
+                  {...register("status", {
+                    required: {
+                      value: true,
+                      message: "Please select a status",
+                    },
+                  })}
+                  value="inactive"
+                  label="Inactive"
+                  id="inactive"
+                  invalid={errors?.status as any}
+                />
               </div>
+              {errors?.status && <div className="invalid-feedback d-block">{errors?.status?.message as any}</div>}
             </CCol>
           </CRow>
         </Card>

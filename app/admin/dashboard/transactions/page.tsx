@@ -51,13 +51,20 @@ const columns: DataTableColumn = [
     width: "94px",
     cell: row => (
       <div className="d-flex justify-content-center">
-        <CTooltip content="Update">
+        <CTooltip content="View">
+          <Link href={`transactions/${row.id}`}>
+            <CButton color="light" size="sm" className="btn-icon">
+              <Icon name="view" size={24} />
+            </CButton>
+          </Link>
+        </CTooltip>
+        {/* <CTooltip content="Update">
           <Link href={`/dashboard/banks/${row.id}`}>
             <CButton color="light" size="sm" className="btn-icon">
               <Icon name="edit" size={24} />
             </CButton>
           </Link>
-        </CTooltip>
+        </CTooltip> */}
       </div>
     ),
   },

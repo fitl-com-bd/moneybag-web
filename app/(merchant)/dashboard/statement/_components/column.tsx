@@ -1,5 +1,5 @@
 import { Icon } from "@/components/ui"
-import { getStatusColor } from "@/utils"
+import { formatPrice, getStatusColor } from "@/utils"
 import { CBadge, CButton, CTooltip } from "@coreui/react"
 import moment from "moment"
 
@@ -33,15 +33,15 @@ export const column: any = ({ openDetails }: any) => [
   },
   {
     name: "Order Amount",
-    selector: (row: any) => row.merchant_order_amount.toFixed(2),
+    selector: (row: any) => formatPrice(row.merchant_order_amount),
   },
   {
     name: "Refund Amount",
-    selector: (row: any) => (row.refund_amount ? row.refund_amount : 0).toFixed(2),
+    selector: (row: any) => formatPrice(row.refund_amount ? row.refund_amount : 0),
   },
   {
     name: "MSF Fee",
-    selector: (row: any) => (row.pgw_charge + row.bank_charge).toFixed(2),
+    selector: (row: any) => formatPrice(row.pgw_charge + row.bank_charge),
   },
   {
     name: "Payment Mode",
@@ -49,7 +49,7 @@ export const column: any = ({ openDetails }: any) => [
   },
   {
     name: "Settlement Amount",
-    selector: (row: any) => row.settlement_amount.toFixed(2),
+    selector: (row: any) => formatPrice(row.settlement_amount),
   },
 
   {
@@ -59,18 +59,7 @@ export const column: any = ({ openDetails }: any) => [
 
   {
     name: "Order Status",
-    selector: (row: any) => {
-      const badgeColor = row.dispute_status === "P" ? "warning" : getStatusColor(row.gw_order_status)
-      const badgeText = row.dispute_status === "P" ? "DISPUTED" : row.gw_order_status
-
-      return (
-        <h6>
-          <CBadge color={badgeColor} className={`bg-opacity-16 text-${badgeColor}`}>
-            {badgeText}
-          </CBadge>
-        </h6>
-      )
-    },
+    selector: (row: any) => row.status,
   },
   // {
   //   name: "Description",

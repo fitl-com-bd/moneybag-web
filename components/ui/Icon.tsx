@@ -1,22 +1,18 @@
 import { FC } from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
-import { FaRegEye, FaRegFileAlt } from "react-icons/fa"
+import { FaRegEye } from "react-icons/fa"
 import { FaLink, FaRegCircleUser, FaRegCopy, FaRegEnvelope } from "react-icons/fa6"
-import { FiChevronDown, FiEdit, FiEye, FiEyeOff, FiFilter, FiLogOut, FiSearch, FiUser, FiX } from "react-icons/fi"
+import { FiChevronDown, FiEye, FiEyeOff, FiSearch, FiX } from "react-icons/fi"
 import { MdMenu } from "react-icons/md"
 import { PiDotsThreeCircle } from "react-icons/pi"
 import {
-  RiAddLine,
   RiAdminLine,
   RiArrowLeftLine,
-  RiBankLine,
   RiDashboardLine,
   RiDeleteBin6Line,
-  RiEdit2Line,
   RiExchangeDollarLine,
   RiFileAddLine,
   RiFileList2Line,
-  RiFileList3Line,
   RiLockPasswordLine,
   RiToolsLine,
   RiUser3Line,
@@ -33,9 +29,13 @@ import {
   TbEdit,
   TbEye,
   TbFileDollar,
-  TbFilter,
+  TbFileInvoice,
+  TbFileReport,
+  TbFileSpreadsheet,
+  TbFileText,
   TbLock,
   TbLogout,
+  TbPencilMinus,
   TbPlus,
   TbSettings,
   TbUser,
@@ -56,19 +56,19 @@ export const ICONS = {
   store: TbBuildingStore,
   bank: TbBuildingBank,
   transaction: TbFileDollar,
+  invoice: TbFileInvoice,
   merchant: RiUser3Line,
   home: RiDashboardLine,
   exchange: RiExchangeDollarLine,
-  report: FaRegFileAlt,
+  report: TbFileText,
   menu: MdMenu,
   userCircle: FaRegCircleUser,
   dotsCircle: BsThreeDotsVertical,
   dotsHorizontalCircle: PiDotsThreeCircle,
   details: FaRegEye,
-  integration: RiEdit2Line,
+  integration: TbPencilMinus,
   copy: FaRegCopy,
-  invoice: RiFileList3Line,
-  customer: RiUser3Line,
+  customer: TbUser,
   addUser: RiUserAddLine,
   back: RiArrowLeftLine,
   addInvoice: RiFileAddLine,

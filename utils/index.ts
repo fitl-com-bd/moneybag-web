@@ -98,7 +98,7 @@ export const getNavItems = (navItems: any, permissions: any) => {
   return filteredNavItems
 }
 
-export const decodeToken = (token: string) => {
+export const decodeToken = (token: string): any => {
   try {
     const decoded = jwtDecode(token)
     return decoded

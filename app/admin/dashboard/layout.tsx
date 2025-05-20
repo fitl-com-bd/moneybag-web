@@ -50,7 +50,6 @@ const DashboardMainLayout = ({ children }: LayoutProps) => {
   const pathname: string = usePathname()
   const slug = isAdmin ? routes[formatPathname(pathname) as keyof typeof routes] : null
   const hasAccess = isSuperAdmin ? true : slug ? (slug === "dashboard" ? true : permissions.includes(slug)) : false
-  // console.log(`🔥 | hasAccess:`, hasAccess ,slug, permissions)
 
   useEffect(() => {
     if (!isLoading && !user) {

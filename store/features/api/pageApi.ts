@@ -1,5 +1,6 @@
 // Need to use the React-specific entry point to import createApi
 import { baseQuery } from "@/store/config"
+import { formatParams } from "@/utils"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 // Define a service using a base URL and expected endpoints
@@ -9,15 +10,15 @@ export const pageApi = createApi({
   tagTypes: ["Dashboard", "Statements", "IntegrationDetails", "MerchantSettlements"],
   endpoints: builder => ({
     dashboard: builder.query({
-      query: () => ({ url: `merchant-dashboard/dashboard-details` }),
+      query: () => ({ url: `merchants/dashboards` }),
       transformResponse: (response: any) => response.data,
       transformErrorResponse: error => error,
       providesTags: ["Dashboard"],
     }),
     statements: builder.query({
-      query: prams => ({
-        url: `txn-statements/merchant`,
-        params: { ...prams },
+      query: params => ({
+        url: "merchants/transactions",
+        params: formatParams(params),
       }),
       transformResponse: (response: any) => response,
       transformErrorResponse: error => error,

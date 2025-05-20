@@ -55,8 +55,10 @@ const Login = () => {
       localStorage.setItem(LS_TOKEN, token)
       toast.success("Login successful")
       const decoded = decodeToken(token)
+      const isMerchant = decoded?.scp === "merchant"
+      console.log(`🔥 | isMerchant:`, isMerchant)
       console.log(`🔥 | decoded:`, decoded)
-      router.push(config.ADMIN_SIGN_IN_URL)
+      router.push(isMerchant ? config.DASHBOARD_URL : config.ADMIN_DASHBOARD_URL)
     }
   }
 

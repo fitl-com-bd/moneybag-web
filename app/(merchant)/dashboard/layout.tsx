@@ -18,6 +18,8 @@ const DashboardMainLayout = ({ children }: LayoutProps) => {
 
   // If user is loading, show loading indicator
   if (isLoading) return null
+  if (!isLoading && !user) return null
+  // if (!hasAccess) return null
 
   return <DashboardLayout>{children}</DashboardLayout>
 }

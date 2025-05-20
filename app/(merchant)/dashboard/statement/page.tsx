@@ -1,4 +1,5 @@
 "use client"
+import { DataTablePage } from "@/components/shared"
 import { Icon, LoadingTable } from "@/components/ui"
 import { useStatementsQuery } from "@/store"
 import { getStatusColor } from "@/utils"
@@ -12,29 +13,22 @@ import { TransactionFilterForm } from "./_components/TransactionFilterForm"
 import { column } from "./_components/column"
 
 const TransactionList = () => {
-  const [showFilter, setShowFilter] = useState(false)
-  const [filter, setFilter] = useState<any>({})
   const [details, setDetails] = useState<any>(false)
-  const { data: statements, isLoading } = useStatementsQuery(filter)
 
   const openDetails = (data: any) => setDetails(data)
 
   return (
-    <div className="data-table-wrapper shadow-sm bg-white border-0 rounded overflow-hidden p-3">
-      <DataTable
+    <>
+      <DataTablePage
+        apiFunction={useStatementsQuery}
         title="Transaction List"
         columns={column({ openDetails })}
-        data={statements}
-        pagination={50 as any}
-        progressPending={isLoading}
-        progressComponent={<LoadingTable className="w-100" />}
-        actions={<TransactionActions transactions={statements} filter={showFilter} setFilter={setShowFilter} />}
-        subHeader
-        subHeaderWrap={false}
-        subHeaderComponent={<TransactionFilterForm show={showFilter} filter={filter} setFilter={setFilter} />}
+        actionsProps={{
+          href: "statement/create",
+        }}
       />
       <TransactionDetails visible={details} setVisible={setDetails} />
-    </div>
+    </>
   )
 }
 

@@ -47,14 +47,14 @@ const MERCHANT_NAV: NavType = [
     component: CNavItem,
     name: "Dashboard",
     href: "/dashboard",
-    icon: <Icon name="home" className="nav-icon" />,
+    icon: <Icon name="dashboard" className="nav-icon" />,
     active: (pathname: string) => pathname === "/dashboard",
   },
   {
     component: CNavItem,
     name: "Transaction List",
     href: "/dashboard/statement",
-    icon: <Icon name="exchange" className="nav-icon" />,
+    icon: <Icon name="transaction" className="nav-icon" />,
   },
   {
     component: CNavGroup,
@@ -76,7 +76,6 @@ const MERCHANT_NAV: NavType = [
       },
     ],
   },
-
   {
     component: CNavItem,
     name: "Integration Details",

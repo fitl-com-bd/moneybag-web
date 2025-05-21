@@ -123,21 +123,23 @@ export const DataTableActions = ({
           </CButton>
         </CTooltip>
       )} */}
-      <CTooltip content={name}>
-        {href ? (
-          <Link href={href}>
-            <CButton color="dark" className="rounded-pill d-inline-flex align-items-center px-3">
+      {(href || onClick) && (
+        <CTooltip content={name}>
+          {href ? (
+            <Link href={href}>
+              <CButton color="dark" className="rounded-pill d-inline-flex align-items-center px-3">
+                <Icon name={icon} size={16} className="me-1" />
+                {name}
+              </CButton>
+            </Link>
+          ) : (
+            <CButton color="dark" className="rounded-pill d-inline-flex align-items-center px-3" onClick={onClick}>
               <Icon name={icon} size={16} className="me-1" />
               {name}
             </CButton>
-          </Link>
-        ) : (
-          <CButton color="dark" className="rounded-pill d-inline-flex align-items-center px-3" onClick={onClick}>
-            <Icon name={icon} size={16} className="me-1" />
-            {name}
-          </CButton>
-        )}
-      </CTooltip>
+          )}
+        </CTooltip>
+      )}
     </div>
   )
 }

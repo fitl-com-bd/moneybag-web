@@ -1,12 +1,14 @@
 import { Icon } from "@/components/ui"
+import { DataTableColumn } from "@/types"
 import { formatPrice, getStatusColor } from "@/utils"
 import { CBadge, CButton, CTooltip } from "@coreui/react"
 import moment from "moment"
+import Link from "next/link"
 
-export const column: any = ({ openDetails }: any) => [
+export const columns: DataTableColumn = [
   {
     name: "SL",
-    selector: (row: any, index: number) => index + 1,
+    selector: (row: any, index?: number) => (index !== undefined ? index + 1 : ""),
     width: "55px",
   },
   {
@@ -68,18 +70,14 @@ export const column: any = ({ openDetails }: any) => [
   {
     name: "Action",
     width: "94px",
-    selector: (row: any) => (
+    cell: row => (
       <div className="d-flex justify-content-center">
-        <CTooltip content="Details">
-          <CButton
-            color="light"
-            size="sm"
-            className="btn-icon"
-            onClick={() => {
-              openDetails(row)
-            }}>
-            <Icon name="details" size={24} />
-          </CButton>
+        <CTooltip content="View">
+          <Link href={`transactions/${row.transaction_id}`}>
+            <CButton color="light" size="sm" className="btn-icon">
+              <Icon name="view" size={24} />
+            </CButton>
+          </Link>
         </CTooltip>
       </div>
     ),

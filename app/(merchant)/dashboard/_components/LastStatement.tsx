@@ -1,11 +1,11 @@
 "use client"
 import { LoadingTable } from "@/components/ui"
-import { useStatementsQuery } from "@/store"
+import { useMerchantTransactionsQuery } from "@/store"
 import DataTable from "react-data-table-component"
-import { column } from "../statement/_components/column"
+import { columns } from "../transactions/_components/column"
 
 export const LastStatement = () => {
-  const { data, isLoading } = useStatementsQuery({
+  const { data, isLoading } = useMerchantTransactionsQuery({
     status: "APPROVED",
   })
 
@@ -14,7 +14,7 @@ export const LastStatement = () => {
       <DataTable
         className=""
         title="Recent Transactions"
-        columns={column({}).splice(0, 7)}
+        columns={columns.splice(0, 7)}
         data={data?.slice(0, 10)}
         pagination={false}
         progressPending={isLoading}

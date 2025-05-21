@@ -7,7 +7,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 export const pageApi = createApi({
   reducerPath: "pageApi",
   baseQuery,
-  tagTypes: ["Dashboard", "Statements", "IntegrationDetails", "MerchantSettlements"],
+  tagTypes: ["Dashboard", "Statements", "IntegrationDetails", "MerchantSettlements", "MerchantTransactionDetails"],
   endpoints: builder => ({
     dashboard: builder.query({
       query: () => ({ url: `merchants/dashboards` }),
@@ -15,7 +15,7 @@ export const pageApi = createApi({
       transformErrorResponse: error => error,
       providesTags: ["Dashboard"],
     }),
-    statements: builder.query({
+    merchantTransactions: builder.query({
       query: params => ({
         url: "merchants/transactions",
         params: formatParams(params),
@@ -23,6 +23,15 @@ export const pageApi = createApi({
       transformResponse: (response: any) => response,
       transformErrorResponse: error => error,
       providesTags: ["Statements"],
+    }),
+    // GET: /api/v2/merchants/transactions/{transaction_id}
+    merchantTransactionDetails: builder.query({
+      query: id => ({
+        url: `merchants/transactions/${id}`,
+      }),
+      transformResponse: (response: any) => response.data,
+      transformErrorResponse: error => error,
+      providesTags: (result, error, id) => [{ type: "MerchantTransactionDetails", id }],
     }),
     merchantSettlements: builder.query({
       query: prams => ({
@@ -46,5 +55,10 @@ export const pageApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useDashboardQuery, useStatementsQuery, useIntegrationDetailsQuery, useMerchantSettlementsQuery } =
-  pageApi
+export const {
+  useDashboardQuery,
+  useMerchantTransactionsQuery,
+  useMerchantTransactionDetailsQuery,
+  useIntegrationDetailsQuery,
+  useMerchantSettlementsQuery,
+} = pageApi

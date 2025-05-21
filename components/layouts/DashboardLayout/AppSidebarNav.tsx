@@ -53,7 +53,7 @@ const MERCHANT_NAV: NavType = [
   {
     component: CNavItem,
     name: "Transaction List",
-    href: "/dashboard/statement",
+    href: "/dashboard/transactions",
     icon: <Icon name="transaction" className="nav-icon" />,
   },
   {

@@ -6,7 +6,7 @@ import { columns } from "../transactions/_components/column"
 
 export const LastStatement = () => {
   const { data, isLoading } = useMerchantTransactionsQuery({
-    status: "APPROVED",
+    status: "SUCCESS",
   })
 
   return (
@@ -15,7 +15,7 @@ export const LastStatement = () => {
         className=""
         title="Recent Transactions"
         columns={columns.splice(0, 7)}
-        data={data?.slice(0, 10)}
+        data={(data?.data || [])?.slice(0, 10)}
         pagination={false}
         progressPending={isLoading}
         // style={{ height: "588px" }}

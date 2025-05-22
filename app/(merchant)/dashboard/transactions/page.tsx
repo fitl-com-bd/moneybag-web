@@ -9,15 +9,12 @@ const TransactionList = () => {
   // const openDetails = (data: any) => setDetails(data)
 
   return (
-    <>
-      <DataTablePage
-        apiFunction={useMerchantTransactionsQuery}
-        title="Transaction List"
-        columns={columns}
-        actionsProps={{}}
-      />
-      {/* <TransactionDetails visible={details} setVisible={setDetails} /> */}
-    </>
+    <DataTablePage
+      apiFunction={useMerchantTransactionsQuery}
+      title="Transaction List"
+      columns={columns}
+      actionsProps={{}}
+    />
   )
 }
 

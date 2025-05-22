@@ -1,4 +1,8 @@
-import Chart from "react-apexcharts"
+"use client"
+import { isBrowser } from "@/utils"
+import dynamic from "next/dynamic"
+
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
 const getChartData = (data: any) => {
   const options = {
@@ -30,11 +34,11 @@ export const DashboardCharts = ({ data }: { data: any }) => {
     <div className="d-grid grid-cols-md-2 gap-3">
       <div className="shadow-sm bg-white border-0 rounded overflow-hidden px-3 py-4">
         <h5 className="mb-0">{daily.title}</h5>
-        <Chart options={daily.options} series={daily.series} type="line" height={350} />
+        {isBrowser() && <Chart options={daily.options} series={daily.series} type="line" height={350} />}
       </div>
       <div className="shadow-sm bg-white border-0 rounded overflow-hidden px-3 py-4">
         <h5 className="mb-0">{monthly.title}</h5>
-        <Chart options={monthly.options} series={monthly.series} type="bar" height={350} />
+        {isBrowser() && <Chart options={monthly.options} series={monthly.series} type="bar" height={350} />}
       </div>
     </div>
   )

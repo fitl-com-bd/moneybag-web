@@ -25,7 +25,6 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest.json",
-  themeColor: "#ffffff",
   other: {
     "msapplication-TileColor": "#ffffff",
     "msapplication-TileImage": "/ms-icon-144x144.png",
@@ -38,6 +37,7 @@ export const viewport: Viewport = {
   minimumScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: "#ebedef",
 }
 
 export default function RootLayout({

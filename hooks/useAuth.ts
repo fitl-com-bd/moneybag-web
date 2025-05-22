@@ -14,7 +14,7 @@ export const useAuth = () => {
 
   const isSuperAdmin = user?.is_super
 
-  const token = localStorage.getItem(LS_TOKEN) as string
+  const token = isBrowser() ? (localStorage.getItem(LS_TOKEN) as string) : ""
   const decoded = decodeToken(token)
   const isMerchant = decoded?.scp === "merchant"
 

@@ -56,46 +56,46 @@ const MERCHANT_NAV: NavType = [
     href: "/dashboard/transactions",
     icon: <Icon name="transaction" className="nav-icon" />,
   },
-  {
-    component: CNavGroup,
-    name: "Customer Invoice",
-    icon: <Icon name="invoice" className="nav-icon" />,
-    href: "",
-    items: [
-      {
-        component: CNavItem,
-        name: "Invoices",
-        href: "/dashboard/invoice",
-        icon: <Icon name="invoice" className="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: "Customers",
-        href: "/dashboard/customer",
-        icon: <Icon name="customer" className="nav-icon" />,
-      },
-    ],
-  },
-  {
-    component: CNavItem,
-    name: "Integration Details",
-    href: "/dashboard/integration-details",
-    icon: <Icon name="integration" className="nav-icon" />,
-  },
-  {
-    component: CNavGroup,
-    name: "Report",
-    icon: <Icon name="report" className="nav-icon" />,
-    href: "",
-    items: [
-      {
-        component: CNavItem,
-        name: "Settlement Report",
-        href: "/dashboard/settlement-report",
-        icon: <Icon name="report" className="nav-icon" />,
-      },
-    ],
-  },
+  // {
+  //   component: CNavGroup,
+  //   name: "Customer Invoice",
+  //   icon: <Icon name="invoice" className="nav-icon" />,
+  //   href: "",
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: "Invoices",
+  //       href: "/dashboard/invoice",
+  //       icon: <Icon name="invoice" className="nav-icon" />,
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: "Customers",
+  //       href: "/dashboard/customer",
+  //       icon: <Icon name="customer" className="nav-icon" />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: "Integration Details",
+  //   href: "/dashboard/integration-details",
+  //   icon: <Icon name="integration" className="nav-icon" />,
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: "Report",
+  //   icon: <Icon name="report" className="nav-icon" />,
+  //   href: "",
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: "Settlement Report",
+  //       href: "/dashboard/settlement-report",
+  //       icon: <Icon name="report" className="nav-icon" />,
+  //     },
+  //   ],
+  // },
 ]
 
 const ADMIN_NAV: NavType = [
